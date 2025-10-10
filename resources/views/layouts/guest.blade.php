@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="overflow-y-hidden">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,15 +14,31 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-            <div>
-                <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+
+    <header>
+        <div class="bg-gradient-to-r from-[rgba(137,255,231,0.4)] to-[#2E7099] text-white">
+            <div class="max-w-7xl mx-auto flex flex-col items-center justify-center py-4">
+                <h1 class="text-xl font-bold tracking-wide">PPDB-TK</h1>
+                <p class="text-xs opacity-90">TK AISYIYAH BUSTANUL ATHFAL BANJAREJA</p>
+            </div>
+        </div>
+
+        <div class="bg-[#CDCDCD] text-[#2E7099]">
+            <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-2">
+                <a href="#" class="flex items-center gap-1 hover:text-[#1f4f6e] transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M3 12l9-9 9 9M4 10v10a1 1 0 001 1h6m8-11v10a1 1 0 01-1 1h-6" />
+                    </svg>
+                    <span class="font-semibold text-sm">Beranda</span>
                 </a>
             </div>
+        </div>
+    </header>
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+    <body class="font-sans text-gray-900 antialiased bg-gray-100 overflow-x-hidden">
+        <div class="flex items-center justify-center min-h-[calc(100vh-110px)] px-6 py-8 overflow-hidden">
+            <div class="w-full max-w-5xl">
                 {{ $slot }}
             </div>
         </div>

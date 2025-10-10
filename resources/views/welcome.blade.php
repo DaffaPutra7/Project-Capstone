@@ -8,7 +8,7 @@
 </head>
 <body class="bg-gradient-to-b from-sky-50 to-white min-h-screen font-sans text-gray-800">
 
-  <!-- 🌈 HEADER -->
+  <!-- HEADER -->
   <header class="shadow-md">
     <!-- Bagian Atas -->
     <div class="bg-gradient-to-r from-[rgba(137,255,231,0.4)] to-[#2E7099] text-white">
@@ -42,10 +42,10 @@
     </div>
   </header>
 
-  <!-- 🌸 MAIN -->
+  <!-- MAIN -->
   <main class="max-w-6xl mx-auto px-4 mt-10 space-y-12">
 
-    <!-- 🪴 Card Selamat Datang -->
+    <!--Card Selamat Datang -->
     <section class="bg-white shadow-md rounded-2xl p-6 border border-[#89FFE7] flex flex-col sm:flex-row items-center justify-between gap-6">
       <div class="flex-1">
         <h2 class="text-xl font-bold text-sky-700">SELAMAT DATANG</h2>
@@ -113,7 +113,7 @@
       </div>
     </section>
 
-    <!-- 📊 Statistik -->
+    <!-- Statistik -->
     <section class="flex flex-wrap justify-center gap-20 mt-10">
       
       <!-- Jumlah Pendaftar -->
@@ -149,7 +149,7 @@
 
   </main>
 
-  <!-- 🌿 Footer -->
+  <!-- Footer -->
   <footer class="mt-16 py-4 bg-[#2E7099] text-center text-white text-sm">
     &copy; 2025 TK Aisyiyah Bustanul Athfal Banjareja. All rights reserved.
   </footer>
