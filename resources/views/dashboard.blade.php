@@ -1,17 +1,105 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+    <main class="space-y-12">
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
+        <!-- Card Selamat Datang -->
+        <section class="bg-white shadow-md rounded-2xl p-6 border border-[#89FFE7] flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div class="flex-1">
+                <h2 class="text-xl font-bold text-sky-700">SELAMAT DATANG</h2>
+                <p class="text-gray-600 mt-1 leading-relaxed">
+                    Penerimaan Peserta Didik Baru (PPDB) TK Aisyiyah Bustanul Athfal Banjareja
+                </p>
+                <!-- Wrapper supaya arrow custom bisa di-position -->
+                <div class="flex items-center gap-2">
+                    <label for="tahun" class="text-sm font-medium text-gray-600">Tahun Ajaran</label>
+
+                    <div class="relative inline-block">
+                        <select id="tahun" name="tahun"
+                                class="block w-full max-w-xs appearance-none rounded-lg border border-[#89FFE7] px-3 py-2 pr-10 text-sm focus:outline-none focus:ring-1 focus:ring-sky-400 bg-white">
+                        <option>2025/2026</option>
+                        <option>2024/2025</option>
+                        <option>2023/2024</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+
+            <img src="{{ asset('images/logo-TK-Aisyiyah.png') }}" alt="Logo" class="w-24 sm:w-28 h-auto">
+        </section>
+
+        <!-- Tombol Aksi -->
+        <section class="flex flex-wrap justify-center gap-10 mt-10">
+            <!-- Tombol Pendaftaran -->
+            <a href="#"
+            class="flex items-center gap-3 border border-[#89FFE7] rounded-2xl px-14 py-5 shadow-md hover:shadow-lg hover:bg-[#E0FFFA] transition transform hover:-translate-y-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-[#2E7099]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12h6m2 8H7a2 2 0 01-2-2V6a2 2 0 012-2h7l5 5v9a2 2 0 01-2 2z" />
+                </svg>
+                <span class="text-lg text-[#2E7099] font-semibold">Pendaftaran</span>
+            </a>
+
+            <!-- Tombol Biodata -->
+            <a href="#"
+            class="flex items-center gap-3 border border-[#89FFE7] rounded-2xl px-14 py-5 shadow-md hover:shadow-lg hover:bg-[#E0FFFA] transition transform hover:-translate-y-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-[#2E7099]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M5.121 17.804A8.966 8.966 0 0112 15c2.21 0 4.21.804 5.879 2.121M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span class="text-lg text-[#2E7099] font-semibold">Biodata</span>
+            </a>
+
+            <!-- Tombol Profil TK -->
+            <a href="#"
+            class="flex items-center gap-3 border border-[#89FFE7] rounded-2xl px-14 py-5 shadow-md hover:shadow-lg hover:bg-[#E0FFFA] transition transform hover:-translate-y-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-[#2E7099]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 7l9-4 9 4-9 4-9-4zm0 0v10a2 2 0 002 2h14a2 2 0 002-2V7M9 21h6" />
+                </svg>
+                <span class="text-lg text-[#2E7099] font-semibold">Profil TK</span>
+            </a>
+        </section>
+
+        <!-- Statistik -->
+        <section class="flex flex-wrap justify-center gap-20 mt-10">
+            <!-- Jumlah Pendaftar -->
+            <div class="flex flex-col items-center">
+                <div class="bg-[#2E7099] text-white font-semibold text-sm px-14 py-5 rounded-full mb-2 shadow">
+                    Jumlah Pendaftar
+                </div>
+                <div class="flex items-center gap-2 text-[#2E7099]">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87M9 10a4 4 0 11-8 0 4 4 0 018 0zm6 0a4 4 0 100-8 4 4 0 000 8z" />
+                    </svg>
+                    <span class="text-3xl font-bold">2500</span>
+                </div>
+            </div>
+
+            <!-- Kuota Pendaftaran -->
+            <div class="flex flex-col items-center">
+                <div class="bg-[#2E7099] text-white font-semibold text-sm px-14 py-5 rounded-full mb-2 shadow">
+                    Kuota Pendaftaran
+                </div>
+                <div class="flex items-center gap-2 text-[#2E7099]">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87M9 10a4 4 0 11-8 0 4 4 0 018 0zm6 0a4 4 0 100-8 4 4 0 000 8z" />
+                    </svg>
+                    <span class="text-3xl font-bold">2500</span>
+                </div>
+            </div>
+        </section>
+    </main>
+    @if (session('success'))
+    <script>
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Login Berhasil 🎉',
+            showConfirmButton: false,
+            timer: 2000
+        })
+    </script>
+    @endif
+
 </x-app-layout>

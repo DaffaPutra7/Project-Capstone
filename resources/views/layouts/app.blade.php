@@ -1,36 +1,72 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
+    <!-- Scripts -->
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body class="font-sans text-gray-900 antialiased bg-gray-100 overflow-x-hidden">
 
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
-
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+    <!-- HEADER -->
+    <header>
+        <!-- Top Bar -->
+        <div class="bg-gradient-to-r from-[rgba(137,255,231,0.4)] to-[#2E7099] text-white">
+            <div class="max-w-7xl mx-auto flex flex-col items-center justify-center py-4">
+                <h1 class="text-xl font-bold tracking-wide">PPDB-TK</h1>
+                <p class="text-xs opacity-90">TK AISYIYAH BUSTANUL ATHFAL BANJAREJA</p>
+            </div>
         </div>
-    </body>
+
+        <!-- Navigation -->
+        <div class="bg-[#CDCDCD] text-[#2E7099]">
+            <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-2">
+                <a href="/" class="flex items-center gap-1 hover:text-[#1f4f6e] transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 12l9-9 9 9M4 10v10a1 1 0 001 1h6m8-11v10a1 1 0 01-1 1h-6" />
+                    </svg>
+                    <span class="font-semibold text-sm">Beranda</span>
+                </a>
+
+                <!-- Kanan: Tombol Logout -->
+                @auth
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit"
+                        class="flex items-center gap-2 bg-[#2E7099] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-[#245b7a] transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 11-4 0v-1m0-8V7a2 2 0 114 0v1" />
+                        </svg>
+                        Logout
+                    </button>
+                </form>
+                @endauth
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex items-center justify-center min-h-[calc(100vh-160px)] px-6 py-8 overflow-hidden">
+        <div class="w-full max-w-6xl">
+            {{ $slot }}
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="py-4 bg-[#2E7099] text-center text-white text-sm">
+        &copy; 2025 TK Aisyiyah Bustanul Athfal Banjareja. All rights reserved.
+    </footer>
+
+</body>
 </html>
