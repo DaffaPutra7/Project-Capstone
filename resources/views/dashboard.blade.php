@@ -2,7 +2,7 @@
     <main class="space-y-12">
 
         <!-- Card Selamat Datang -->
-        <section class="bg-white shadow-md rounded-2xl p-6 border border-[#89FFE7] flex flex-col sm:flex-row items-center justify-between gap-6">
+        <section class="bg-white shadow-md rounded-[50px] p-6 border border-[#89FFE7] flex flex-col sm:flex-row items-center justify-between gap-6">
             <div class="flex-1">
                 <h2 class="text-xl font-bold text-sky-700">SELAMAT DATANG</h2>
                 <p class="text-gray-600 mt-1 leading-relaxed">
@@ -14,7 +14,7 @@
 
                     <div class="relative inline-block">
                         <select id="tahun" name="tahun"
-                                class="block w-full max-w-xs appearance-none rounded-lg border border-[#89FFE7] px-3 py-2 pr-10 text-sm focus:outline-none focus:ring-1 focus:ring-sky-400 bg-white">
+                                class="block w-full max-w-xs appearance-none rounded-[50px] border border-[#89FFE7] px-3 py-2 pr-10 text-sm focus:outline-none focus:ring-1 focus:ring-sky-400 bg-white">
                         <option>2025/2026</option>
                         <option>2024/2025</option>
                         <option>2023/2024</option>
@@ -27,65 +27,65 @@
         </section>
 
         <!-- Tombol Aksi -->
-        <section class="flex flex-wrap justify-center gap-10 mt-10">
+        <section class="flex flex-wrap justify-center gap-12 mt-14">
             <!-- Tombol Pendaftaran -->
             <a href="#"
-            class="flex items-center gap-3 border border-[#89FFE7] rounded-2xl px-14 py-5 shadow-md hover:shadow-lg hover:bg-[#E0FFFA] transition transform hover:-translate-y-1">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-[#2E7099]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            class="flex items-center gap-4 border border-[#89FFE7] rounded-[50px] px-20 py-6 shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-[#2E7099]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M9 12h6m2 8H7a2 2 0 01-2-2V6a2 2 0 012-2h7l5 5v9a2 2 0 01-2 2z" />
                 </svg>
-                <span class="text-lg text-[#2E7099] font-semibold">Pendaftaran</span>
+                <span class="text-2xl text-[#2E7099] font-semibold">Pendaftaran</span>
             </a>
 
             <!-- Tombol Biodata -->
             <a href="#"
-            class="flex items-center gap-3 border border-[#89FFE7] rounded-2xl px-14 py-5 shadow-md hover:shadow-lg hover:bg-[#E0FFFA] transition transform hover:-translate-y-1">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-[#2E7099]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            class="flex items-center gap-4 border border-[#89FFE7] rounded-[50px] px-20 py-6 shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-[#2E7099]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M5.121 17.804A8.966 8.966 0 0112 15c2.21 0 4.21.804 5.879 2.121M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <span class="text-lg text-[#2E7099] font-semibold">Biodata</span>
+                <span class="text-2xl text-[#2E7099] font-semibold">Biodata</span>
             </a>
 
             <!-- Tombol Profil TK -->
             <a href="#"
-            class="flex items-center gap-3 border border-[#89FFE7] rounded-2xl px-14 py-5 shadow-md hover:shadow-lg hover:bg-[#E0FFFA] transition transform hover:-translate-y-1">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-[#2E7099]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            class="flex items-center gap-4 border border-[#89FFE7] rounded-[50px] px-20 py-6 shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-[#2E7099]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M3 7l9-4 9 4-9 4-9-4zm0 0v10a2 2 0 002 2h14a2 2 0 002-2V7M9 21h6" />
                 </svg>
-                <span class="text-lg text-[#2E7099] font-semibold">Profil TK</span>
+                <span class="text-2xl text-[#2E7099] font-semibold">Profil TK</span>
             </a>
         </section>
 
         <!-- Statistik -->
-        <section class="flex flex-wrap justify-center gap-20 mt-10">
+        <section class="flex flex-wrap justify-center gap-32 mt-16">
             <!-- Jumlah Pendaftar -->
-            <div class="flex flex-col items-center">
-                <div class="bg-[#2E7099] text-white font-semibold text-sm px-14 py-5 rounded-full mb-2 shadow">
+            <div class="flex flex-col items-center hover:scale-105 transition-transform duration-300">
+                <div class="bg-[#2E7099] text-white font-extrabold text-2xl px-20 py-8 rounded-full mb-5 shadow-lg">
                     Jumlah Pendaftar
                 </div>
-                <div class="flex items-center gap-2 text-[#2E7099]">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div class="flex items-center gap-4 text-[#2E7099] py-5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87M9 10a4 4 0 11-8 0 4 4 0 018 0zm6 0a4 4 0 100-8 4 4 0 000 8z" />
                     </svg>
-                    <span class="text-3xl font-bold">2500</span>
+                    <span class="text-6xl font-extrabold tracking-wide">2500</span>
                 </div>
             </div>
 
             <!-- Kuota Pendaftaran -->
-            <div class="flex flex-col items-center">
-                <div class="bg-[#2E7099] text-white font-semibold text-sm px-14 py-5 rounded-full mb-2 shadow">
+            <div class="flex flex-col items-center hover:scale-105 transition-transform duration-300">
+                <div class="bg-[#2E7099] text-white font-extrabold text-2xl px-20 py-8 rounded-full mb-5 shadow-lg">
                     Kuota Pendaftaran
                 </div>
-                <div class="flex items-center gap-2 text-[#2E7099]">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div class="flex items-center gap-4 text-[#2E7099] py-5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87M9 10a4 4 0 11-8 0 4 4 0 018 0zm6 0a4 4 0 100-8 4 4 0 000 8z" />
                     </svg>
-                    <span class="text-3xl font-bold">2500</span>
+                    <span class="text-6xl font-extrabold tracking-wide">2500</span>
                 </div>
             </div>
         </section>
@@ -93,11 +93,19 @@
     @if (session('success'))
     <script>
         Swal.fire({
-            position: 'center',
+            toast: true,
+            position: 'bottom-end', // pojok kanan bawah
             icon: 'success',
-            title: 'Login Berhasil 🎉',
+            title: 'Login berhasil 🎉',
             showConfirmButton: false,
-            timer: 2000
+            timer: 2500,
+            timerProgressBar: true,
+            background: '#2E7099',
+            color: '#fff',
+            iconColor: '#89FFE7',
+            customClass: {
+                popup: 'rounded-lg shadow-lg'
+            }
         })
     </script>
     @endif
