@@ -14,14 +14,16 @@
         <div class="bg-white rounded-2xl shadow-md p-8 border border-[#89FFE7] w-full sm:max-w-md mx-auto md:ml-8">
             <form method="POST" action="{{ route('register') }}">
                 @csrf
-
-                <!-- Name -->
-                <div>
-                    <x-input-label for="nama_lengkap" :value="__('Nama_lengkap')" />
-                    <x-text-input id="nama_lengkap" class="block mt-1 w-full" type="text" name="nama_lengkap" :value="old('nama_lengkap')" required autofocus autocomplete="name" />
-                    <x-input-error :messages="$errors->get('nama_lengkap')" class="mt-2" />
+                <!--  Nama Lengkap  -->
+               <div>
+                    <x-input-label for="nama_lengkap" :value="__('Nama Lengkap')" />
+                    <x-text-input id="nama_lengkap" class="block mt-1 w-full" type="text" name="nama_lengkap" required autofocus />
                 </div>
-
+                <!-- No Hp -->
+                <div class="mt-4">
+                    <x-input-label for="no_hp" :value="__('No HP')" />
+                    <x-text-input id="no_hp" class="block mt-1 w-full" type="text" name="no_hp" />
+                </div>
                 <!-- Email Address -->
                 <div class="mt-4">
                     <x-input-label for="email" :value="__('Email')" />
@@ -50,6 +52,11 @@
                                     name="password_confirmation" required autocomplete="new-password" />
 
                     <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+                </div>
+                <!-- Alamat -->
+                <div class="mt-4">
+                    <x-input-label for="alamat" :value="__('Alamat')" />
+                    <textarea id="alamat" name="alamat" class="block mt-1 w-full border-gray-300 rounded-md"></textarea>
                 </div>
 
                 <div class="mt-4 space-y-4">
