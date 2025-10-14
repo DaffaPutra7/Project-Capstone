@@ -49,7 +49,7 @@
             </a>
 
             <!-- Tombol Profil TK -->
-            <a href="#"
+            <a href="{{ route('company') }}"
             class="flex items-center gap-4 border border-[#89FFE7] rounded-[50px] px-20 py-6 shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-[#2E7099]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

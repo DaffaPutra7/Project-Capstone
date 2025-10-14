@@ -30,7 +30,7 @@
         <!-- Navigation -->
         <div class="bg-[#CDCDCD] text-[#2E7099]">
             <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-2">
-                <a href="/" class="flex items-center gap-1 hover:text-[#1f4f6e] transition">
+                <a href="/dashboard" class="flex items-center gap-1 hover:text-[#1f4f6e] transition">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 12l9-9 9 9M4 10v10a1 1 0 001 1h6m8-11v10a1 1 0 01-1 1h-6" />
