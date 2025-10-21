@@ -8,16 +8,20 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard.dashboard');
+    return view('user.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/company', function () {
-    return view('dashboard.company');
+    return view('user.company');
 })->name('company');
 
 Route::get('/formulir', function () {
-    return view('dashboard.formulir');
+    return view('user.formulir');
 })->name('formulir');
+
+Route::get('/biodata', function () {
+    return view('user.biodata');
+})->name('biodata');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
