@@ -8,15 +8,15 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('dashboard.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/company', function () {
-    return view('company');
+    return view('dashboard.company');
 })->name('company');
 
 Route::get('/formulir', function () {
-    return view('formulir');
+    return view('dashboard.formulir');
 })->name('formulir');
 
 Route::middleware('auth')->group(function () {
