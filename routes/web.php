@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProfilTkController;
 use Illuminate\Support\Facades\Route;
 
 // Halaman utama
@@ -15,9 +16,10 @@ Route::get('/', function () {
 // =======================
 Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
     Route::get('/dashboard', [UserController::class, 'index'])->name('user.dashboard');
-    Route::get('/company', function () {
-        return view('user.company');
-    })->name('company');
+    // Route::get('/company', function () {
+    //     return view('user.company');
+    // })->name('company');
+    Route::get('/company', [ProfilTkController::class, 'index'])->name('company');
     Route::get('/formulir', function () {
         return view('user.formulir');
     })->name('formulir');
