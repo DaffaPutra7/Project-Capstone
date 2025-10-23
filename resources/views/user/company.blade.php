@@ -3,8 +3,7 @@
         <!-- Judul -->
         <section>
             <h1 class="text-5xl font-bold text-sky-700 mb-2">
-                Profil TK – Aisyiyah <br>
-                Bustanul Athfal Banjareja
+                Profil TK - {{ $profil->nama_tk ?? 'Nama TK' }}
             </h1>
         </section>
 
@@ -16,7 +15,7 @@
                     VISI
                 </h2>
                 <p class="text-gray-700 text-justify leading-relaxed">
-                    Mewujudkan anak didik menjadi generasi yang berakhlakul karimah, aktif, kreatif, asik, dan bertanggung jawab.
+                    {{ $profil->visi ?? 'Visi belum diatur.' }}
                 </p>
             </div>
 
@@ -26,11 +25,7 @@
                     MISI
                 </h2>
                 <ol class="list-decimal list-inside text-gray-700 space-y-2 leading-relaxed">
-                    <li>Mencintai Al Qur’an melalui kegiatan tahfidzul qur’an.</li>
-                    <li>Pembiasaan 5S (senyum, salam, sapa, sopan, santun).</li>
-                    <li>Melaksanakan pembelajaran yang unggul dan kompeten.</li>
-                    <li>Memotivasi anak dalam kegiatan yang asik dan menyenangkan tanpa beban.</li>
-                    <li>Melatih anak menjadi pribadi yang mandiri, percaya diri, dan bertanggung jawab.</li>
+                    {!! $profil->misi ?? 'Misi belum diatur.' !!}
                 </ol>
             </div>
         </section>
@@ -41,9 +36,7 @@
                 TUJUAN
             </h2>
             <ol class="list-decimal list-inside text-gray-700 space-y-2 leading-relaxed">
-                <li>Mewujudkan generasi hafidz-hafidzah yang berakhlakul karimah.</li>
-                <li>Membentuk generasi yang aktif, kreatif, asik, dan menyenangkan.</li>
-                <li>Membentuk generasi yang berkepribadian serta tanggung jawab dalam menghadapi era globalisasi.</li>
+                {!! $profil->tujuan ?? 'Tujuan belum diatur.' !!}
             </ol>
         </section>
 
@@ -51,7 +44,7 @@
         <section>
             <h2 class="text-lg font-bold text-gray-800 mb-2">MOTTO SEKOLAH</h2>
             <p class="text-gray-700">
-                Membentuk generasi <strong>“BAKAT”</strong> berakhlakul karimah, aktif, kreatif, asik, dan tanggung jawab.
+                {!! $profil->motto ?? 'Moto belum diatur.' !!}
             </p>
         </section>
     </main>
