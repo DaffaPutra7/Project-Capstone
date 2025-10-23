@@ -33,12 +33,12 @@ Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
 // =======================
 Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::get('/formulir', function () {
+    Route::get('/admin/formulir', function () {
         return view('user.formulir');
-    })->name('formulir');
-    Route::get('/company', function () {
+    })->name('admin.formulir');
+    Route::get('/admin/company', function () {
         return view('admin.company');
-    })->name('company');
+    })->name('admin.company');
     // lo bisa tambahin route admin lain di sini nanti
 });
 
