@@ -1,30 +1,42 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
+// Halaman utama
 Route::get('/', function () {
     return view('welcome');
 });
-//user
-Route::get('/dashboard', function () {
-    return view('user.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/company', function () {
-    return view('user.company');
-})->name('company');
+// =======================
+//      USER ROUTES
+// =======================
+Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
+    Route::get('/dashboard', [UserController::class, 'index'])->name('user.dashboard');
+    Route::get('/company', function () {
+        return view('user.company');
+    })->name('company');
+    Route::get('/formulir', function () {
+        return view('user.formulir');
+    })->name('formulir');
+    Route::get('/biodata', function () {
+        return view('user.biodata');
+    })->name('biodata');
+});
 
-Route::get('/formulir', function () {
-    return view('user.formulir');
-})->name('formulir');
+// =======================
+//       ADMIN ROUTES
+// =======================
+Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    // lo bisa tambahin route admin lain di sini nanti
+});
 
-Route::get('/biodata', function () {
-    return view('user.biodata');
-})->name('biodata');
-
-//admin
-
+// =======================
+//   PROFILE (semua user)
+// =======================
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
