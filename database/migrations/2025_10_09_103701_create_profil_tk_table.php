@@ -14,11 +14,10 @@ return new class extends Migration
         Schema::create('profil_tk', function (Blueprint $table) {
             $table->id('id_profil'); // Sesuai dengan .sql
             $table->string('nama_tk', 100);
-            $table->text('alamat')->nullable();
-            $table->text('deskripsi')->nullable();
             $table->text('visi')->nullable();
             $table->text('misi')->nullable();
-            $table->string('kontak', 100)->nullable();
+            $table->text('tujuan')->nullable();
+            $table->text('motto')->nullable();
             // Laravel otomatis menambahkan created_at dan updated_at
             // jika Anda menggunakan $table->timestamps();
         });
