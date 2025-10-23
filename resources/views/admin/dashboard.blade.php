@@ -28,15 +28,6 @@
 
         <!-- Tombol Aksi -->
         <section class="flex flex-wrap justify-center gap-12 mt-14">
-            <!-- Tombol Pendaftaran -->
-            <a href="{{ route('formulir') }}"
-            class="flex items-center gap-4 border border-[#89FFE7] rounded-[50px] px-20 py-6 shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-[#2E7099]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 12h6m2 8H7a2 2 0 01-2-2V6a2 2 0 012-2h7l5 5v9a2 2 0 01-2 2z" />
-                </svg>
-                <span class="text-2xl text-[#2E7099] font-semibold">Pendaftaran</span>
-            </a>
 
             <!-- Tombol Biodata -->
             <a href="{{ route('biodata') }}"
@@ -45,7 +36,17 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M5.121 17.804A8.966 8.966 0 0112 15c2.21 0 4.21.804 5.879 2.121M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <span class="text-2xl text-[#2E7099] font-semibold">Biodata</span>
+                <span class="text-2xl text-[#2E7099] font-semibold">List siswa</span>
+            </a>
+
+            <!-- Tombol Pendaftaran -->
+            <a href="{{ route('formulir') }}"
+            class="flex items-center gap-4 border border-[#89FFE7] rounded-[50px] px-20 py-6 shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-[#2E7099]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12h6m2 8H7a2 2 0 01-2-2V6a2 2 0 012-2h7l5 5v9a2 2 0 01-2 2z" />
+                </svg>
+                <span class="text-2xl text-[#2E7099] font-semibold">Daftarkan</span>
             </a>
 
             <!-- Tombol Profil TK -->
