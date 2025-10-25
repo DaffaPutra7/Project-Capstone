@@ -29,7 +29,7 @@
         <!-- Tombol Aksi -->
         <section class="flex flex-wrap justify-center gap-12 mt-14">
             <!-- Tombol Pendaftaran -->
-            <a href="{{ route('formulir') }}"
+            <a href="{{ route('user.formulir') }}"
             class="flex items-center gap-4 border border-[#89FFE7] rounded-[50px] px-20 py-6 shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-[#2E7099]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -39,7 +39,7 @@
             </a>
 
             <!-- Tombol Biodata -->
-            <a href="{{ route('biodata') }}"
+            <a href="{{ route('user.biodata') }}"
             class="flex items-center gap-4 border border-[#89FFE7] rounded-[50px] px-20 py-6 shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-[#2E7099]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -49,7 +49,7 @@
             </a>
 
             <!-- Tombol Profil TK -->
-            <a href="{{ route('company') }}"
+            <a href="{{ route('user.company') }}"
             class="flex items-center gap-4 border border-[#89FFE7] rounded-[50px] px-20 py-6 shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-[#2E7099]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

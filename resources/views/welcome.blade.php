@@ -30,38 +30,70 @@
           <span class="font-semibold text-sm">Beranda</span>
         </a>
 
-        <!-- Tombol Login -->
+        <!-- Tombol Masuk -->
         <a href="{{ route('login') }}" class="flex items-center gap-1 hover:text-[#1f4f6e] transition">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1" />
           </svg>
-          <span class="font-semibold text-sm">Login</span>
+          <span class="font-semibold text-sm">Masuk</span>
         </a>
       </div>
     </div>
   </header>
 
   <!-- MAIN -->
-  <main class="max-w-6xl mx-auto px-4 mt-10 space-y-12">
+  <main class="max-w-6xl mx-auto px-4 mt-10 space-y-8">
 
-    <!--Card Selamat Datang -->
-    <section class="bg-white shadow-md rounded-2xl p-6 border border-[#89FFE7] flex flex-col sm:flex-row items-center justify-between gap-6">
-      <div class="flex-1">
-        <h2 class="text-xl font-bold text-sky-700">SELAMAT DATANG</h2>
-        <p class="text-gray-600 mt-1 leading-relaxed">
-          Penerimaan Peserta Didik Baru (PPDB) TK Aisyiyah Bustanul Athfal Banjareja
-        </p>
-        <div class="mt-4">
-          <label class="text-sm font-medium text-gray-600">Tahun Ajaran</label>
-          <select class="ml-2 border border-[#89FFE7] rounded-lg px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-sky-400">
-            <option>2025/2026</option>
-          </select>
+    <!-- 🏫 Card Selamat Datang + Statistik -->
+    <div class="space-y-0">
+      <!-- 🏫 Card Selamat Datang -->
+      <section class="bg-white shadow-md rounded-t-2xl p-6 border border-[#89FFE7] flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div class="flex-1">
+          <h2 class="text-xl font-bold text-sky-700">SELAMAT DATANG</h2>
+          <p class="text-gray-600 mt-1 leading-relaxed">
+            Penerimaan Peserta Didik Baru (PPDB) Taman Kanak-Kanak Aisyiyah Bustanul Athfal Banjareja.
+          </p>
         </div>
-      </div>
+        <img src="{{ asset('images/logo-TK-Aisyiyah.png') }}" alt="Logo Sekolah" class="w-24 sm:w-28 h-auto">
+      </section>
 
-      <img src="{{ asset('images/logo-TK-Aisyiyah.png') }}" alt="Logo" class="w-24 sm:w-28 h-auto">
-    </section>
+      <!-- 📊 Statistik -->
+      <section class="flex flex-col sm:flex-row justify-start items-start sm:items-center flex-wrap gap-2 text-sm bg-white border-x border-b border-[#89FFE7] rounded-b-2xl shadow-md px-6 py-3">
+        <!-- Jumlah Pendaftar -->
+        <div class="flex items-center gap-2 bg-sky-100 text-sky-800 px-4 py-2 rounded-xl shadow-sm border border-sky-200">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87M9 10a4 4 0 11-8 0 4 4 0 018 0zm6 0a4 4 0 100-8 4 4 0 000 8z" />
+          </svg>
+          <span><strong>Jumlah Pendaftar:</strong> 2500 Orang</span>
+        </div>
+
+        <!-- Kuota Pendaftaran -->
+        <div class="flex items-center gap-2 bg-emerald-100 text-emerald-800 px-4 py-2 rounded-xl shadow-sm border border-emerald-200">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 12h6m-6 4h6m2 4H7a2 2 0 01-2-2V6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v12a2 2 0 01-2 2z" />
+          </svg>
+          <span><strong>Kuota Tersedia:</strong> 2500 Peserta</span>
+        </div>
+      </section>
+    </div>
+
+    <!-- Tombol Aksi -->
+    <div class="mt-5 flex flex-wrap gap-3">
+      <!-- Tombol Daftar Sekarang -->
+      <a href="{{ route('register') }}"
+        class="bg-gradient-to-r from-sky-500 via-sky-600 to-sky-700 text-white font-semibold px-6 py-2.5 rounded-xl shadow-lg shadow-sky-200 hover:scale-105 hover:shadow-sky-400 transition-transform duration-200 ease-in-out">
+        Daftar Sekarang
+      </a>
+
+      <!-- Tombol Lihat Status Pendaftaran -->
+      <a href="#"
+        class="bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-600 text-white font-semibold px-6 py-2.5 rounded-xl shadow-lg shadow-emerald-200 hover:scale-105 hover:shadow-emerald-400 transition-transform duration-200 ease-in-out">
+        Lihat Status Pendaftaran
+      </a>
+    </div>
 
     <!-- 🌼 Visi Misi Tujuan -->
     <section class="space-y-8">
@@ -82,10 +114,10 @@
           <div class="bg-sky-600 text-white font-semibold text-center py-2 text-lg">MISI</div>
           <div class="p-5 text-gray-700 leading-relaxed">
             <ol class="list-decimal list-inside space-y-2">
-              <li>Mencintai Al-Qur’an melalui kegiatan tahfidzul Qur’an.</li>
-              <li>Pembiasaan 5S (senyum, salam, sapa, sopan, santun).</li>
+              <li>Menumbuhkan kecintaan terhadap Al-Qur’an melalui kegiatan tahfidzul Qur’an.</li>
+              <li>Menanamkan pembiasaan 5S (Senyum, Salam, Sapa, Sopan, Santun).</li>
               <li>Melaksanakan pembelajaran yang unggul dan kompeten.</li>
-              <li>Memotivasi anak dalam kegiatan yang asik dan menyenangkan tanpa beban.</li>
+              <li>Memotivasi anak agar belajar dalam suasana yang asik dan menyenangkan tanpa tekanan.</li>
               <li>Melatih anak menjadi pribadi yang mandiri, percaya diri, dan bertanggung jawab.</li>
             </ol>
           </div>
@@ -97,9 +129,9 @@
         <div class="bg-sky-700 text-white font-semibold text-center py-2 text-lg">TUJUAN</div>
         <div class="p-5 text-gray-700 leading-relaxed">
           <ol class="list-decimal list-inside space-y-2">
-            <li>Mewujudkan generasi hafidz-hafidzah yang berakhlakul karimah.</li>
+            <li>Mewujudkan generasi hafidz dan hafidzah yang berakhlakul karimah.</li>
             <li>Membentuk generasi yang aktif, kreatif, asik, dan menyenangkan.</li>
-            <li>Membentuk generasi yang berkepribadian serta tanggung jawab dalam menghadapi era globalisasi.</li>
+            <li>Membentuk generasi yang berkepribadian kuat serta bertanggung jawab dalam menghadapi era globalisasi.</li>
           </ol>
         </div>
       </div>
@@ -108,50 +140,16 @@
       <div class="text-center mt-6">
         <h3 class="text-lg font-semibold text-gray-800 mb-1">MOTTO SEKOLAH</h3>
         <p class="text-gray-700 leading-relaxed">
-          Membentuk generasi <span class="font-semibold">“BAKAT”</span> berakhlakul karimah, aktif, kreatif, asik, dan tanggung jawab.
+          Membentuk generasi <span class="font-semibold">“BAKAT”</span> — Berakhlakul karimah, Aktif, Kreatif, Asik, dan Tanggung jawab.
         </p>
       </div>
-    </section>
-
-    <!-- Statistik -->
-    <section class="flex flex-wrap justify-center gap-20 mt-10">
-      
-      <!-- Jumlah Pendaftar -->
-      <div class="flex flex-col items-center">
-        <div class="bg-[#2E7099] text-white font-semibold text-sm px-14 py-5 rounded-full mb-2 shadow">
-          Jumlah Pendaftar
-        </div>
-        <div class="flex items-center gap-2 text-[#2E7099]">
-          <!-- Icon orang -->
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87M9 10a4 4 0 11-8 0 4 4 0 018 0zm6 0a4 4 0 100-8 4 4 0 000 8z" />
-          </svg>
-          <span class="text-3xl font-bold">2500</span>
-        </div>
-      </div>
-
-      <!-- Kuota Pendaftaran -->
-      <div class="flex flex-col items-center">
-        <div class="bg-[#2E7099] text-white font-semibold text-sm px-14 py-5 rounded-full mb-2 shadow">
-          Kuota Pendaftaran
-        </div>
-        <div class="flex items-center gap-2 text-[#2E7099]">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87M9 10a4 4 0 11-8 0 4 4 0 018 0zm6 0a4 4 0 100-8 4 4 0 000 8z" />
-          </svg>
-          <span class="text-3xl font-bold">2500</span>
-        </div>
-      </div>
-
     </section>
 
   </main>
 
   <!-- Footer -->
   <footer class="mt-16 py-4 bg-[#2E7099] text-center text-white text-sm">
-    &copy; 2025 TK Aisyiyah Bustanul Athfal Banjareja. All rights reserved.
+    &copy; 2025 TK Aisyiyah Bustanul Athfal Banjareja. Seluruh hak cipta dilindungi.
   </footer>
 
 </body>

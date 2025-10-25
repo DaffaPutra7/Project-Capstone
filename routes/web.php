@@ -1,53 +1,77 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfilTkController;
-use Illuminate\Support\Facades\Route;
 
-// =======================
-//      HALAMAN UTAMA
-// =======================
+/*
+|--------------------------------------------------------------------------
+| HALAMAN UTAMA
+|--------------------------------------------------------------------------
+*/
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
-// =======================
-//      USER ROUTES
-// =======================
-Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
-    Route::get('/dashboard', [UserController::class, 'index'])->name('user.dashboard');
+/*
+|--------------------------------------------------------------------------
+| LOGIN / AUTH ROUTES
+|--------------------------------------------------------------------------
+*/
+if (!Route::has('login')) {
+    Route::get('/login', function () {
+        return view('auth.login');
+    })->name('login');
+}
 
-    Route::get('/company', [ProfilTkController::class, 'index'])->name('user.company');
-    Route::get('/formulir', function () {
-        return view('user.formulir');
-    })->name('user.formulir');
-    Route::get('/biodata', function () {
-        return view('user.biodata');
-    })->name('user.biodata');
-});
+/*
+|--------------------------------------------------------------------------
+| ROUTE UNTUK USER (role:user)
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'verified', 'role:user'])
+    ->prefix('user')
+    ->name('user.')
+    ->group(function () {
+        Route::get('/dashboard', [UserController::class, 'index'])->name('dashboard');
+        Route::get('/company', [ProfilTkController::class, 'index'])->name('company');
+        Route::view('/formulir', 'user.formulir')->name('formulir');
+        Route::view('/biodata', 'user.biodata')->name('biodata');
+    });
 
-// =======================
-//      ADMIN ROUTES
-// =======================
-Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::get('/admin/formulir', function () {
-        return view('user.formulir');
-    })->name('user.formulir');
-    Route::get('/admin/company', function () {
-        return view('admin.company');
-    })->name('admin.company');
-});
+/*
+|--------------------------------------------------------------------------
+| ROUTE UNTUK ADMIN (role:admin)
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'verified', 'role:admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+        Route::view('/formulir', 'admin.formulir')->name('formulir');
+        Route::view('/company', 'admin.company')->name('company');
+    });
 
-// =======================
-//   PROFILE (SEMUA USER)
-// =======================
+/*
+|--------------------------------------------------------------------------
+| PROFILE (SEMUA USER)
+|--------------------------------------------------------------------------
+*/
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+/*
+|--------------------------------------------------------------------------
+| FILE AUTH (REGISTER, LOGIN, LOGOUT DLL)
+|--------------------------------------------------------------------------
+*/
+$authFile = __DIR__ . '/auth.php';
+if (file_exists($authFile)) {
+    require $authFile;
+}
