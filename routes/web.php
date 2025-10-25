@@ -6,7 +6,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfilTkController;
 use Illuminate\Support\Facades\Route;
 
-// Halaman utama
+// =======================
+//      HALAMAN UTAMA
+// =======================
 Route::get('/', function () {
     return view('welcome');
 });
@@ -16,34 +18,31 @@ Route::get('/', function () {
 // =======================
 Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
     Route::get('/dashboard', [UserController::class, 'index'])->name('user.dashboard');
-    // Route::get('/company', function () {
-    //     return view('user.company');
-    // })->name('company');
-    Route::get('/company', [ProfilTkController::class, 'index'])->name('company');
+
+    Route::get('/company', [ProfilTkController::class, 'index'])->name('user.company');
     Route::get('/formulir', function () {
         return view('user.formulir');
-    })->name('formulir');
+    })->name('user.formulir');
     Route::get('/biodata', function () {
         return view('user.biodata');
-    })->name('biodata');
+    })->name('user.biodata');
 });
 
 // =======================
-//       ADMIN ROUTES
+//      ADMIN ROUTES
 // =======================
 Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/formulir', function () {
         return view('user.formulir');
-    })->name('admin.formulir');
+    })->name('user.formulir');
     Route::get('/admin/company', function () {
         return view('admin.company');
     })->name('admin.company');
-    // lo bisa tambahin route admin lain di sini nanti
 });
 
 // =======================
-//   PROFILE (semua user)
+//   PROFILE (SEMUA USER)
 // =======================
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
