@@ -43,13 +43,16 @@ class RegisteredUserController extends Controller
             'password'     => Hash::make($request->password),
             'no_hp'        => $request->no_hp,
             'alamat'       => $request->alamat,
-            'role'         => 'user', // default sesuai DB kamu
+            'role'         => 'user', // default user baru
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect()->route('dashboard');
+        // 🔥 Arahkan sesuai role
+        return redirect()->route(
+            $user->role === 'admin' ? 'admin.dashboard' : 'user.dashboard'
+        );
     }
 }
