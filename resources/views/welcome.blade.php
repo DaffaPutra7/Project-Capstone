@@ -89,7 +89,7 @@
       </a>
 
       <!-- Tombol Lihat Status Pendaftaran -->
-      <a href="#"
+      <a href="{{ route('login') }}"
         class="bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-600 text-white font-semibold px-6 py-2.5 rounded-xl shadow-lg shadow-emerald-200 hover:scale-105 hover:shadow-emerald-400 transition-transform duration-200 ease-in-out">
         Lihat Status Pendaftaran
       </a>
