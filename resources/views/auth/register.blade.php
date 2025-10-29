@@ -35,28 +35,30 @@
                     <x-input-error :messages="$errors->get('email')" class="mt-2" />
                 </div>
 
-                <!-- Kata Sandi -->
-                <div class="mt-4">
-                    <x-input-label for="password" :value="__('Kata Sandi')" />
-                    <x-text-input id="password" class="block mt-1 w-full"
-                                  type="password"
-                                  name="password"
-                                  required autocomplete="new-password"
-                                  placeholder="Masukkan kata sandi" />
-                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
-                </div>
+                <!-- Kata Sandi & Konfirmasi Kata Sandi -->
+                <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Kata Sandi -->
+                    <div>
+                        <x-input-label for="password" :value="__('Kata Sandi')" />
+                        <x-text-input id="password" class="block mt-1 w-full"
+                                    type="password"
+                                    name="password"
+                                    required autocomplete="new-password"
+                                    placeholder="Masukkan kata sandi" />
+                        <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                    </div>
 
-                <!-- Konfirmasi Kata Sandi -->
-                <div class="mt-4">
-                    <x-input-label for="password_confirmation" :value="__('Konfirmasi Kata Sandi')" />
-                    <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                                  type="password"
-                                  name="password_confirmation"
-                                  required autocomplete="new-password"
-                                  placeholder="Ulangi kata sandi" />
-                    <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+                    <!-- Konfirmasi Kata Sandi -->
+                    <div>
+                        <x-input-label for="password_confirmation" :value="__('Konfirmasi Kata Sandi')" />
+                        <x-text-input id="password_confirmation" class="block mt-1 w-full"
+                                    type="password"
+                                    name="password_confirmation"
+                                    required autocomplete="new-password"
+                                    placeholder="Ulangi kata sandi" />
+                        <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+                    </div>
                 </div>
-
                 <!-- Alamat -->
                 <div class="mt-4">
                     <x-input-label for="alamat" :value="__('Alamat Lengkap')" />
