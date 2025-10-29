@@ -84,7 +84,7 @@
                                     required />
                             </div>
 
-                            <!-- Kewarganegaraan (Radio Button) -->
+                            <!-- Kewarganegaraan -->
                             <div>
                                 <span class="block text-sm font-medium text-gray-700 mb-1">Kewarganegaraan</span>
                                 <div class="flex items-center space-x-4">
@@ -101,19 +101,32 @@
                                 </div>
                             </div>
 
-                            @foreach ([
-                                'Banyak Saudara Kandung',
-                                'Banyak Saudara Tiri',
-                                'Banyak Saudara Angkat',
-                                'Bahasa Sehari-hari'
-                            ] as $label)
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">{{ $label }}</label>
-                                    <input type="text" name="{{ Str::slug($label, '_') }}"
-                                        class="w-full rounded-[50px] border-gray-300 shadow-sm focus:border-[#89FFE7] focus:ring-[#89FFE7]"
-                                        required />
-                                </div>
-                            @endforeach
+                            <!-- Banyak Saudara -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Banyak Saudara Kandung</label>
+                                <input type="text" name="banyak_saudara_kandung"
+                                    class="w-full rounded-[50px] border-gray-300 shadow-sm focus:border-[#89FFE7] focus:ring-[#89FFE7]"
+                                    required />
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Banyak Saudara Tiri</label>
+                                <input type="text" name="banyak_saudara_tiri"
+                                    class="w-full rounded-[50px] border-gray-300 shadow-sm focus:border-[#89FFE7] focus:ring-[#89FFE7]" />
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Banyak Saudara Angkat</label>
+                                <input type="text" name="banyak_saudara_angkat"
+                                    class="w-full rounded-[50px] border-gray-300 shadow-sm focus:border-[#89FFE7] focus:ring-[#89FFE7]" />
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Bahasa Sehari-hari</label>
+                                <input type="text" name="bahasa_sehari_hari"
+                                    class="w-full rounded-[50px] border-gray-300 shadow-sm focus:border-[#89FFE7] focus:ring-[#89FFE7]"
+                                    required />
+                            </div>
 
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
@@ -247,7 +260,6 @@
                         </div>
                     </div>
                 </div>
-
 
                 <!-- Pilihan Program -->
                 <div class="border-t pt-6">
