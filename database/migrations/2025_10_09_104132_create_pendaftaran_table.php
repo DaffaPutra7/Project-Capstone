@@ -18,9 +18,17 @@ return new class extends Migration
             // Foreign Key ke tabel tahun_ajaran
             $table->foreignId('id_tahun')->nullable()->references('id_tahun')->on('tahun_ajaran')->onDelete('set null');
             
-            $table->enum('jenis_program', ['Full Day', 'Reguler']);
-            $table->date('tanggal_daftar');
-            $table->enum('status', ['Diterima', 'Menunggu', 'Ditolak'])->default('Menunggu');
+            $table->enum('jenis_program', ['Full Day', 'Reguler'])->nullable();
+            $table->date('tanggal_daftar')->nullable();
+            $table->enum('status', [
+                'Pengisian Formulir', // Status Awal
+                'Formulir Dikirim', 
+                'Proses Seleksi',
+                'Diterima',
+                'Ditolak'
+            ])->default('Pengisian Formulir'); // Default-nya adalah status pertama
+
+            $table->string('no_hp', 20)->nullable();
             $table->timestamps();
         });
     }
