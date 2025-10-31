@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfilTkController;
 use App\Http\Controllers\PendaftaranController;
+use App\Http\Controllers\BiodataController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,7 +50,7 @@ Route::middleware(['auth', 'verified', 'role:user'])
         Route::get('/formulir/program', [PendaftaranController::class, 'createStep3'])->name('formulir.step3');
         Route::post('/formulir/program', [PendaftaranController::class, 'storeFinal'])->name('formulir.store');
         
-        Route::view('/biodata', 'user.biodata')->name('biodata');
+        Route::get('/biodata', [BiodataController::class, 'index'])->name('biodata');
     });
 
 /*
