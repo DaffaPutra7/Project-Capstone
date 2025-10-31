@@ -38,8 +38,8 @@ class AuthenticatedSessionController extends Controller
         }
 
         return redirect()
-            ->route('user.dashboard')
-            ->with('success', 'Login berhasil sebagai User!');
+            ->route('user.formulir.step1');
+            // ->with('success', 'Login berhasil sebagai User!');
     }
 
     /**
