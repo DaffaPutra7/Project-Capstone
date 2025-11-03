@@ -18,8 +18,7 @@ return new class extends Migration
             $table->text('misi')->nullable();
             $table->text('tujuan')->nullable();
             $table->text('motto')->nullable();
-            // Laravel otomatis menambahkan created_at dan updated_at
-            // jika Anda menggunakan $table->timestamps();
+            $table->timestamps();
         });
     }
 

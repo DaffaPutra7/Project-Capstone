@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\ProfilTk;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
@@ -13,8 +14,10 @@ use App\Http\Controllers\BiodataController;
 | HALAMAN UTAMA
 |--------------------------------------------------------------------------
 */
+
 Route::get('/', function () {
-    return view('welcome');
+    $profil = ProfilTk::first();
+    return view('welcome', compact('profil'));
 })->name('home');
 
 /*
@@ -49,7 +52,7 @@ Route::middleware(['auth', 'verified', 'role:user'])
 
         Route::get('/formulir/program', [PendaftaranController::class, 'createStep3'])->name('formulir.step3');
         Route::post('/formulir/program', [PendaftaranController::class, 'storeFinal'])->name('formulir.store');
-        
+
         Route::get('/biodata', [BiodataController::class, 'index'])->name('biodata');
     });
 
@@ -63,8 +66,8 @@ Route::middleware(['auth', 'verified', 'role:admin'])
     ->name('admin.')
     ->group(function () {
         Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
-        Route::view('/formulir', 'admin.formulir')->name('formulir');
-        Route::view('/company', 'admin.company')->name('company');
+        Route::get('/company', [ProfilTkController::class, 'index'])->name('company');
+        Route::post('/company/update', [ProfilTkController::class, 'update'])->name('profil.update');
     });
 
 /*

@@ -10,10 +10,7 @@ class ProfilTk extends Model
     use HasFactory;
 
     protected $table = 'profil_tk';
-
     protected $primaryKey = 'id_profil';
-
-    public $timestamps = false;
 
     protected $fillable = [
         'nama_tk',

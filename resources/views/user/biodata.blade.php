@@ -6,16 +6,18 @@
 
             <!-- Status siswa (pojok kanan atas) -->
             @php
-                // Ganti $status dummy
-                $status = $pendaftaran->status ?? 'Proses'; // nilai: diterima / proses / ditolak
+            // Ganti $status dummy
+            $status = $pendaftaran->status ?? 'Proses'; // nilai: diterima / proses / ditolak
             @endphp
-            <div class="absolute top-4 right-4 px-3 py-1 rounded-full text-white font-semibold"
+            <div
+                x-data="{ status: '{{ $status }}' }"
+                class="absolute top-4 right-4 px-3 py-1 rounded-full text-white font-semibold"
                 :class="{
-                    'bg-green-500': '{{ $status }}' === 'diterima',
-                    'bg-yellow-500': '{{ $status }}' === 'proses',
-                    'bg-red-500': '{{ $status }}' === 'ditolak'
+                    'bg-green-500': status === 'diterima',
+                    'bg-yellow-500': status === 'proses',
+                    'bg-red-500': status === 'ditolak'
                 }">
-                {{ ucfirst($status) }}
+                <span x-text="status.charAt(0).toUpperCase() + status.slice(1)"></span>
             </div>
 
             <!-- Ringkasan -->
@@ -23,7 +25,7 @@
                 <h3 class="text-sky-700 font-semibold mb-2">Ringkasan Data</h3>
                 <p><span class="font-semibold">Nama:</span> {{ $anak->nama_lengkap ?? 'Belum Diisi' }}</p>
                 <p><span class="font-semibold">Jenis Kelamin:</span> {{ $anak->jenis_kelamin ?? 'Belum Diisi' }}</p>
-                <p><span class="font-semibold">Tempat, Tanggal Lahir:</span> 
+                <p><span class="font-semibold">Tempat, Tanggal Lahir:</span>
                     {{ $anak->tempat_lahir ?? '...' }},
                     {{ $anak->tanggal_lahir ? \Carbon\Carbon::parse($anak->tanggal_lahir)->isoFormat('D MMMM YYYY') : '...' }}
                 </p>
@@ -33,7 +35,7 @@
             <!-- Detail -->
             <div x-show="showDetail" class="mt-4 space-y-2 text-gray-700 border-t border-gray-200 pt-4">
                 <h3 class="text-sky-700 font-semibold mb-2">Detail Data Lengkap</h3>
-                
+
                 <!-- Data Anak -->
                 <p>Nama Panggilan: {{ $anak->nama_panggilan ?? '...' }}</p>
                 <p>NIK Anak: {{ $anak->nik_anak ?? '...' }}</p>
@@ -66,7 +68,7 @@
             <!-- Tombol -->
             <div class="pt-4 flex justify-center gap-4">
                 <button @click="showDetail = !showDetail"
-                        class="bg-sky-600 hover:bg-sky-700 text-white font-semibold py-2 px-6 rounded-[40px] shadow transition">
+                    class="bg-sky-600 hover:bg-sky-700 text-white font-semibold py-2 px-6 rounded-[40px] shadow transition">
                     <span x-text="showDetail ? 'Sembunyikan Detail' : 'Detail'"></span>
                 </button>
 
