@@ -50,9 +50,9 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        // 🔥 Arahkan sesuai role
-        return redirect()->route(
-            $user->role === 'admin' ? 'admin.dashboard' : 'user.dashboard'
-        );
+        // 🔥 Langsung arahkan ke form pendaftaran step 1
+        return redirect()
+            ->route('user.formulir.step1')
+            ->with('success', 'Registrasi berhasil! Silakan lengkapi formulir pendaftaran.');
     }
 }
