@@ -37,9 +37,15 @@ class AuthenticatedSessionController extends Controller
                 ->with('success', 'Login berhasil sebagai Admin!');
         }
 
-        return redirect()
-            ->route('user.formulir.step1');
-            // ->with('success', 'Login berhasil sebagai User!');
+        if ($user->role === 'user') {
+            return redirect()
+                ->route('user.dashboard')
+                ->with('success', 'Login berhasil sebagai User!');
+        }
+
+        // 🧠 fallback untuk role lain (biar gak error)
+        return redirect('/')
+            ->with('error', 'Role pengguna tidak dikenali.');
     }
 
     /**
