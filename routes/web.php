@@ -41,7 +41,7 @@ Route::middleware(['auth', 'verified', 'role:user'])
     ->name('user.')
     ->group(function () {
         Route::get('/dashboard', [UserController::class, 'index'])->name('dashboard');
-        Route::get('/company', [ProfilTkController::class, 'index'])->name('company');
+        Route::get('/company', [UserController::class, 'showCompanyProfile'])->name('company');
 
         // Route::view('/formulir', 'user.formulir')->name('formulir');
         Route::get('/formulir/data-anak', [PendaftaranController::class, 'createStep1'])->name('formulir.step1');
