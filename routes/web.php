@@ -9,6 +9,8 @@ use App\Http\Controllers\ProfilTkController;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\BiodataController;
 use App\Http\Controllers\Admin\DataSiswaController;
+use App\Models\TahunAjaran;
+use App\Models\Pendaftaran;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +20,20 @@ use App\Http\Controllers\Admin\DataSiswaController;
 
 Route::get('/', function () {
     $profil = ProfilTk::first();
-    return view('welcome', compact('profil'));
+    $tahunAktif = TahunAjaran::orderBy('tahun', 'desc')->first();
+
+    $jumlahPendaftar = 0;
+
+    if ($tahunAktif) {
+        $jumlahPendaftar = Pendaftaran::where('id_tahun', $tahunAktif->id_tahun)
+                                      ->where('status', '!=', 'Pengisian Formulir')
+                                      ->count();
+    }
+
+    return view('welcome', [
+        'profil' => $profil,
+        'jumlahPendaftar' => $jumlahPendaftar
+    ]);
 })->name('home');
 
 /*
