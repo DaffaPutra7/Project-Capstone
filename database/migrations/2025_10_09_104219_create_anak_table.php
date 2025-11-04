@@ -30,9 +30,6 @@ return new class extends Migration
             $table->enum('jenis_kelamin', ['Laki-laki','Perempuan'])->nullable(); // <-- Tambah nullable()
             $table->string('agama', 30)->nullable(); // <-- Tambah nullable()
             $table->enum('kewarganegaraan', ['Indonesia', 'WNA'])->nullable(); // <-- Tambah nullable()
-            $table->tinyInteger('jml_saudara_kandung')->nullable(); 
-            $table->tinyInteger('jml_saudara_tiri')->nullable()->default(0); 
-            $table->tinyInteger('jml_saudara_angkat')->nullable()->default(0); 
             $table->string('bahasa_sehari_hari', 50)->nullable(); // <-- Tambah nullable()
             $table->decimal('berat_badan', 5, 2)->nullable(); // <-- Tambah nullable()
             $table->decimal('tinggi_badan', 5, 2)->nullable(); // <-- Tambah nullable()
