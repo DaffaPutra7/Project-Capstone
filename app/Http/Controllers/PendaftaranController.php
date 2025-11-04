@@ -6,9 +6,9 @@ use App\Models\Pendaftaran;
 use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\StoreDataAnakRequest;   // <-- Akan kita buat
-use App\Http\Requests\StoreDataOrtuRequest;  // <-- Akan kita buat
-use App\Http\Requests\StoreProgramRequest; // <-- Akan kita buat
+use App\Http\Requests\StoreDataAnakRequest;   
+use App\Http\Requests\StoreDataOrtuRequest;  
+use App\Http\Requests\StoreProgramRequest; 
 
 class PendaftaranController extends Controller
 {
@@ -19,7 +19,7 @@ class PendaftaranController extends Controller
     public function getOrCreatePendaftaran()
     {
         $user = Auth::user();
-        $tahunAktif = TahunAjaran::orderBy('tahun', 'desc')->first(); // Asumsi yg terbaru = aktif
+        $tahunAktif = TahunAjaran::orderBy('tahun', 'desc')->first(); 
 
         // 1. Cari pendaftaran yang 'Pengisian Formulir'
         $pendaftaran = Pendaftaran::where('id_user', $user->id_user)
@@ -70,7 +70,12 @@ class PendaftaranController extends Controller
     public function storeStep1(StoreDataAnakRequest $request)
     {
         $pendaftaran = $this->getOrCreatePendaftaran();
-        $pendaftaran->anak->update($request->validated());
+
+        $validatedData = $request->validated();
+
+        $dataToUpdate = $validatedData; 
+
+        $pendaftaran->anak->update($dataToUpdate);
 
         return redirect()->route('user.formulir.step2'); // Lanjut ke langkah 2
     }
@@ -88,7 +93,10 @@ class PendaftaranController extends Controller
     public function storeStep2(StoreDataOrtuRequest $request)
     {
         $pendaftaran = $this->getOrCreatePendaftaran();
-        $pendaftaran->anak->update($request->validated());
+
+        $validatedData = $request->validated();
+
+        $pendaftaran->anak->update($validatedData);
 
         return redirect()->route('user.formulir.step3'); // Lanjut ke langkah 3
     }
