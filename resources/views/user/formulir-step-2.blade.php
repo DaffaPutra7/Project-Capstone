@@ -5,7 +5,18 @@
         <form method="POST" action="{{ route('user.formulir.step2.store') }}" class="space-y-6">
             @csrf
 
-            <!-- Data Ayah -->
+            {{-- TAMPILKAN SEMUA ERROR DI ATAS (UNTUK DEBUGGING) --}}
+            @if ($errors->any())
+                <div class="bg-red-50 border border-red-300 text-red-700 p-4 rounded-xl">
+                    <strong class="font-bold">Oops! Ada yang salah:</strong>
+                    <ul class="list-disc list-inside mt-2">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <div class="bg-white border border-[#89FFE7] shadow-md rounded-[30px] p-8 space-y-4">
                 <h4 class="text-sky-700 font-semibold">👨 Data Ayah</h4>
                 <div class="grid md:grid-cols-2 gap-6">
@@ -17,18 +28,22 @@
                     'pekerjaan_ayah' => 'Pekerjaan',
                     ] as $name => $label)
                     <div>
-                        <label class="block text-sm font-semibold mb-2">{{ $label }}</label>
+                        <label for="{{ $name }}" class="block text-sm font-semibold mb-2">{{ $label }}</label>
                         <input
+                            id="{{ $name }}"
                             type="{{ str_contains($name, 'tanggal') ? 'date' : 'text' }}"
                             name="{{ $name }}"
                             value="{{ old($name, $anak->$name) }}"
-                            class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7]">
+                            class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error($name) border-red-500 @enderror">
+                        
+                        @error($name)
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                     @endforeach
                 </div>
             </div>
 
-            <!-- Data Ibu -->
             <div class="bg-white border border-[#89FFE7] shadow-md rounded-[30px] p-8 space-y-4">
                 <h4 class="text-sky-700 font-semibold">👩 Data Ibu</h4>
                 <div class="grid md:grid-cols-2 gap-6">
@@ -40,28 +55,40 @@
                     'pekerjaan_ibu' => 'Pekerjaan',
                     ] as $name => $label)
                     <div>
-                        <label class="block text-sm font-semibold mb-2">{{ $label }}</label>
+                        <label for="{{ $name }}" class="block text-sm font-semibold mb-2">{{ $label }}</label>
                         <input
+                            id="{{ $name }}"
                             type="{{ str_contains($name, 'tanggal') ? 'date' : 'text' }}"
                             name="{{ $name }}"
                             value="{{ old($name, $anak->$name) }}"
-                            class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7]">
+                            class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error($name) border-red-500 @enderror">
+                        
+                        @error($name)
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                     @endforeach
                 </div>
             </div>
 
-            <!-- Data Wali -->
             <div class="bg-white border border-[#89FFE7] shadow-md rounded-[30px] p-8 space-y-4">
                 <h4 class="text-sky-700 font-semibold">🧓 Data Wali (Opsional)</h4>
                 <div class="grid md:grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-sm font-semibold mb-2">Nama Wali</label>
-                        <input type="text" name="nama_wali" value="{{ old('nama_wali', $anak->nama_wali) }}" class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7]">
+                        <label for="nama_wali" class="block text-sm font-semibold mb-2">Nama Wali</label>
+                        <input id="nama_wali" type="text" name="nama_wali" value="{{ old('nama_wali', $anak->nama_wali) }}" class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error('nama_wali') border-red-500 @enderror">
+                        
+                        @error('nama_wali')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold mb-2">Pekerjaan Wali</label>
-                        <input type="text" name="pekerjaan_wali" value="{{ old('pekerjaan_wali', $anak->pekerjaan_wali) }}" class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7]">
+                        <label for="pekerjaan_wali" class="block text-sm font-semibold mb-2">Pekerjaan Wali</label>
+                        <input id="pekerjaan_wali" type="text" name="pekerjaan_wali" value="{{ old('pekerjaan_wali', $anak->pekerjaan_wali) }}" class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error('pekerjaan_wali') border-red-500 @enderror">
+                        
+                        @error('pekerjaan_wali')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
             </div>
