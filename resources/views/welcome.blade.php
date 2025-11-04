@@ -68,7 +68,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87M9 10a4 4 0 11-8 0 4 4 0 018 0zm6 0a4 4 0 100-8 4 4 0 000 8z" />
           </svg>
-          <span><strong>Jumlah Pendaftar:</strong> 2500 Orang</span>
+          <span><strong>Jumlah Pendaftar:</strong> {{ $jumlahPendaftar }} Orang</span>
         </div>
 
         <!-- Kuota Pendaftaran -->
@@ -77,7 +77,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M9 12h6m-6 4h6m2 4H7a2 2 0 01-2-2V6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v12a2 2 0 01-2 2z" />
           </svg>
-          <span><strong>Kuota Tersedia:</strong> 2500 Peserta</span>
+          <span><strong>Kuota Tersedia:</strong> 500 Peserta</span>
         </div>
       </section>
     </div>
