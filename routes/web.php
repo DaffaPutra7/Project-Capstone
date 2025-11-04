@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfilTkController;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\BiodataController;
+use App\Http\Controllers\Admin\DataSiswaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,6 +69,10 @@ Route::middleware(['auth', 'verified', 'role:admin'])
         Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
         Route::get('/company', [ProfilTkController::class, 'index'])->name('company');
         Route::post('/company/update', [ProfilTkController::class, 'update'])->name('profil.update');
+
+        Route::get('/siswa', [DataSiswaController::class, 'index'])->name('siswa.index');
+
+        Route::post('/siswa/{id_pendaftaran}/update-status', [DataSiswaController::class, 'updateStatus'])->name('siswa.updateStatus');
     });
 
 /*
