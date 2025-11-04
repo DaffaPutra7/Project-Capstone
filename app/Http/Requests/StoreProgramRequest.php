@@ -3,13 +3,13 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule; // <-- Tambahkan ini
+use Illuminate\Validation\Rule; 
 
 class StoreProgramRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true; // <-- UBAH INI
+        return true;
     }
 
     public function rules(): array
@@ -19,7 +19,7 @@ class StoreProgramRequest extends FormRequest
             'no_hp' => 'required|string|min:10|max:20',
 
             // Pilihan Program
-            'program' => ['required', Rule::in(['Reguler', 'Full Day'])],
+            'jenis_program' => ['required', Rule::in(['Reguler', 'Full Day'])],
         ];
     }
 }

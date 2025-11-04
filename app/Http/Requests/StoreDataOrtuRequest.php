@@ -8,24 +8,24 @@ class StoreDataOrtuRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true; // <-- UBAH INI
+        return true; 
     }
 
     public function rules(): array
     {
         return [
-            // Data Ayah
-            'nama_ayah_kandung' => 'required|string|max:100',
+            // Data Ayah (disamakan dengan 'name' di HTML)
+            'nama_ayah' => 'required|string|max:100',
             'tempat_lahir_ayah' => 'required|string|max:50',
             'tanggal_lahir_ayah' => 'required|date',
-            'pendidikan_terakhir_ayah' => 'required|string|max:50',
+            'pendidikan_ayah' => 'required|string|max:50',
             'pekerjaan_ayah' => 'required|string|max:100',
 
-            // Data Ibu
-            'nama_ibu_kandung' => 'required|string|max:100',
+            // Data Ibu (disamakan dengan 'name' di HTML)
+            'nama_ibu' => 'required|string|max:100', 
             'tempat_lahir_ibu' => 'required|string|max:50',
             'tanggal_lahir_ibu' => 'required|date',
-            'pendidikan_terakhir_ibu' => 'required|string|max:50',
+            'pendidikan_ibu' => 'required|string|max:50', 
             'pekerjaan_ibu' => 'required|string|max:100',
 
             // Data Wali
