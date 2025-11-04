@@ -51,7 +51,7 @@ Route::middleware(['auth', 'verified', 'role:user'])
         Route::post('/formulir/data-ortu', [PendaftaranController::class, 'storeStep2'])->name('formulir.step2.store');
 
         Route::get('/formulir/program', [PendaftaranController::class, 'createStep3'])->name('formulir.step3');
-        Route::post('/formulir/program', [PendaftaranController::class, 'storeFinal'])->name('formulir.store');
+        Route::post('/formulir/program', [PendaftaranController::class, 'storeFinal'])->name('formulir.step3.store'); 
 
         Route::get('/biodata', [BiodataController::class, 'index'])->name('biodata');
     });
