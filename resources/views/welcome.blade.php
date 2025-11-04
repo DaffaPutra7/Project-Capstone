@@ -47,9 +47,9 @@
   <!-- MAIN -->
   <main class="max-w-6xl mx-auto px-4 mt-10 space-y-8">
 
-    <!-- 🏫 Card Selamat Datang + Statistik -->
+    <!-- Card Selamat Datang + Statistik -->
     <div class="space-y-0">
-      <!-- 🏫 Card Selamat Datang -->
+      <!-- Card Selamat Datang -->
       <section class="bg-white shadow-md rounded-t-2xl p-6 border border-[#89FFE7] flex flex-col sm:flex-row items-center justify-between gap-6">
         <div class="flex-1">
           <h2 class="text-xl font-bold text-sky-700">SELAMAT DATANG</h2>
@@ -60,7 +60,7 @@
         <img src="{{ asset('images/logo-TK-Aisyiyah.png') }}" alt="Logo Sekolah" class="w-24 sm:w-28 h-auto">
       </section>
 
-      <!-- 📊 Statistik -->
+      <!-- Statistik -->
       <section class="flex flex-col sm:flex-row justify-start items-start sm:items-center flex-wrap gap-2 text-sm bg-white border-x border-b border-[#89FFE7] rounded-b-2xl shadow-md px-6 py-3">
         <!-- Jumlah Pendaftar -->
         <div class="flex items-center gap-2 bg-sky-100 text-sky-800 px-4 py-2 rounded-xl shadow-sm border border-sky-200">
@@ -86,9 +86,10 @@
     <div class="mt-5 flex flex-wrap gap-3">
       <!-- Tombol Daftar Sekarang -->
       <a href="{{ route('register') }}"
-        class="bg-gradient-to-r from-sky-500 via-sky-600 to-sky-700 text-white font-semibold px-6 py-2.5 rounded-xl shadow-lg shadow-sky-200 hover:scale-105 hover:shadow-sky-400 transition-transform duration-200 ease-in-out">
+        class="bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 text-white font-bold px-7 py-3 rounded-xl shadow-lg shadow-orange-200 hover:scale-110 hover:shadow-orange-400 transition-all duration-200 ease-in-out">
         Daftar Sekarang
       </a>
+
 
       <!-- Tombol Lihat Status Pendaftaran -->
       <a href="{{ route('login') }}"
@@ -97,7 +98,7 @@
       </a>
     </div>
 
-    <!-- 🌼 Visi Misi Tujuan -->
+    <!-- Visi Misi Tujuan -->
     <section class="space-y-8">
       <div class="grid md:grid-cols-2 gap-6">
         <!-- Visi -->

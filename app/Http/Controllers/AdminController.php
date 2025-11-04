@@ -2,30 +2,41 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Pendaftaran;
 use App\Models\TahunAjaran;
+use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
     public function index()
     {
-        // 1. Ambil tahun ajaran yang sedang aktif
+        // Ambil tahun ajaran aktif (paling baru)
         $tahunAktif = TahunAjaran::orderBy('tahun', 'desc')->first();
 
+        // Default value biar gak error kalau belum ada data
         $jumlahPendaftar = 0;
+        $pendaftaranSiswa = collect(); // biar bisa di-loop walau kosong
 
         if ($tahunAktif) {
-            // 2. Hitung pendaftar di tahun aktif yang sudah submit
+            // Hitung jumlah pendaftar yang udah submit (bukan isi form doang)
             $jumlahPendaftar = Pendaftaran::where('id_tahun', $tahunAktif->id_tahun)
-                                        ->where('status', '!=', 'Pengisian Formulir')
-                                        ->count();
+                ->where('status', '!=', 'Pengisian Formulir')
+                ->count();
+
+            // Ambil data siswa yang udah daftar di tahun ajaran aktif
+            $pendaftaranSiswa = Pendaftaran::with('anak')
+                ->where('id_tahun', $tahunAktif->id_tahun)
+                ->where('status', '!=', 'Pengisian Formulir')
+                ->latest()
+                ->take(10)
+                ->get();
         }
 
-        // 3. Kirim data ke view
+        // Kirim semua data ke view
         return view('admin.dashboard', [
-            'jumlahPendaftar' => $jumlahPendaftar
-            // Anda bisa tambahkan data lain di sini (misal: kuota)
+            'tahunAktif' => $tahunAktif,
+            'jumlahPendaftar' => $jumlahPendaftar,
+            'pendaftaranSiswa' => $pendaftaranSiswa
         ]);
     }
 }
