@@ -236,7 +236,7 @@
                                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
-                    <span class="text-7xl font-extrabold tracking-wide">500</span>
+                    <span class="text-7xl font-extrabold tracking-wide">{{ $sisaKuota }}</span>
                     <span class="text-sm text-gray-500 font-medium">Kuota Tersedia</span>
                 </div>
             </div>
