@@ -8,7 +8,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gradient-to-b from-sky-50 to-white min-h-screen font-sans text-gray-800">
+<body class="bg-gradient-to-b from-sky-50 to-white min-h-screen font-sans text-gray-800 flex flex-col">
 
   <!-- HEADER -->
   <header class="shadow-md">
@@ -45,7 +45,8 @@
   </header>
 
   <!-- MAIN -->
-  <main class="max-w-6xl mx-auto px-4 mt-10 space-y-8">
+  <!-- Tambahkan flex-grow agar main content mengisi ruang dan footer menempel di bawah -->
+  <main class="max-w-6xl mx-auto px-4 mt-10 space-y-8 flex-grow">
 
     <!-- Card Selamat Datang + Statistik -->
     <div class="space-y-0">
@@ -149,9 +150,33 @@
   </main>
 
   <!-- Footer -->
-  <footer class="mt-16 py-4 bg-[#2E7099] text-center text-white text-sm">
-    &copy; 2025 TK Aisyiyah Bustanul Athfal Banjareja. Seluruh hak cipta dilindungi.
+  {{-- KODE FOOTER BARU DIMULAI DI SINI --}}
+  <footer class="mt-16 py-6 bg-[#2E7099] text-white text-sm">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+        
+        <!-- Kiri: Link Google Maps -->
+        <div class="text-center sm:text-left">
+            <a href="https://maps.app.goo.gl/DtEXPabjH8JkZc2w8?g_st=ipc" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               class="flex items-center justify-center sm:justify-start gap-2 hover:text-gray-300 transition-colors duration-200">
+                
+                <!-- Ikon Pin Lokasi -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span>Lokasi TK AISYIYAH BUSTANUL ATHFAL BANJAREJA</span>
+            </a>
+        </div>
+
+        <!-- Kanan: Copyright -->
+        <div class="text-center sm:text-right">
+            <p>&copy; 2025 TK Aisyiyah Bustanul Athfal Banjareja. Seluruh hak cipta dilindungi.</p>
+        </div>
+    </div>
   </footer>
+  {{-- KODE FOOTER BARU BERAKHIR DI SINI --}}
 
 </body>
 
