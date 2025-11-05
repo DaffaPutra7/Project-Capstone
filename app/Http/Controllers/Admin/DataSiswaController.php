@@ -61,6 +61,6 @@ class DataSiswaController extends Controller
         $pendaftaran->update(['status' => $validated['status']]);
 
         // 4. Redirect kembali dengan pesan sukses
-        return redirect()->route('admin.siswa.index')->with('success', 'Status siswa berhasil diperbarui.');
+        return redirect()->back()->with('success', 'Status siswa berhasil diperbarui.');
     }
 }
