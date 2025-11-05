@@ -23,16 +23,25 @@ Route::get('/', function () {
     $tahunAktif = TahunAjaran::orderBy('tahun', 'desc')->first();
 
     $jumlahPendaftar = 0;
+    $sisaKuota = 0; // Default sisa kuota
 
     if ($tahunAktif) {
+        // 1. Hitung TOTAL kuota
+        $totalKuota = ($tahunAktif->kuota_full_day ?? 0) + ($tahunAktif->kuota_reguler ?? 0);
+
+        // 2. Hitung jumlah pendaftar
         $jumlahPendaftar = Pendaftaran::where('id_tahun', $tahunAktif->id_tahun)
                                       ->where('status', '!=', 'Pengisian Formulir')
                                       ->count();
+        
+        // 3. Hitung sisa kuota
+        $sisaKuota = $totalKuota - $jumlahPendaftar;
     }
 
     return view('welcome', [
         'profil' => $profil,
-        'jumlahPendaftar' => $jumlahPendaftar
+        'jumlahPendaftar' => $jumlahPendaftar,
+        'sisaKuota' => $sisaKuota // <-- Mengirim sisa kuota yang sudah dihitung
     ]);
 })->name('home');
 
