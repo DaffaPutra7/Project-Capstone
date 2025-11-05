@@ -66,6 +66,11 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <form action="{{ route('admin.siswa.updateStatus', $pendaftaran->id_pendaftaran) }}" method="POST" class="flex items-center justify-end gap-2">
+                                    
+                                    <a href="{{ route('admin.siswa.show', $pendaftaran->id_pendaftaran) }}" 
+                                    class="px-3 py-1 text-xs font-medium text-sky-700 bg-sky-100 rounded-md hover:bg-sky-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                                        Detail
+                                    </a>
                                     @csrf
 
                                     {{-- Dropdown untuk memilih status --}}

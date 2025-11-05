@@ -96,6 +96,8 @@ Route::middleware(['auth', 'verified', 'role:admin'])
 
         Route::get('/siswa', [DataSiswaController::class, 'index'])->name('siswa.index');
 
+        Route::get('/siswa/{id_pendaftaran}', [DataSiswaController::class, 'show'])->name('siswa.show');
+
         Route::post('/siswa/{id_pendaftaran}/update-status', [DataSiswaController::class, 'updateStatus'])->name('siswa.updateStatus');
     });
 

@@ -29,15 +29,20 @@ class DataSiswaController extends Controller
     }
 
     /**
-     * (Opsional - Untuk nanti)
      * Menampilkan detail satu siswa.
      */
     public function show($id_pendaftaran)
     {
+        // 1. Ambil pendaftaran DAN data anaknya
         $pendaftaran = Pendaftaran::with('anak')->findOrFail($id_pendaftaran);
+        
+        // 2. Ekstrak data anak untuk dikirim ke view
+        $anak = $pendaftaran->anak;
 
+        // 3. Kirim kedua variabel ke view baru
         return view('admin.siswa.show', [
-            'pendaftaran' => $pendaftaran
+            'pendaftaran' => $pendaftaran,
+            'anak' => $anak 
         ]);
     }
 
