@@ -18,29 +18,40 @@
             @endif
 
             <div class="bg-white border border-[#89FFE7] shadow-md rounded-[30px] p-8 space-y-6">
-                <div>
+                
+                <div x-data="{ hasTyped: false }">
                     <label for="no_hp" class="block text-sm font-semibold mb-2">Nomor HP (Aktif)</label>
-                    <input id="no_hp" type="text" name="no_hp" value="{{ old('no_hp', $pendaftaran->no_hp) }}" class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error('no_hp') border-red-500 @enderror">
+                    <input id="no_hp" type="text" name="no_hp" value="{{ old('no_hp', $pendaftaran->no_hp) }}" 
+                           @input="hasTyped = true"
+                           class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error('no_hp') border-red-500 @enderror">
                     
-                    @error('no_hp')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
+                    <div x-show="!hasTyped">
+                        @error('no_hp')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
 
-                <div>
+                <div x-data="{ hasTyped: false }">
                     <label class="block text-sm font-semibold mb-2">Pilih Program</label>
                     <div class="flex gap-6 mt-2">
                         <label class="flex items-center gap-2">
-                            <input type="radio" name="jenis_program" value="Reguler" {{ old('jenis_program', $pendaftaran->jenis_program) == 'Reguler' ? 'checked' : '' }}> Reguler
+                            <input type="radio" name="jenis_program" value="Reguler" 
+                                   @change="hasTyped = true"
+                                   {{ old('jenis_program', $pendaftaran->jenis_program) == 'Reguler' ? 'checked' : '' }}> Reguler
                         </label>
                         <label class="flex items-center gap-2">
-                            <input type="radio" name="jenis_program" value="Full Day" {{ old('jenis_program', $pendaftaran->jenis_program) == 'Full Day' ? 'checked' : '' }}> Full Day
+                            <input type="radio" name="jenis_program" value="Full Day" 
+                                   @change="hasTyped = true"
+                                   {{ old('jenis_program', $pendaftaran->jenis_program) == 'Full Day' ? 'checked' : '' }}> Full Day
                         </label>
                     </div>
                     
-                    @error('jenis_program')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
+                    <div x-show="!hasTyped">
+                        @error('jenis_program')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
             </div>
 
@@ -52,4 +63,8 @@
             </div>
         </form>
     </main>
+    
+    {{-- SCRIPT ALPINE.JS --}}
+    <script src="//unpkg.com/alpinejs" defer></script>
+
 </x-app-layout>

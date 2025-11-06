@@ -27,18 +27,21 @@
                     'pendidikan_ayah' => 'Pendidikan',
                     'pekerjaan_ayah' => 'Pekerjaan',
                     ] as $name => $label)
-                    <div>
+                    <div x-data="{ hasTyped: false }">
                         <label for="{{ $name }}" class="block text-sm font-semibold mb-2">{{ $label }}</label>
                         <input
                             id="{{ $name }}"
                             type="{{ str_contains($name, 'tanggal') ? 'date' : 'text' }}"
                             name="{{ $name }}"
                             value="{{ old($name, $anak->$name) }}"
+                            @input="hasTyped = true"
                             class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error($name) border-red-500 @enderror">
                         
-                        @error($name)
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                        <div x-show="!hasTyped">
+                            @error($name)
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
                     @endforeach
                 </div>
@@ -54,18 +57,21 @@
                     'pendidikan_ibu' => 'Pendidikan',
                     'pekerjaan_ibu' => 'Pekerjaan',
                     ] as $name => $label)
-                    <div>
+                    <div x-data="{ hasTyped: false }">
                         <label for="{{ $name }}" class="block text-sm font-semibold mb-2">{{ $label }}</label>
                         <input
                             id="{{ $name }}"
                             type="{{ str_contains($name, 'tanggal') ? 'date' : 'text' }}"
                             name="{{ $name }}"
                             value="{{ old($name, $anak->$name) }}"
+                            @input="hasTyped = true"
                             class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error($name) border-red-500 @enderror">
                         
-                        @error($name)
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                        <div x-show="!hasTyped">
+                            @error($name)
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
                     @endforeach
                 </div>
@@ -74,21 +80,29 @@
             <div class="bg-white border border-[#89FFE7] shadow-md rounded-[30px] p-8 space-y-4">
                 <h4 class="text-sky-700 font-semibold">🧓 Data Wali (Opsional)</h4>
                 <div class="grid md:grid-cols-2 gap-6">
-                    <div>
+                    <div x-data="{ hasTyped: false }">
                         <label for="nama_wali" class="block text-sm font-semibold mb-2">Nama Wali</label>
-                        <input id="nama_wali" type="text" name="nama_wali" value="{{ old('nama_wali', $anak->nama_wali) }}" class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error('nama_wali') border-red-500 @enderror">
+                        <input id="nama_wali" type="text" name="nama_wali" value="{{ old('nama_wali', $anak->nama_wali) }}" 
+                               @input="hasTyped = true"
+                               class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error('nama_wali') border-red-500 @enderror">
                         
-                        @error('nama_wali')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                        <div x-show="!hasTyped">
+                            @error('nama_wali')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
-                    <div>
+                    <div x-data="{ hasTyped: false }">
                         <label for="pekerjaan_wali" class="block text-sm font-semibold mb-2">Pekerjaan Wali</label>
-                        <input id="pekerjaan_wali" type="text" name="pekerjaan_wali" value="{{ old('pekerjaan_wali', $anak->pekerjaan_wali) }}" class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error('pekerjaan_wali') border-red-500 @enderror">
+                        <input id="pekerjaan_wali" type="text" name="pekerjaan_wali" value="{{ old('pekerjaan_wali', $anak->pekerjaan_wali) }}" 
+                               @input="hasTyped = true"
+                               class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error('pekerjaan_wali') border-red-500 @enderror">
                         
-                        @error('pekerjaan_wali')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                        <div x-show="!hasTyped">
+                            @error('pekerjaan_wali')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
                 </div>
             </div>
@@ -99,4 +113,8 @@
             </div>
         </form>
     </main>
+
+    {{-- SCRIPT ALPINE.JS --}}
+    <script src="//unpkg.com/alpinejs" defer></script>
+
 </x-app-layout>

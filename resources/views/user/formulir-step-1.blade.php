@@ -37,69 +37,87 @@
                     'tinggi_badan'=>'Tinggi Badan (cm)',
                     'golongan_darah'=>'Golongan Darah'
                     ] as $name => $label)
-                    <div>
+                    {{-- 1. Tambahkan x-data --}}
+                    <div x-data="{ hasTyped: false }">
                         <label for="{{ $name }}" class="block text-sm font-semibold mb-2">{{ $label }}</label>
                         <input
                             id="{{ $name }}"
                             type="{{ $name === 'tanggal_lahir' ? 'date' : ($name === 'berat_badan' || $name === 'tinggi_badan' || $name === 'anak_ke' ? 'number' : 'text') }}"
                             name="{{ $name }}"
                             value="{{ old($name, $anak->$name) }}"
+                            @input="hasTyped = true" {{-- 2. Tambahkan @input --}}
                             class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error($name) border-red-500 @enderror">
                         
-                        {{-- TAMBAHKAN KODE ERROR --}}
-                        @error($name)
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                        {{-- 3. Bungkus error dengan x-show --}}
+                        <div x-show="!hasTyped">
+                            @error($name)
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
                     @endforeach
 
-                    <div>
+                    {{-- Lakukan hal yang sama untuk <select> --}}
+                    <div x-data="{ hasTyped: false }">
                         <label for="jenis_kelamin" class="block text-sm font-semibold mb-2">Jenis Kelamin</label>
-                        <select id="jenis_kelamin" name="jenis_kelamin" class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error('jenis_kelamin') border-red-500 @enderror">
+                        <select id="jenis_kelamin" name="jenis_kelamin" 
+                                @change="hasTyped = true" {{-- Gunakan @change untuk select --}}
+                                class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error('jenis_kelamin') border-red-500 @enderror">
                             <option value="">-- Pilih --</option>
                             <option value="Laki-laki" {{ old('jenis_kelamin', $anak->jenis_kelamin) == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
                             <option value="Perempuan" {{ old('jenis_kelamin', $anak->jenis_kelamin) == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
                         </select>
                         
-                        {{-- TAMBAHKAN KODE ERROR --}}
-                        @error('jenis_kelamin')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                        <div x-show="!hasTyped">
+                            @error('jenis_kelamin')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
 
-                    <div>
+                    <div x-data="{ hasTyped: false }">
                         <label for="kewarganegaraan" class="block text-sm font-semibold mb-2">Kewarganegaraan</label>
-                        <select id="kewarganegaraan" name="kewarganegaraan" class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error('kewarganegaraan') border-red-500 @enderror">
+                        <select id="kewarganegaraan" name="kewarganegaraan"
+                                @change="hasTyped = true" {{-- Gunakan @change untuk select --}}
+                                class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error('kewarganegaraan') border-red-500 @enderror">
                             <option value="">-- Pilih --</option>
                             <option value="Indonesia" {{ old('kewarganegaraan', $anak->kewarganegaraan) == 'Indonesia' ? 'selected' : '' }}>Indonesia</option>
                             <option value="WNA" {{ old('kewarganegaraan', $anak->kewarganegaraan) == 'WNA' ? 'selected' : '' }}>WNA</option>
                         </select>
                         
-                        {{-- TAMBAHKAN KODE ERROR --}}
-                        @error('kewarganegaraan')
+                        <div x-show="!hasTyped">
+                            @error('kewarganegaraan')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Lakukan hal yang sama untuk <textarea> --}}
+                <div x-data="{ hasTyped: false }">
+                    <label for="alamat" class="block text-sm font-semibold mb-2">Alamat</label>
+                    <textarea id="alamat" name="alamat" rows="3"
+                              @input="hasTyped = true"
+                              class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error('alamat') border-red-500 @enderror">{{ old('alamat', $anak->alamat) }}</textarea>
+                    
+                    <div x-show="!hasTyped">
+                        @error('alamat')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror
                     </div>
                 </div>
 
-                <div>
-                    <label for="alamat" class="block text-sm font-semibold mb-2">Alamat</label>
-                    <textarea id="alamat" name="alamat" rows="3" class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error('alamat') border-red-500 @enderror">{{ old('alamat', $anak->alamat) }}</textarea>
-                    
-                    {{-- TAMBAHKAN KODE ERROR --}}
-                    @error('alamat')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div>
+                <div x-data="{ hasTyped: false }">
                     <label for="riwayat_penyakit" class="block text-sm font-semibold mb-2">Riwayat Penyakit</label>
-                    <textarea id="riwayat_penyakit" name="riwayat_penyakit" rows="3" class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error('riwayat_penyakit') border-red-500 @enderror">{{ old('riwayat_penyakit', $anak->riwayat_penyakit) }}</textarea>
+                    <textarea id="riwayat_penyakit" name="riwayat_penyakit" rows="3"
+                              @input="hasTyped = true"
+                              class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error('riwayat_penyakit') border-red-500 @enderror">{{ old('riwayat_penyakit', $anak->riwayat_penyakit) }}</textarea>
                     
-                    {{-- TAMBAHKAN KODE ERROR --}}
-                    @error('riwayat_penyakit')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
+                    <div x-show="!hasTyped">
+                        @error('riwayat_penyakit')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
             </div>
 
@@ -110,4 +128,8 @@
             </div>
         </form>
     </main>
+    
+    {{-- SCRIPT ALPINE.JS --}}
+    <script src="//unpkg.com/alpinejs" defer></script>
+
 </x-app-layout>
