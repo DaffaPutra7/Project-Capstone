@@ -25,7 +25,15 @@
                 <!-- Nomor HP -->
                 <div class="mt-4">
                     <x-input-label for="no_hp" :value="__('Nomor HP')" />
-                    <x-text-input id="no_hp" class="block mt-1 w-full" type="text" name="no_hp" placeholder="Contoh: 081234567890" />
+                    <x-text-input id="no_hp" class="block mt-1 w-full" 
+                        type="tel" {{-- Ganti ke 'tel' untuk keyboard HP --}}
+                        name="no_hp" 
+                        placeholder="Contoh: 081234567890" 
+                        pattern="\d*" {{-- Hanya izinkan digit --}}
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '')" {{-- Hapus apa pun yang bukan angka --}}
+                    />
+                    {{-- Tambahkan ini untuk menampilkan error (jika dari backend, misal "minimal 10 digit") --}}
+                    <x-input-error :messages="$errors->get('no_hp')" class="mt-2" />
                 </div>
 
                 <!-- Alamat Email -->
