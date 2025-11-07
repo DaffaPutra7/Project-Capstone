@@ -33,7 +33,7 @@ class RegisteredUserController extends Controller
             'nama_lengkap' => ['required', 'string', 'max:100'],
             'email'        => ['required', 'string', 'lowercase', 'email', 'max:100', 'unique:users,email'],
             'password'     => ['required', 'confirmed', Rules\Password::defaults()],
-            'no_hp'        => ['nullable', 'string', 'numeric', 'digits_between:11,13'],
+            'no_hp'        => ['nullable', 'string', 'numeric', 'digits_between:11,13'], // Sesuai perbaikan terakhir
             'alamat'       => ['nullable', 'string'],
         ]);
 
@@ -43,16 +43,13 @@ class RegisteredUserController extends Controller
             'password'     => Hash::make($request->password),
             'no_hp'        => $request->no_hp,
             'alamat'       => $request->alamat,
-            'role'         => 'user', // default user baru
+            'role'         => 'user', 
         ]);
 
         event(new Registered($user));
 
-        Auth::login($user);
-
-        // 🔥 Langsung arahkan ke form pendaftaran step 1
         return redirect()
-            ->route('user.formulir.step1')
-            ->with('success', 'Registrasi berhasil! Silakan lengkapi formulir pendaftaran.');
+            ->route('login')
+            ->with('success', 'Registrasi berhasil! Silakan masuk dengan akun Anda.');
     }
 }
