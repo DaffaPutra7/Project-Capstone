@@ -6,9 +6,9 @@ use App\Models\Pendaftaran;
 use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\StoreDataAnakRequest;   
-use App\Http\Requests\StoreDataOrtuRequest;  
-use App\Http\Requests\StoreProgramRequest; 
+use App\Http\Requests\StoreDataAnakRequest;
+use App\Http\Requests\StoreDataOrtuRequest;
+use App\Http\Requests\StoreProgramRequest;
 
 class PendaftaranController extends Controller
 {
@@ -19,7 +19,7 @@ class PendaftaranController extends Controller
     public function getOrCreatePendaftaran()
     {
         $user = Auth::user();
-        $tahunAktif = TahunAjaran::orderBy('tahun', 'desc')->first(); 
+        $tahunAktif = TahunAjaran::orderBy('tahun', 'desc')->first();
 
         // 1. Cari pendaftaran yang 'Pengisian Formulir'
         $pendaftaran = Pendaftaran::where('id_user', $user->id_user)
@@ -33,6 +33,7 @@ class PendaftaranController extends Controller
                 'id_user' => $user->id_user,
                 'id_tahun' => $tahunAktif->id_tahun,
                 'status' => 'Pengisian Formulir',
+                'progress_step' => 1, // <-- SET PROGRESS AWAL
             ]);
         }
 
@@ -44,82 +45,112 @@ class PendaftaranController extends Controller
         return $pendaftaran; // $pendaftaran sudah otomatis include $anak
     }
 
+    // Helper function untuk Guard (Kunci)
+    private function checkStatus($pendaftaran)
+    {
+        if ($pendaftaran->status !== 'Pengisian Formulir') {
+            return redirect()->route('user.dashboard')->with('info', 'Anda sudah mengirim formulir. Data tidak dapat diubah.');
+        }
+        return null;
+    }
+
     // === LANGKAH 1: DATA ANAK ===
     public function createStep1()
     {
-        // 1. Laravel OTOMATIS menjalankan authorize() dan rules() 
-        //    dari StoreDataAnakRequest.
-        
-        // 2. Jika GAGAL, Laravel OTOMATIS me-redirect user kembali
-        //    ke form dengan pesan error.
-
-        // 3. Jika BERHASIL, baru kode di bawah ini dijalankan:
         $pendaftaran = $this->getOrCreatePendaftaran();
 
-        // Redirect jika user sudah selesai isi form
-        if($pendaftaran->status !== 'Pengisian Formulir') {
-            return redirect()->route('user.dashboard')->with('info', 'Anda sudah mengirim formulir.');
-        }
+        // Guard: Cek apakah formulir sudah dikirim
+        $check = $this->checkStatus($pendaftaran);
+        if ($check) return $check;
 
-        return view('user.formulir-step-1', [ // Ganti nama view sesuai front-end
+        return view('user.formulir-step-1', [
             'pendaftaran' => $pendaftaran,
-            'anak' => $pendaftaran->anak // Kirim data anak
+            'anak' => $pendaftaran->anak
         ]);
     }
 
     public function storeStep1(StoreDataAnakRequest $request)
     {
         $pendaftaran = $this->getOrCreatePendaftaran();
+        
+        // Guard: Cek lagi untuk mencegah double-submit
+        $check = $this->checkStatus($pendaftaran);
+        if ($check) return $check;
 
         $validatedData = $request->validated();
+        $pendaftaran->anak->update($validatedData);
 
-        $dataToUpdate = $validatedData; 
+        // Update progress HANYA JIKA step saat ini 1
+        if ($pendaftaran->progress_step < 2) {
+             $pendaftaran->update(['progress_step' => 2]);
+        }
 
-        $pendaftaran->anak->update($dataToUpdate);
-
-        return redirect()->route('user.formulir.step2'); // Lanjut ke langkah 2
+        return redirect()->route('user.formulir.step2');
     }
 
     // === LANGKAH 2: DATA ORANG TUA ===
     public function createStep2()
     {
         $pendaftaran = $this->getOrCreatePendaftaran();
-        return view('user.formulir-step-2', [ // Ganti nama view
+
+        // Guard: Cek apakah formulir sudah dikirim
+        $check = $this->checkStatus($pendaftaran);
+        if ($check) return $check;
+
+        return view('user.formulir-step-2', [
             'pendaftaran' => $pendaftaran,
-            'anak' => $pendaftaran->anak // Kirim data anak (yg sudah terisi data ortu)
+            'anak' => $pendaftaran->anak
         ]);
     }
 
     public function storeStep2(StoreDataOrtuRequest $request)
     {
         $pendaftaran = $this->getOrCreatePendaftaran();
+        
+        // Guard: Cek lagi
+        $check = $this->checkStatus($pendaftaran);
+        if ($check) return $check;
 
         $validatedData = $request->validated();
-
         $pendaftaran->anak->update($validatedData);
 
-        return redirect()->route('user.formulir.step3'); // Lanjut ke langkah 3
+        // Update progress HANYA JIKA step saat ini 2
+        if ($pendaftaran->progress_step < 3) {
+            $pendaftaran->update(['progress_step' => 3]);
+        }
+
+        return redirect()->route('user.formulir.step3');
     }
 
     // === LANGKAH 3: PROGRAM & SELESAI ===
     public function createStep3()
     {
         $pendaftaran = $this->getOrCreatePendaftaran();
-        return view('user.formulir-step-3', [ // Ganti nama view
-            'pendaftaran' => $pendaftaran, // Kirim data pendaftaran
+        
+        // Guard: Cek apakah formulir sudah dikirim
+        $check = $this->checkStatus($pendaftaran);
+        if ($check) return $check;
+
+        return view('user.formulir-step-3', [
+            'pendaftaran' => $pendaftaran,
         ]);
     }
 
     public function storeFinal(StoreProgramRequest $request)
     {
         $pendaftaran = $this->getOrCreatePendaftaran();
+        
+        // Guard: Cek lagi
+        $check = $this->checkStatus($pendaftaran);
+        if ($check) return $check;
 
         // Update data terakhir di tabel pendaftaran
         $pendaftaran->update([
             'jenis_program' => $request->jenis_program,
             'no_hp' => $request->no_hp,
             'tanggal_daftar' => now(),
-            'status' => 'Formulir Dikirim' // <-- UBAH STATUS!
+            'status' => 'Formulir Dikirim', // <-- UBAH STATUS!
+            'progress_step' => 4, // <-- Tandai sebagai selesai
         ]);
 
         return redirect()->route('user.dashboard')->with('success', 'Pendaftaran berhasil dikirim!');
