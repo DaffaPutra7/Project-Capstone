@@ -33,7 +33,7 @@ class RegisteredUserController extends Controller
             'nama_lengkap' => ['required', 'string', 'max:100'],
             'email'        => ['required', 'string', 'lowercase', 'email', 'max:100', 'unique:users,email'],
             'password'     => ['required', 'confirmed', Rules\Password::defaults()],
-            'no_hp'        => ['nullable', 'string', 'numeric', 'min:10', 'max:20'],
+            'no_hp'        => ['nullable', 'string', 'numeric', 'digits_between:11,13'],
             'alamat'       => ['nullable', 'string'],
         ]);
 
