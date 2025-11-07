@@ -19,6 +19,7 @@ class Pendaftaran extends Model
         'tanggal_daftar',
         'status',
         'no_hp',
+        'progress_step',
     ];
 
     public function anak()
