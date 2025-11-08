@@ -2,6 +2,28 @@
     <main class="max-w-3xl mx-auto py-10 px-6">
         <h2 class="text-2xl font-bold text-sky-700 mb-6 text-center">Formulir Pendaftaran — Pilihan Program</h2>
 
+        {{-- ====================================================== --}}
+        {{-- == TAMBAHAN: Boks Info "Jalan Keluar" == --}}
+        {{-- ====================================================== --}}
+        <div class="flex items-start gap-3 bg-sky-50 border border-sky-200 text-sky-800 p-4 rounded-xl mb-6 shadow-sm">
+            <div class="flex-shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+            <div>
+                <strong class="font-semibold">Satu Langkah Terakhir!</strong>
+                <p class="text-sm">
+                    Pastikan data Anda sudah benar sebelum mengirim. Anda masih bisa kembali ke 
+                    <a href="{{ route('user.dashboard') }}" class="font-bold underline hover:text-sky-900">Dashboard</a> 
+                    jika belum siap mengirim.
+                </p>
+            </div>
+        </div>
+        {{-- ====================================================== --}}
+        {{-- == BATAS TAMBAHAN == --}}
+        {{-- ====================================================== --}}
+
         <form method="POST" action="{{ route('user.formulir.step3.store') }}" class="space-y-8" id="formStep3">
             @csrf
 
