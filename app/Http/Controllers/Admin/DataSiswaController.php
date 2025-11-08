@@ -6,44 +6,62 @@ use App\Http\Controllers\Controller;
 use App\Models\Pendaftaran;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB; // <-- PASTIKAN INI DITAMBAHKAN
 
 class DataSiswaController extends Controller
 {
     /**
      * Menampilkan daftar semua siswa yang telah mengirim formulir.
      */
-    public function index()
+    public function index(Request $request) // <-- Tambahkan Request
     {
-        // 1. Ambil data pendaftaran
-        $pendaftaranSiswaQuery = Pendaftaran::where('status', '!=', 'Pengisian Formulir')
-            ->with('anak') // Eager loading tetap penting
-            ->orderBy('tanggal_daftar', 'desc')
-            ->get(); // Ambil datanya sebagai Collection
+        // 1. Ambil parameter 'sort' dari URL, default-nya 'terbaru'
+        $sort = $request->query('sort', 'terbaru');
 
-        // 2. Urutkan Collection berdasarkan status usia (dari Accessor)
-        //    Kita gunakan sortBy agar 'Memenuhi Syarat' tampil di atas.
-        $pendaftaranSiswa = $pendaftaranSiswaQuery->sortBy(function ($pendaftaran) {
+        // 2. Mulai Query Builder
+        $query = Pendaftaran::where('pendaftaran.status', '!=', 'Pengisian Formulir')
+            ->with('anak') // Eager load relasi anak
+            ->join('anak', 'pendaftaran.id_pendaftaran', '=', 'anak.id_pendaftaran') // JOIN tabel anak
+            ->select('pendaftaran.*'); // Pilih semua kolom dari pendaftaran (anak sudah di-load via 'with')
+
+        // 3. Terapkan Sorting berdasarkan parameter 'sort'
+        switch ($sort) {
+            case 'nama_asc':
+                // Urutkan berdasarkan nama anak A-Z
+                $query->orderBy('anak.nama_lengkap', 'asc');
+                break;
+
+            case 'usia_syarat':
+                // Urutkan berdasarkan status usia (Memenuhi Syarat dulu)
+                // Kita replikasi logika accessor 'status_usia' di SQL
+                // Syarat: Usia >= 4 TAHUN DAN <= 5 TAHUN
+                // Note: CURDATE() adalah fungsi MySQL. Gunakan GETDATE() untuk SQL Server atau DATE('now') untuk SQLite.
+                $query->orderByRaw(
+                    "CASE 
+                        WHEN TIMESTAMPDIFF(YEAR, anak.tanggal_lahir, CURDATE()) >= 4 
+                         AND TIMESTAMPDIFF(YEAR, anak.tanggal_lahir, CURDATE()) <= 5 
+                        THEN 1 
+                        ELSE 2 
+                     END ASC"
+                )
+                // Tambahkan urutan sekunder agar konsisten
+                ->orderBy('anak.tanggal_lahir', 'desc'); 
+                break;
             
-            // Pengecekan jika relasi anak ada
-            if (isset($pendaftaran->anak)) {
-                // pendaftaran->anak->status_usia akan memanggil Accessor
-                $statusUsia = $pendaftaran->anak->status_usia; 
+            case 'terbaru':
+            default:
+                // Urutan default: berdasarkan tanggal daftar terbaru
+                $query->orderBy('pendaftaran.tanggal_daftar', 'desc');
+                break;
+        }
 
-                if ($statusUsia === 'Memenuhi Syarat') {
-                    return 1; // Grup 1 (Paling atas)
-                } elseif ($statusUsia === 'Tidak Memenuhi Syarat') {
-                    return 2; // Grup 2 (Di bawahnya)
-                } else {
-                    return 3; // Grup 3 (N/A atau lainnya)
-                }
-            }
-            return 4; // Fallback jika data anak tidak ada
-        });
+        // 4. Ambil data dengan PAGINATION (misal: 10 per halaman)
+        $pendaftaranSiswa = $query->paginate(10);
 
-
-        // 3. Kirim data ke view
+        // 5. Kirim data dan nilai 'sort' ke view
         return view('admin.siswa.index', [
-            'pendaftaranSiswa' => $pendaftaranSiswa
+            'pendaftaranSiswa' => $pendaftaranSiswa,
+            'sort' => $sort // Kirim variabel sort ke view
         ]);
     }
 
