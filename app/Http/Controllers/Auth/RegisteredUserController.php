@@ -33,7 +33,7 @@ class RegisteredUserController extends Controller
             'nama_lengkap' => ['required', 'string', 'max:100'],
             'email'        => ['required', 'string', 'lowercase', 'email', 'max:100', 'unique:users,email'],
             'password'     => ['required', 'confirmed', Rules\Password::defaults()],
-            'no_hp'        => ['nullable', 'string', 'numeric', 'digits_between:11,13'], // Sesuai perbaikan terakhir
+            'no_hp'        => ['nullable', 'string', 'numeric', 'digits_between:11,13'], 
             'alamat'       => ['nullable', 'string'],
         ]);
 
@@ -48,8 +48,12 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
+        // 1. Langsung loginkan user yang baru daftar
+        Auth::login($user); 
+
+        // 2. UBAH: Alihkan ke dashboard user, BUKAN ke halaman login
         return redirect()
-            ->route('login')
-            ->with('success', 'Registrasi berhasil! Silakan masuk dengan akun Anda.');
+            ->route('user.dashboard') // <-- UBAH KE user.dashboard
+            ->with('success', 'Registrasi berhasil! Selamat datang.'); // Pesan bisa diubah
     }
 }
