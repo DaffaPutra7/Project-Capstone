@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pendaftaran; 
-use App\Models\Anak; // <-- TAMBAHKAN INI
+use App\Models\Anak;
 use Illuminate\Support\Facades\Auth;
 
 class BiodataController extends Controller
@@ -32,20 +32,30 @@ class BiodataController extends Controller
                                         ->first();
         }
 
-        // 3. Cek jika pendaftaran benar-benar tidak ada ATAU 
-        //    data anaknya belum terisi (nama_lengkap masih NULL)
-        //    Ini untuk menangani kasus 'anak' (ID 2) yang ada tapi datanya kosong.
-        if (!$pendaftaran || !$pendaftaran->anak || !$pendaftaran->anak->nama_lengkap) {
+        // 3. === LOGIKA BARU DI SINI ===
+        // Cek jika pendaftaran (baik yang sudah dikirim atau belum) DITEMUKAN
+        if ($pendaftaran) {
             
-            // Alihkan ke formulir untuk mengisi data
-            return redirect()->route('user.formulir.step1')
-                                 ->with('info', 'Anda belum memiliki biodata. Silakan isi formulir pendaftaran terlebih dahulu.');
+            // Jika ada, ambil data anaknya (mungkin datanya masih kosong, 
+            // tapi view 'biodata.blade.php' sudah bisa menanganinya)
+            $anak = $pendaftaran->anak;
+
+        } else {
+            
+            // Jika TIDAK DITEMUKAN SAMA SEKALI (user baru, belum klik daftar)
+            // Buat objek model kosong agar view tidak error
+            $pendaftaran = new Pendaftaran();
+            $anak = new Anak();
+            
+            // PENTING: Set status default agar tombol "Edit Data" muncul
+            // di halaman biodata, sesuai permintaan Anda.
+            $pendaftaran->status = 'Pengisian Formulir'; 
         }
 
-        // 4. Jika lolos, kirim data yang valid ke view
+        // 4. Kirim data (yang mungkin valid, atau mungkin kosong) ke view
         return view('user.biodata', [
             'pendaftaran' => $pendaftaran,
-            'anak' => $pendaftaran->anak
+            'anak' => $anak
         ]);
     }
 }
