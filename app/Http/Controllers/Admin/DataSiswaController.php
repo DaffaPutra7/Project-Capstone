@@ -14,15 +14,34 @@ class DataSiswaController extends Controller
      */
     public function index()
     {
-        // 1. Ambil data pendaftaran yang statusnya BUKAN 'Pengisian Formulir'
-        // 2. Gunakan ->with('anak') untuk eager loading (optimasi query)
-        // 3. Urutkan berdasarkan tanggal daftar terbaru
-        $pendaftaranSiswa = Pendaftaran::where('status', '!=', 'Pengisian Formulir')
-            ->with('anak')
+        // 1. Ambil data pendaftaran
+        $pendaftaranSiswaQuery = Pendaftaran::where('status', '!=', 'Pengisian Formulir')
+            ->with('anak') // Eager loading tetap penting
             ->orderBy('tanggal_daftar', 'desc')
-            ->get();
+            ->get(); // Ambil datanya sebagai Collection
 
-        // 4. Kirim data ke view
+        // 2. Urutkan Collection berdasarkan status usia (dari Accessor)
+        //    Kita gunakan sortBy agar 'Memenuhi Syarat' tampil di atas.
+        $pendaftaranSiswa = $pendaftaranSiswaQuery->sortBy(function ($pendaftaran) {
+            
+            // Pengecekan jika relasi anak ada
+            if (isset($pendaftaran->anak)) {
+                // pendaftaran->anak->status_usia akan memanggil Accessor
+                $statusUsia = $pendaftaran->anak->status_usia; 
+
+                if ($statusUsia === 'Memenuhi Syarat') {
+                    return 1; // Grup 1 (Paling atas)
+                } elseif ($statusUsia === 'Tidak Memenuhi Syarat') {
+                    return 2; // Grup 2 (Di bawahnya)
+                } else {
+                    return 3; // Grup 3 (N/A atau lainnya)
+                }
+            }
+            return 4; // Fallback jika data anak tidak ada
+        });
+
+
+        // 3. Kirim data ke view
         return view('admin.siswa.index', [
             'pendaftaranSiswa' => $pendaftaranSiswa
         ]);
