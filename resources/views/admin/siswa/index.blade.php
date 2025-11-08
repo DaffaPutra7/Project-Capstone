@@ -20,6 +20,9 @@
                             Nama Lengkap
                         </th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Usia (Status)
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Tgl. Daftar
                         </th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -42,6 +45,28 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                 {{-- Akses data anak melalui relasi --}}
                                 {{ $pendaftaran->anak->nama_lengkap ?? 'Data Belum Lengkap' }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                @if ($pendaftaran->anak && $pendaftaran->anak->tanggal_lahir)
+                                    {{-- Menampilkan usia detail dari accessor --}}
+                                    <div>{{ $pendaftaran->anak->usia_detail }}</div>
+                                    
+                                    {{-- Logika warna untuk status usia --}}
+                                    @php
+                                        $statusUsia = $pendaftaran->anak->status_usia;
+                                        $statusClass = '';
+                                        if ($statusUsia == 'Memenuhi Syarat') {
+                                            $statusClass = 'text-green-700 font-semibold';
+                                        } elseif ($statusUsia == 'Tidak Memenuhi Syarat') {
+                                            $statusClass = 'text-red-700 font-semibold';
+                                        } else {
+                                            $statusClass = 'text-gray-500';
+                                        }
+                                    @endphp
+                                    <span class="{{ $statusClass }}">{{ $statusUsia }}</span>
+                                @else
+                                    <span class="text-gray-500">N/A</span>
+                                @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 {{ $pendaftaran->tanggal_daftar ? \Carbon\Carbon::parse($pendaftaran->tanggal_daftar)->format('d M Y') : '-' }}
