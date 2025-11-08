@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Anak extends Model
 {
@@ -49,5 +50,46 @@ class Anak extends Model
     public function pendaftaran()
     {
         return $this->belongsTo(Pendaftaran::class, 'id_pendaftaran', 'id_pendaftaran');
+    }
+
+    /**
+     * Accessor untuk menghitung usia (hanya angka tahun).
+     */
+    public function getUsiaTahunAttribute()
+    {
+        if (!$this->tanggal_lahir) {
+            return null;
+        }
+        return Carbon::parse($this->tanggal_lahir)->diffInYears(now());
+    }
+
+    /**
+     * Accessor untuk menampilkan usia dalam format "X tahun, Y bulan".
+     */
+    public function getUsiaDetailAttribute()
+    {
+        if (!$this->tanggal_lahir) {
+            return 'Tgl Lahir Kosong';
+        }
+        return Carbon::parse($this->tanggal_lahir)->diff(now())->format('%y tahun, %m bulan');
+    }
+
+    /**
+     * Accessor untuk status pemenuhan syarat usia (Min 4, Max 5).
+     */
+    public function getStatusUsiaAttribute()
+    {
+        $usiaTahun = $this->getUsiaTahunAttribute(); // Memanggil accessor di atas
+
+        if ($usiaTahun === null) {
+            return 'N/A';
+        }
+
+        // Syarat: Minimal 4 tahun DAN Maksimal 5 tahun
+        if ($usiaTahun >= 4 && $usiaTahun <= 5) {
+            return 'Memenuhi Syarat';
+        } else {
+            return 'Tidak Memenuhi Syarat';
+        }
     }
 }
