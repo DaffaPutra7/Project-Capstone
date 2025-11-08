@@ -71,11 +71,13 @@
                     class="bg-sky-600 hover:bg-sky-700 text-white font-semibold py-2 px-6 rounded-[40px] shadow transition">
                     <span x-text="showDetail ? 'Sembunyikan Detail' : 'Detail'"></span>
                 </button>
-
-                <a href="{{ route('user.formulir.step1') }}"
-                    class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-[40px] shadow transition">
-                    Edit Data
-                </a>
+                
+                @if ($pendaftaran->status == 'Pengisian Formulir')
+                    <a href="{{ route('user.formulir.step1') }}"
+                        class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-[40px] shadow transition">
+                        Edit Data
+                    </a>
+                @endif
             </div>
         </section>
     </main>
