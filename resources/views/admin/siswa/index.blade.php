@@ -132,7 +132,7 @@
                                         @csrf
 
                                         {{-- Dropdown untuk memilih status --}}
-                                        <select name="status" class="block text-sm py-1 px-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+                                        <select name="status" class="block w-36 text-sm py-1 px-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
                                             <option value="Proses Seleksi" {{ $pendaftaran->status == 'Proses Seleksi' ? 'selected' : '' }}>
                                                 Proses Seleksi
                                             </option>
