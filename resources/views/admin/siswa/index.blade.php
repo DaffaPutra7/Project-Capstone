@@ -1,5 +1,5 @@
 <x-app-layout>
-    <main class="max-w-7xl mx-auto p-6 space-y-8">
+    <main class="max-w-none p-6 space-y-8">
         <section>
             <h1 class="text-4xl font-bold text-sky-700 mb-4">
                 Data Pendaftar Siswa
@@ -132,7 +132,7 @@
                                         @csrf
 
                                         {{-- Dropdown untuk memilih status --}}
-                                        <select name="status" class="block w-40 text-sm py-1 px-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+                                        <select name="status" class="block text-sm py-1 px-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
                                             <option value="Proses Seleksi" {{ $pendaftaran->status == 'Proses Seleksi' ? 'selected' : '' }}>
                                                 Proses Seleksi
                                             </option>
