@@ -57,7 +57,6 @@
                     'bahasa_sehari_hari'=>'Bahasa Sehari-hari',
                     'berat_badan'=>'Berat Badan (kg)',
                     'tinggi_badan'=>'Tinggi Badan (cm)',
-                    'golongan_darah'=>'Golongan Darah'
                     ] as $name => $label)
                     {{-- 1. Tambahkan x-data --}}
                     <div x-data="{ hasTyped: false }">
@@ -78,6 +77,25 @@
                         </div>
                     </div>
                     @endforeach
+
+                    <div x-data="{ hasTyped: false }">
+                            <label for="golongan_darah" class="block text-sm font-semibold mb-2">Golongan Darah</label>
+                            <select id="golongan_darah" name="golongan_darah" 
+                                    @change="hasTyped = true" {{-- Gunakan @change untuk select --}}
+                                    class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error('golongan_darah') border-red-500 @enderror">
+                                <option value="">-- Pilih --</option>
+                                <option value="A" {{ old('golongan_darah', $anak->golongan_darah) == 'A' ? 'selected' : '' }}>A</option>
+                                <option value="B" {{ old('golongan_darah', $anak->golongan_darah) == 'B' ? 'selected' : '' }}>B</option>
+                                <option value="AB" {{ old('golongan_darah', $anak->golongan_darah) == 'AB' ? 'selected' : '' }}>AB</option>
+                                <option value="O" {{ old('golongan_darah', $anak->golongan_darah) == 'O' ? 'selected' : '' }}>O</option>
+                            </select>
+                            
+                            <div x-show="!hasTyped">
+                                @error('golongan_darah')
+                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
 
                     {{-- Lakukan hal yang sama untuk <select> --}}
                     <div x-data="{ hasTyped: false }">

@@ -32,7 +32,7 @@ class StoreDataAnakRequest extends FormRequest
             'bahasa_sehari_hari' => 'required|string|max:50',
             'berat_badan' => 'required|numeric|min:0',
             'tinggi_badan' => 'required|numeric|min:0',
-            'golongan_darah' => 'required|string|max:5',
+            'golongan_darah' => ['required', Rule::in(['A', 'B', 'AB', 'O'])],
             'jenis_kelamin' => ['required', Rule::in(['Laki-laki', 'Perempuan'])], 
             'kewarganegaraan' => ['required', Rule::in(['Indonesia', 'WNA'])],
             'alamat' => 'required|string',
