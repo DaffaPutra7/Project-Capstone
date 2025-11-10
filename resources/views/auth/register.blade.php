@@ -70,11 +70,27 @@
                     <!-- Konfirmasi Kata Sandi -->
                     <div>
                         <x-input-label for="password_confirmation" :value="__('Konfirmasi Kata Sandi')" />
-                        <x-text-input id="password_confirmation" class="block mt-1 w-full rounded-[50px]"
-                            type="password"
-                            name="password_confirmation"
-                            required autocomplete="new-password"
-                            placeholder="Ulangi kata sandi" />
+
+                        <div class="relative flex items-center">
+                            <input id="password_confirmation" class="block w-full rounded-[50px] border-gray-300 shadow-sm focus:border-[#2E7099] focus:ring-[#2E7099] pr-10"
+                                type="password"
+                                name="password_confirmation"
+                                required autocomplete="new-password"
+                                placeholder="Ulangi kata sandi" />
+
+                            <button type="button" onclick="togglePassword('password_confirmation', 'eyeIcon2')"
+                                class="absolute right-4 text-gray-500 hover:text-[#2E7099] focus:outline-none">
+                                <svg id="eyeIcon2" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                    class="w-5 h-5 transition-all duration-200">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M2.25 12s3.75-6.75 9.75-6.75S21.75 12 21.75 12s-3.75 6.75-9.75 6.75S2.25 12 2.25 12z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                            </button>
+                        </div>
+
                         <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                     </div>
                 </div>
