@@ -111,5 +111,4 @@
         </section>
     </main>
 
-    <script src="//unpkg.com/alpinejs" defer></script>
 </x-app-layout>

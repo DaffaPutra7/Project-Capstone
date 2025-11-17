@@ -211,6 +211,4 @@
         </form>
     </main>
 
-    {{-- SCRIPT ALPINE.JS --}}
-    <script src="//unpkg.com/alpinejs" defer></script>
 </x-app-layout>
