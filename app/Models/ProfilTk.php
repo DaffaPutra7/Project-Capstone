@@ -19,4 +19,9 @@ class ProfilTk extends Model
         'tujuan',
         'motto',
     ];
+
+    public function foto()
+    {
+        return $this->hasMany(FotoTk::class, 'id_profil', 'id_profil');
+    }
 }
