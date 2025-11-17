@@ -94,10 +94,10 @@ Route::middleware(['auth', 'verified', 'role:admin'])
         Route::get('/company', [ProfilTkController::class, 'index'])->name('company');
         Route::post('/company/update', [ProfilTkController::class, 'update'])->name('profil.update');
 
+        Route::delete('/company/foto/{id_foto}', [ProfilTkController::class, 'hapusFoto'])->name('profil.foto.hapus');
+
         Route::get('/siswa', [DataSiswaController::class, 'index'])->name('siswa.index');
-
         Route::get('/siswa/{id_pendaftaran}', [DataSiswaController::class, 'show'])->name('siswa.show');
-
         Route::post('/siswa/{id_pendaftaran}/update-status', [DataSiswaController::class, 'updateStatus'])->name('siswa.updateStatus');
     });
 
