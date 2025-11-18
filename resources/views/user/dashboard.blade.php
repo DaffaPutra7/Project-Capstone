@@ -14,7 +14,7 @@
                     </span>
                 </div>
                 <h2 class="text-2xl sm:text-3xl font-bold text-sky-700 mb-2">
-                    SELAMAT DATANG,<br> 
+                    SELAMAT DATANG,<br>
                     <span class="text-[#2E7099]">{{ Auth::user()->nama_lengkap ?? 'User' }}</span>
                 </h2>
                 <p class="text-gray-600 mt-2 leading-relaxed">
@@ -23,13 +23,12 @@
                 </p>
             </div>
             <div class="relative">
-                <div class="absolute inset-0 bg-[#89FFE7] opacity-20 rounded-full blur-xl animate-pulse"></div>
                 <img src="{{ asset('images/logo-TK-Aisyiyah.png') }}" alt="Logo" class="w-28 sm:w-32 h-auto relative z-10 drop-shadow-lg">
             </div>
         </section>
 
         <section class="max-w-5xl mx-auto bg-gradient-to-br from-white via-blue-50 to-cyan-50 rounded-[40px] p-10 shadow-2xl border-2 border-[#89FFE7] relative overflow-hidden">
-             {{-- ... (kode section progress bar tahapan pendaftaran) ... --}}
+            {{-- ... (kode section progress bar tahapan pendaftaran) ... --}}
             <div class="absolute top-0 left-0 w-64 h-64 bg-[#89FFE7] opacity-5 rounded-full -ml-32 -mt-32"></div>
             <div class="absolute bottom-0 right-0 w-64 h-64 bg-[#2E7099] opacity-5 rounded-full -mr-32 -mb-32"></div>
 
@@ -41,49 +40,50 @@
 
                 {{-- Logika untuk status dinamis 4-langkah --}}
                 @php
-                    $steps = [
-                        'Pengisian Formulir' => ['desc' => 'Anda sedang dalam tahap pengisian formulir.'],
-                        'Formulir Dikirim' => ['desc' => 'Formulir Anda sedang dalam proses verifikasi oleh tim kami. Mohon menunggu konfirmasi lebih lanjut.'],
-                        'Proses Seleksi' => ['desc' => 'Anda telah memasuki tahap seleksi. Tim kami akan meninjau data Anda.'],
-                        'Diterima' => ['desc' => 'Selamat! Anda telah diterima. Silakan lakukan pendaftaran ulang.'],
-                        'Ditolak' => ['desc' => 'Mohon maaf, Anda belum lolos seleksi. Silakan coba lagi tahun depan.'],
-                        'Belum Mendaftar' => ['desc' => 'Anda belum melakukan pendaftaran.'],
+                $steps = [
+                'Pengisian Formulir' => ['desc' => 'Anda sedang dalam tahap pengisian formulir.'],
+                'Formulir Dikirim' => ['desc' => 'Formulir Anda sedang dalam proses verifikasi oleh tim kami. Mohon menunggu konfirmasi lebih lanjut.'],
+                'Proses Seleksi' => ['desc' => 'Anda telah memasuki tahap seleksi. Tim kami akan meninjau data Anda.'],
+                'Diterima' => ['desc' => 'Selamat! Anda telah diterima. Silakan lakukan pendaftaran ulang.'],
+                'Ditolak' => ['desc' => 'Mohon maaf, Anda belum lolos seleksi. Silakan coba lagi tahun depan.'],
+                'Belum Mendaftar' => ['desc' => 'Anda belum melakukan pendaftaran.'],
+                ];
+
+                // $pendaftaran dikirim dari UserController
+                $currentStatus = $pendaftaran->status ?? 'Belum Mendaftar';
+
+                // Tentukan step mana yang aktif/selesai
+                // "Diterima" dan "Ditolak" sekarang sama-sama berada di step 4
+                $statusMap = [
+                'Belum Mendaftar' => 0,
+                'Pengisian Formulir' => 1,
+                'Formulir Dikirim' => 2,
+                'Proses Seleksi' => 3,
+                'Diterima' => 4,
+                'Ditolak' => 4, // <-- Digabung ke step 4
                     ];
 
-                    // $pendaftaran dikirim dari UserController
-                    $currentStatus = $pendaftaran->status ?? 'Belum Mendaftar'; 
-
-                    // Tentukan step mana yang aktif/selesai
-                    // "Diterima" dan "Ditolak" sekarang sama-sama berada di step 4
-                    $statusMap = [
-                        'Belum Mendaftar' => 0,
-                        'Pengisian Formulir' => 1,
-                        'Formulir Dikirim' => 2,
-                        'Proses Seleksi' => 3,
-                        'Diterima' => 4,
-                        'Ditolak' => 4, // <-- Digabung ke step 4
-                    ];
-
-                    $currentStepIndex = $statusMap[$currentStatus] ?? 0;
+                    $currentStepIndex=$statusMap[$currentStatus] ?? 0;
 
                     // Tentukan pesan status
-                    $statusInfo = $steps[$currentStatus];
+                    $statusInfo=$steps[$currentStatus];
 
                     // Logika progress bar (0%, 33%, 66%, 100%)
-                    $progressWidth = '0%';
-                    if ($currentStepIndex > 1) {
-                        $progressWidth = min(100, ($currentStepIndex - 1) * 33.33) . '%';
+                    $progressWidth='0%' ;
+                    if ($currentStepIndex> 1) {
+                    $progressWidth = min(100, ($currentStepIndex - 1) * 33.33) . '%';
                     }
 
-                @endphp
+                    @endphp
 
-                <div class="relative">
-                    <div class="absolute top-12 left-0 right-0 h-2 bg-gray-200 rounded-full mx-auto" style="width: calc(100% - 80px); margin-left: 40px;"></div>
+                    <div class="relative">
+                        <div class="absolute top-12 left-0 right-0 h-2 bg-gray-200 rounded-full mx-auto" style="width: calc(100% - 80px); margin-left: 40px;"></div>
 
-                    <div class="absolute top-12 left-0 h-2 bg-gradient-to-r from-[#2E7099] via-[#3d8bb8] to-[#89FFE7] rounded-full transition-all duration-1000 ease-out shadow-lg" 
-                         style="width: calc({{ $progressWidth }} - 80px); margin-left: 40px;">
-                        @if ($currentStepIndex > 0 && $currentStepIndex < 4)
-                            <div class="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#89FFE7] rounded-full animate-pulse shadow-lg"></div>
+                        <div class="absolute top-12 left-0 h-2 bg-gradient-to-r from-[#2E7099] via-[#3d8bb8] to-[#89FFE7] rounded-full transition-all duration-1000 ease-out shadow-lg"
+                            style="width: calc({{ $progressWidth }} - 80px); margin-left: 40px;">
+                            @if ($currentStepIndex > 0 && $currentStepIndex < 4)
+                                <div class="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#89FFE7] rounded-full animate-pulse shadow-lg">
+                        </div>
                         @endif
                     </div>
 
@@ -98,24 +98,30 @@
                                     {{ $currentStepIndex < $stepIndex ? 'bg-gray-200 group-hover:bg-gray-300' : '' }}">
 
                                     @if ($currentStepIndex > $stepIndex)
-                                        <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                                    <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
                                     @else
-                                        <svg class="w-10 h-10 {{ $currentStepIndex == $stepIndex ? 'text-white' : 'text-gray-400' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                                    <svg class="w-10 h-10 {{ $currentStepIndex == $stepIndex ? 'text-white' : 'text-gray-400' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                    </svg>
                                     @endif
                                 </div>
                                 @if ($currentStepIndex > $stepIndex)
-                                    <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
-                                        <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                    </div>
+                                <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
+                                    <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
                                 @endif
                             </div>
                             <span class="text-sm font-bold {{ $currentStepIndex >= $stepIndex ? 'text-[#2E7099]' : 'text-gray-500' }} text-center leading-tight">Pengisian<br>Formulir</span>
                             @if ($currentStepIndex > $stepIndex)
-                                <span class="text-xs text-green-600 font-semibold mt-1">✓ Selesai</span>
+                            <span class="text-xs text-green-600 font-semibold mt-1">✓ Selesai</span>
                             @elseif ($currentStepIndex == $stepIndex)
-                                <span class="text-xs text-[#2E7099] font-semibold mt-1 animate-pulse">● Proses</span>
+                            <span class="text-xs text-[#2E7099] font-semibold mt-1 animate-pulse">● Proses</span>
                             @else
-                                <span class="text-xs text-gray-400 mt-1">Menunggu</span>
+                            <span class="text-xs text-gray-400 mt-1">Menunggu</span>
                             @endif
                         </div>
 
@@ -128,27 +134,33 @@
                                     {{ $currentStepIndex < $stepIndex ? 'bg-gray-200 group-hover:bg-gray-300' : '' }}">
 
                                     @if ($currentStepIndex > $stepIndex)
-                                        <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                                    <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
                                     @else
-                                        <svg class="w-10 h-10 {{ $currentStepIndex == $stepIndex ? 'text-white' : 'text-gray-400' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                                    <svg class="w-10 h-10 {{ $currentStepIndex == $stepIndex ? 'text-white' : 'text-gray-400' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                                    </svg>
                                     @endif
                                 </div>
                                 @if ($currentStepIndex > $stepIndex)
-                                    <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
-                                        <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                    </div>
+                                <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
+                                    <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
                                 @endif
                                 @if ($currentStepIndex == $stepIndex)
-                                    <div class="absolute inset-0 rounded-full border-4 border-[#89FFE7] animate-ping opacity-75"></div>
+                                <div class="absolute inset-0 rounded-full border-4 border-[#89FFE7] animate-ping opacity-75"></div>
                                 @endif
                             </div>
                             <span class="text-sm font-bold {{ $currentStepIndex >= $stepIndex ? 'text-[#2E7099]' : 'text-gray-500' }} text-center leading-tight">Formulir<br>Dikirim</span>
                             @if ($currentStepIndex > $stepIndex)
-                                <span class="text-xs text-green-600 font-semibold mt-1">✓ Selesai</span>
+                            <span class="text-xs text-green-600 font-semibold mt-1">✓ Selesai</span>
                             @elseif ($currentStepIndex == $stepIndex)
-                                <span class="text-xs text-[#2E7099] font-semibold mt-1 animate-pulse">● Proses</span>
+                            <span class="text-xs text-[#2E7099] font-semibold mt-1 animate-pulse">● Proses</span>
                             @else
-                                <span class="text-xs text-gray-400 mt-1">Menunggu</span>
+                            <span class="text-xs text-gray-400 mt-1">Menunggu</span>
                             @endif
                         </div>
 
@@ -161,27 +173,33 @@
                                     {{ $currentStepIndex < $stepIndex ? 'bg-gray-200 group-hover:bg-gray-300' : '' }}">
 
                                     @if ($currentStepIndex > $stepIndex)
-                                        <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                                    <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
                                     @else
-                                        <svg class="w-10 h-10 {{ $currentStepIndex == $stepIndex ? 'text-white' : 'text-gray-400' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                                    <svg class="w-10 h-10 {{ $currentStepIndex == $stepIndex ? 'text-white' : 'text-gray-400' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                    </svg>
                                     @endif
                                 </div>
                                 @if ($currentStepIndex > $stepIndex)
-                                    <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
-                                        <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                    </div>
+                                <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
+                                    <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
                                 @endif
                                 @if ($currentStepIndex == $stepIndex)
-                                    <div class="absolute inset-0 rounded-full border-4 border-[#89FFE7] animate-ping opacity-75"></div>
+                                <div class="absolute inset-0 rounded-full border-4 border-[#89FFE7] animate-ping opacity-75"></div>
                                 @endif
                             </div>
                             <span class="text-sm font-bold {{ $currentStepIndex >= $stepIndex ? 'text-[#2E7099]' : 'text-gray-500' }} text-center leading-tight">Proses<br>Seleksi</span>
                             @if ($currentStepIndex > $stepIndex)
-                                <span class="text-xs text-green-600 font-semibold mt-1">✓ Selesai</span>
+                            <span class="text-xs text-green-600 font-semibold mt-1">✓ Selesai</span>
                             @elseif ($currentStepIndex == $stepIndex)
-                                <span class="text-xs text-[#2E7099] font-semibold mt-1 animate-pulse">● Proses</span>
+                            <span class="text-xs text-[#2E7099] font-semibold mt-1 animate-pulse">● Proses</span>
                             @else
-                                <span class="text-xs text-gray-400 mt-1">Menunggu</span>
+                            <span class="text-xs text-gray-400 mt-1">Menunggu</span>
                             @endif
                         </div>
 
@@ -195,24 +213,34 @@
 
                                     {{-- Icon dinamis --}}
                                     @if ($currentStatus == 'Diterima')
-                                        <svg class="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    <svg class="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
                                     @elseif ($currentStatus == 'Ditolak')
-                                        <svg class="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    <svg class="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
                                     @else
-                                        {{-- Icon default (pending) --}}
-                                        <svg class="w-10 h-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    {{-- Icon default (pending) --}}
+                                    <svg class="w-10 h-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
                                     @endif
                                 </div>
 
                                 {{-- Badge dinamis --}}
                                 @if ($currentStatus == 'Diterima')
-                                    <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
-                                        <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                    </div>
+                                <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
+                                    <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
                                 @elseif ($currentStatus == 'Ditolak')
-                                    <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-red-500 rounded-full border-2 border-white flex items-center justify-center">
-                                        <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                                    </div>
+                                <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-red-500 rounded-full border-2 border-white flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </div>
                                 @endif
                             </div>
 
@@ -220,35 +248,41 @@
                             <span class="text-sm font-bold {{ $currentStatus == 'Diterima' ? 'text-green-600' : ($currentStatus == 'Ditolak' ? 'text-red-600' : 'text-gray-500') }} text-center leading-tight">Status<br>Pendaftaran</span>
 
                             @if ($currentStatus == 'Diterima')
-                                <span class="text-xs text-green-600 font-semibold mt-1">✓ Diterima</span>
+                            <span class="text-xs text-green-600 font-semibold mt-1">✓ Diterima</span>
                             @elseif ($currentStatus == 'Ditolak')
-                                <span class="text-xs text-red-600 font-semibold mt-1">● Ditolak</span>
+                            <span class="text-xs text-red-600 font-semibold mt-1">● Ditolak</span>
                             @else
-                                <span class="text-xs text-gray-400 mt-1">Menunggu</span>
+                            <span class="text-xs text-gray-400 mt-1">Menunggu</span>
                             @endif
                         </div>
 
                     </div>
-                </div>
-                <div class="mt-8 bg-white rounded-2xl p-5 shadow-md border border-[#89FFE7]">
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#2E7099] to-[#89FFE7] flex items-center justify-center 
+            </div>
+            <div class="mt-8 bg-white rounded-2xl p-5 shadow-md border border-[#89FFE7]">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#2E7099] to-[#89FFE7] flex items-center justify-center 
                             {{ ($currentStepIndex == 4) ? '' : 'animate-pulse' }}">
 
-                            @if ($currentStatus == 'Diterima')
-                                <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            @elseif ($currentStatus == 'Ditolak')
-                                <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            @else
-                                <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            @endif
-                        </div>
-                        <div class="flex-1">
-                            <h4 class="font-bold text-[#2E7099] mb-1">Status Saat Ini: {{ $currentStatus }}</h4>
-                            <p class="text-sm text-gray-600">{{ $statusInfo['desc'] }}</p>
-                        </div>
+                        @if ($currentStatus == 'Diterima')
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        @elseif ($currentStatus == 'Ditolak')
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        @else
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        @endif
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-bold text-[#2E7099] mb-1">Status Saat Ini: {{ $currentStatus }}</h4>
+                        <p class="text-sm text-gray-600">{{ $statusInfo['desc'] }}</p>
                     </div>
                 </div>
+            </div>
             </div>
         </section>
 
@@ -256,53 +290,55 @@
         {{-- == KARTU-KARTU MENU == --}}
         {{-- ====================================================================== --}}
         <section class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-14 max-w-5xl mx-auto place-items-stretch">
-            
+
             {{-- ============================================= --}}
             {{-- == KARTU PENDAFTARAN (DINAMIS) == --}}
             {{-- ============================================= --}}
             @php
-                // Tentukan logic untuk link dan teks
-                $linkPendaftaran = route('user.formulir.step1'); // Default
-                $teksJudul = "Mulai Pendaftaran";
-                $teksDeskripsi = "Klik untuk mengisi formulir pendaftaran";
-                $iconPendaftaran = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />';
-                $step = 1;
+            // Tentukan logic untuk link dan teks
+            $linkPendaftaran = route('user.formulir.step1'); // Default
+            $teksJudul = "Mulai Pendaftaran";
+            $teksDeskripsi = "Klik untuk mengisi formulir pendaftaran";
+            $iconPendaftaran = '
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />';
+            $step = 1;
 
-                if ($pendaftaran) {
-                    $step = $pendaftaran->progress_step ?? 1;
+            if ($pendaftaran) {
+            $step = $pendaftaran->progress_step ?? 1;
 
-                    if ($pendaftaran->status == 'Pengisian Formulir') {
-                        if ($step == 1) {
-                            $linkPendaftaran = route('user.formulir.step1');
-                            $teksJudul = "Lanjutkan Pendaftaran";
-                            $teksDeskripsi = "Anda di Tahap 1: Data Anak";
-                        } elseif ($step == 2) {
-                            $linkPendaftaran = route('user.formulir.step2');
-                            $teksJudul = "Lanjutkan Pendaftaran";
-                            $teksDeskripsi = "Anda di Tahap 2: Data Orang Tua";
-                        } elseif ($step >= 3) {
-                            $linkPendaftaran = route('user.formulir.step3');
-                            $teksJudul = "Lanjutkan Pendaftaran";
-                            $teksDeskripsi = "Anda di Tahap 3: Pilihan Program";
-                        }
-                    } else {
-                        // Jika status BUKAN 'Pengisian Formulir' (misal: Formulir Dikirim, Diterima, dll)
-                        $linkPendaftaran = '#'; // Link non-aktif
-                        $teksJudul = "Pendaftaran Terkirim";
-                        $teksDeskripsi = "Data Anda sedang diverifikasi. Status: " . $pendaftaran->status;
-                        $iconPendaftaran = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />';
-                    }
-                }
+            if ($pendaftaran->status == 'Pengisian Formulir') {
+            if ($step == 1) {
+            $linkPendaftaran = route('user.formulir.step1');
+            $teksJudul = "Lanjutkan Pendaftaran";
+            $teksDeskripsi = "Anda di Tahap 1: Data Anak";
+            } elseif ($step == 2) {
+            $linkPendaftaran = route('user.formulir.step2');
+            $teksJudul = "Lanjutkan Pendaftaran";
+            $teksDeskripsi = "Anda di Tahap 2: Data Orang Tua";
+            } elseif ($step >= 3) {
+            $linkPendaftaran = route('user.formulir.step3');
+            $teksJudul = "Lanjutkan Pendaftaran";
+            $teksDeskripsi = "Anda di Tahap 3: Pilihan Program";
+            }
+            } else {
+            // Jika status BUKAN 'Pengisian Formulir' (misal: Formulir Dikirim, Diterima, dll)
+            $linkPendaftaran = '#'; // Link non-aktif
+            $teksJudul = "Pendaftaran Terkirim";
+            $teksDeskripsi = "Data Anda sedang diverifikasi. Status: " . $pendaftaran->status;
+            $iconPendaftaran = '
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />';
+            }
+            }
             @endphp
 
             {{-- PERBAIKAN: `p-8` diubah menjadi `p-6` --}}
             <a href="{{ $linkPendaftaran }}"
-               class="group bg-gradient-to-br from-white to-cyan-50 border-2 border-[#89FFE7] rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:border-[#2E7099] relative overflow-hidden flex flex-col
+                class="group bg-gradient-to-br from-white to-cyan-50 border-2 border-[#89FFE7] rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:border-[#2E7099] relative overflow-hidden flex flex-col
                {{ $pendaftaran && $pendaftaran->status !== 'Pengisian Formulir' ? 'opacity-70 cursor-not-allowed' : '' }} {{-- Abu-abu jika non-aktif --}}
                ">
-                
+
                 <div class="absolute top-0 right-0 w-32 h-32 bg-[#89FFE7] opacity-10 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500"></div>
-                
+
                 {{-- PERBAIKAN: `gap-4` diubah `gap-3` --}}
                 <div class="flex flex-col items-center gap-3 relative z-10">
                     <div class="bg-gradient-to-br from-[#2E7099] to-[#3d8bb8] p-4 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
@@ -318,26 +354,26 @@
 
                 {{-- Progress Bar (Hanya tampil saat proses pengisian) --}}
                 @if ($pendaftaran && $pendaftaran->status == 'Pengisian Formulir')
-                    @php $progressPercent = max(0, ($step - 1) * 50); // Step 1: 0%, Step 2: 50%, Step 3: 100% @endphp
-                    
-                    <div class="w-full mt-auto pt-4"> 
-                         <span class="text-xs font-semibold text-gray-500">Progres: ({{ $step }}/3)</span>
-                        <div class="w-full bg-gray-200 rounded-full h-2.5 mt-1">
-                            <div class="bg-gradient-to-r from-[#2E7099] to-[#89FFE7] h-2.5 rounded-full transition-all duration-500" style="width: {{ $progressPercent }}%"></div>
-                        </div>
+                @php $progressPercent = max(0, ($step - 1) * 50); // Step 1: 0%, Step 2: 50%, Step 3: 100% @endphp
+
+                <div class="w-full mt-auto pt-4">
+                    <span class="text-xs font-semibold text-gray-500">Progres: ({{ $step }}/3)</span>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5 mt-1">
+                        <div class="bg-gradient-to-r from-[#2E7099] to-[#89FFE7] h-2.5 rounded-full transition-all duration-500" style="width: {{ $progressPercent }}%"></div>
                     </div>
+                </div>
                 @endif
             </a>
-            
+
             {{-- ================================= --}}
             {{-- == KARTU BIODATA == --}}
             {{-- ================================= --}}
 
             {{-- PERBAIKAN: `p-8` diubah menjadi `p-6` --}}
             <a href="{{ route('user.biodata') }}"
-            class="group bg-gradient-to-br from-white to-cyan-50 border-2 border-[#89FFE7] rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:border-[#2E7099] relative overflow-hidden flex flex-col">
+                class="group bg-gradient-to-br from-white to-cyan-50 border-2 border-[#89FFE7] rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:border-[#2E7099] relative overflow-hidden flex flex-col">
                 <div class="absolute top-0 right-0 w-32 h-32 bg-[#89FFE7] opacity-10 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500"></div>
-                
+
                 {{-- PERBAIKAN: `gap-4` diubah `gap-3` --}}
                 <div class="flex flex-col items-center gap-3 relative z-10">
                     <div class="bg-gradient-to-br from-[#2E7099] to-[#3d8bb8] p-4 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
@@ -359,9 +395,9 @@
 
             {{-- PERBAIKAN: `p-8` diubah menjadi `p-6` --}}
             <a href="{{ route('user.company') }}"
-            class="group bg-gradient-to-br from-white to-blue-50 border-2 border-[#89FFE7] rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:border-[#2E7099] relative overflow-hidden flex flex-col">
+                class="group bg-gradient-to-br from-white to-blue-50 border-2 border-[#89FFE7] rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:border-[#2E7099] relative overflow-hidden flex flex-col">
                 <div class="absolute top-0 right-0 w-32 h-32 bg-[#89FFE7] opacity-10 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500"></div>
-                
+
                 {{-- PERBAIKAN: `gap-4` diubah `gap-3` --}}
                 <div class="flex flex-col items-center gap-3 relative z-10">
                     <div class="bg-gradient-to-br from-[#2E7099] to-[#3d8bb8] p-4 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
