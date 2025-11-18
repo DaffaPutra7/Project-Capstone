@@ -5,9 +5,7 @@
 
             <main class="max-w-6xl mx-auto px-4 mt-10 space-y-8 flex-grow">
 
-                <!-- Card Selamat Datang + Statistik -->
                 <div class="space-y-0">
-                    <!-- Card Selamat Datang -->
                     <section class="bg-white shadow-md rounded-t-2xl p-6 border border-[#89FFE7] flex flex-col sm:flex-row items-center justify-between gap-6">
                         <div class="flex-1">
                             <div class="flex items-center gap-2 mb-2">
@@ -38,9 +36,7 @@
                         <img src="{{ asset('images/logo-TK-Aisyiyah.png') }}" alt="Logo Sekolah" class="w-24 sm:w-28 h-auto">
                     </section>
 
-                    <!-- Statistik -->
                     <section class="flex flex-col sm:flex-row justify-start items-start sm:items-center flex-wrap gap-2 text-sm bg-white border-x border-b border-[#89FFE7] rounded-b-2xl shadow-md px-6 py-3">
-                        <!-- Jumlah Pendaftar -->
                         <div class="flex items-center gap-2 bg-sky-100 text-sky-800 px-4 py-2 rounded-xl shadow-sm border border-sky-200">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -49,59 +45,80 @@
                             <span><strong>Jumlah Pendaftar:</strong> {{ $jumlahPendaftar }} Orang</span>
                         </div>
 
-                        <!-- Kuota Pendaftaran -->
                         <div class="flex items-center gap-2 bg-emerald-100 text-emerald-800 px-4 py-2 rounded-xl shadow-sm border border-emerald-200">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 12h6m-6 4h6m2 4H7a2 2 0 01-2-2V6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v12a2 2 0 01-2 2z" />
                             </svg>
-                            {{-- Ganti angka 500 dengan variabel sisaKuota --}}
                             <span><strong>Kuota Tersedia:</strong> {{ $sisaKuota }} Peserta</span>
                         </div>
                     </section>
                 </div>
 
-                <!-- TABEL PENDAFTAR TERBARU -->
                 <section class="max-w-6xl mx-auto mt-10">
                     <div class="bg-white border-2 border-[#89FFE7] rounded-[40px] p-8 shadow-lg">
 
                         <div class="flex items-center gap-3 mb-6">
-                            <div class="w-1.5 h-8 bg-[#2E7099] rounded-full"></div>
                             <h3 class="text-2xl font-bold text-[#2E7099]">Pendaftar Terbaru</h3>
                         </div>
 
-                        <!-- Table -->
                         <div class="overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
                                     <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Lengkap</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tgl. Daftar</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Program</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                                        {{-- Mengurangi padding menjadi px-4 py-3 --}}
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Lengkap</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usia</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tgl. Daftar</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Program</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                        <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-48">Aksi</th>
                                     </tr>
                                 </thead>
 
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     @forelse ($pendaftaranSiswa as $pendaftaran)
                                     <tr>
-                                        <td class="px-6 py-4 text-sm text-gray-500">{{ $loop->iteration }}</td>
+                                        {{-- Menambah whitespace-nowrap dan mengurangi padding --}}
+                                        <td class="px-4 py-3 text-sm text-gray-500 whitespace-nowrap">{{ $loop->iteration }}</td>
 
-                                        <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                                        <td class="px-4 py-3 text-sm font-medium text-gray-900 whitespace-nowrap">
                                             {{ $pendaftaran->anak->nama_lengkap ?? 'Data Belum Lengkap' }}
                                         </td>
 
-                                        <td class="px-6 py-4 text-sm text-gray-500">
+                                        <td class="px-4 py-3 text-sm font-medium text-gray-900 whitespace-nowrap">
+                                            @if ($pendaftaran->anak && $pendaftaran->anak->tanggal_lahir)
+                                            {{-- Menampilkan usia detail dari accessor --}}
+                                            <div>{{ $pendaftaran->anak->usia_detail }}</div>
+
+                                            {{-- Logika warna untuk status usia --}}
+                                            @php
+                                            $statusUsia = $pendaftaran->anak->status_usia;
+                                            $statusClass = '';
+                                            if ($statusUsia == 'Memenuhi Syarat') {
+                                            $statusClass = 'text-green-700 font-semibold';
+                                            } elseif ($statusUsia == 'Tidak Memenuhi Syarat') {
+                                            $statusClass = 'text-red-700 font-semibold';
+                                            } else {
+                                            $statusClass = 'text-gray-500';
+                                            }
+                                            @endphp
+                                            <span class="{{ $statusClass }}">{{ $statusUsia }}</span>
+                                            @else
+                                            <span class="text-gray-500">N/A</span>
+                                            @endif
+                                        </td>
+
+                                        <td class="px-4 py-3 text-sm text-gray-500 whitespace-nowrap">
                                             {{ $pendaftaran->tanggal_daftar ? \Carbon\Carbon::parse($pendaftaran->tanggal_daftar)->format('d M Y') : '-' }}
                                         </td>
 
-                                        <td class="px-6 py-4 text-sm text-gray-500">
+                                        <td class="px-4 py-3 text-sm text-gray-500 whitespace-nowrap">
                                             {{ $pendaftaran->jenis_program ?? '-' }}
                                         </td>
 
-                                        <td class="px-6 py-4">
+                                        <td class="px-4 py-3 whitespace-nowrap">
                                             @php
                                             $statusClass = match($pendaftaran->status){
                                             'Formulir Dikirim' => 'bg-blue-100 text-blue-800',
@@ -117,11 +134,12 @@
                                             </span>
                                         </td>
 
-                                        <td class="px-6 py-4 text-right text-sm font-medium">
+                                        {{-- Mengatur lebar kolom Aksi dan menggunakan flex untuk elemen di dalamnya --}}
+                                        <td class="px-4 py-3 text-right text-sm font-medium whitespace-nowrap w-48">
                                             <form action="{{ route('admin.siswa.updateStatus', $pendaftaran->id_pendaftaran) }}" method="POST" class="flex items-center justify-end gap-2">
                                                 @csrf
 
-                                                <select name="status" class="block w-40 text-sm py-1 px-2 border border-gray-300 rounded-md shadow-sm">
+                                                <select name="status" class="block w-32 text-xs py-1 px-2 border border-gray-300 rounded-md shadow-sm">
                                                     <option value="Proses Seleksi" {{ $pendaftaran->status=='Proses Seleksi'?'selected':'' }}>Proses Seleksi</option>
                                                     <option value="Diterima" {{ $pendaftaran->status=='Diterima'?'selected':'' }}>Diterima</option>
                                                     <option value="Ditolak" {{ $pendaftaran->status=='Ditolak'?'selected':'' }}>Ditolak</option>
@@ -136,7 +154,8 @@
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td colspan="6" class="px-4 py-8 text-center text-gray-500">
+                                        {{-- Mengurangi padding sel empty state --}}
+                                        <td colspan="7" class="px-4 py-8 text-center text-gray-500">
                                             <div class="flex flex-col items-center gap-3">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-300" fill="none"
                                                     viewBox="0 0 24 24" stroke="currentColor">
@@ -167,10 +186,8 @@
                     </div>
                 </section>
 
-                <!-- Tombol Aksi -->
                 <section class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-4">
 
-                    <!-- Profil TK -->
                     <a href="{{ route('admin.company') }}"
                         class="group relative flex items-center gap-3 bg-white border-2 border-[#89FFE7] rounded-[40px] 
                             px-6 py-4 w-fit shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
