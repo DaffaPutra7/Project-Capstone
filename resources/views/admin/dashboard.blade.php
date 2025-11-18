@@ -9,11 +9,12 @@
                     <section class="bg-white shadow-md rounded-t-2xl p-6 border border-[#89FFE7] flex flex-col sm:flex-row items-center justify-between gap-6">
                         <div class="flex-1">
                             <div class="flex items-center gap-2 mb-2">
-                                <h2 class="text-xl font-bold text-sky-700">SELAMAT DATANG</h2>
+                                <h2 class="text-2xl sm:text-3xl font-bold text-sky-700 mb-2">
+                                    SELAMAT DATANG,<br>
+                                    <span class="text-[#2E7099]">{{ Auth::user()->nama_lengkap ?? 'User' }}</span>
+                                </h2>
                             </div>
-                            <p class="text-gray-600 mt-1 leading-relaxed">
-                                Penerimaan Peserta Didik Baru (PPDB) Taman Kanak-Kanak Aisyiyah Bustanul Athfal Banjareja.
-                            </p>
+                            <p>Lihat rekapitulasi jumlah pendaftar terbaru dan status kuota sekolah Anda.</p>
 
                             <div class="relative inline-block mt-6">
                                 <select id="tahun" name="tahun"
