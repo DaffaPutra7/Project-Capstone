@@ -103,7 +103,22 @@
                     ] as $name => $label)
                     <div x-data="{ hasTyped: false }">
                         <label for="{{ $name }}" class="block text-sm font-semibold mb-2">{{ $label }}</label>
-                        <input
+                        @if($name === 'agama')
+                            <select
+                                id="{{ $name }}"
+                                name="{{ $name }}"
+                                @change="hasTyped = true"
+                                class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error($name) border-red-500 @enderror">
+                                <option value="">-- Pilih Agama --</option>
+                                @foreach(['Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha', 'Khonghucu'] as $agm)
+                                    <option value="{{ $agm }}" {{ old($name, $anak->$name) == $agm ? 'selected' : '' }}>
+                                        {{ $agm }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                        @else
+                              <input
                             id="{{ $name }}"
                             type="{{ $name === 'tanggal_lahir' ? 'date' : 
                                         ($name === 'berat_badan' || $name === 'tinggi_badan' || $name === 'anak_ke' ? 'number' : 'text') }}"
@@ -118,6 +133,7 @@
                                 oninput="if(this.value.length > 3) this.value = this.value.slice(0, 3);"
                             @endif
                             class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error($name) border-red-500 @enderror">
+                        @endif
 
                         <div x-show="!hasTyped">
                             @error($name)
