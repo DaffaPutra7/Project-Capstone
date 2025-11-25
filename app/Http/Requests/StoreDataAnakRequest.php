@@ -26,7 +26,7 @@ class StoreDataAnakRequest extends FormRequest
             'nisn' => 'nullable|string|max:20',
             'tempat_lahir' => 'required|string|max:50',
             'tanggal_lahir' => 'required|date',
-            'agama' => 'required|string|max:30',
+            'agama' => ['required', Rule::in(['Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha', 'Khonghucu'])],
             'bahasa_sehari_hari' => 'required|string|max:50',
             'berat_badan' => 'required|numeric|min:0|max:999', 
             'tinggi_badan' => 'required|numeric|min:0|max:999',
