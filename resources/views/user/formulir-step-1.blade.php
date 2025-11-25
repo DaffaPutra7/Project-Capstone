@@ -110,6 +110,13 @@
                             name="{{ $name }}"
                             value="{{ old($name, $anak->$name) }}"
                             @input="hasTyped = true"
+                            @if($name==='anak_ke' )
+                                max="99"
+                                oninput="if(this.value.length > 2) this.value = this.value.slice(0, 2);"
+                            @elseif($name==='berat_badan' || $name==='tinggi_badan' )
+                                max="999"
+                                oninput="if(this.value.length > 3) this.value = this.value.slice(0, 3);"
+                            @endif
                             class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error($name) border-red-500 @enderror">
 
                         <div x-show="!hasTyped">
