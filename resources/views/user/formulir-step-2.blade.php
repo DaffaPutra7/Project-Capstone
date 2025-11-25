@@ -3,7 +3,7 @@
         <h2 class="text-2xl font-bold text-sky-700 mb-6 text-center">Formulir Pendaftaran — Data Orang Tua / Wali</h2>
 
         {{-- ====================================================== --}}
-        {{-- == TAMBAHAN: Boks Info "Jalan Keluar" == --}}
+        {{-- == Boks Info "Jalan Keluar" == --}}
         {{-- ====================================================== --}}
         <div class="flex items-start gap-3 bg-sky-50 border border-sky-200 text-sky-800 p-4 rounded-xl mb-6 shadow-sm">
             <div class="flex-shrink-0">
@@ -20,9 +20,6 @@
                 </p>
             </div>
         </div>
-        {{-- ====================================================== --}}
-        {{-- == BATAS TAMBAHAN == --}}
-        {{-- ====================================================== --}}
 
         <form method="POST" action="{{ route('user.formulir.step2.store') }}" class="space-y-6">
             @csrf
@@ -39,6 +36,7 @@
                 </div>
             @endif
 
+            {{-- BAGIAN DATA AYAH --}}
             <div class="bg-white border border-[#89FFE7] shadow-md rounded-[30px] p-8 space-y-4">
                 <h4 class="text-sky-700 font-semibold">👨 Data Ayah</h4>
                 <div class="grid md:grid-cols-2 gap-6">
@@ -51,14 +49,31 @@
                     ] as $name => $label)
                     <div x-data="{ hasTyped: false }">
                         <label for="{{ $name }}" class="block text-sm font-semibold mb-2">{{ $label }}</label>
-                        <input
-                            id="{{ $name }}"
-                            type="{{ str_contains($name, 'tanggal') ? 'date' : 'text' }}"
-                            name="{{ $name }}"
-                            value="{{ old($name, $anak->$name) }}"
-                            @input="hasTyped = true"
-                            class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error($name) border-red-500 @enderror">
                         
+                        @if(str_contains($name, 'pendidikan'))
+                            <select 
+                                id="{{ $name }}" 
+                                name="{{ $name }}"
+                                @change="hasTyped = true"
+                                class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error($name) border-red-500 @enderror">
+                                <option value="">-- Pilih Pendidikan --</option>
+                                @foreach(['SD', 'SMP', 'SMA', 'S1', 'S2', 'S3', 'Tidak Sekolah'] as $edu)
+                                    <option value="{{ $edu }}" {{ old($name, $anak->$name) == $edu ? 'selected' : '' }}>
+                                        {{ $edu }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        @else
+                        {{-- Input Biasa --}}
+                            <input
+                                id="{{ $name }}"
+                                type="{{ str_contains($name, 'tanggal') ? 'date' : 'text' }}"
+                                name="{{ $name }}"
+                                value="{{ old($name, $anak->$name) }}"
+                                @input="hasTyped = true"
+                                class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error($name) border-red-500 @enderror">
+                        @endif  {{-- <--- INI YANG TADI HILANG --}}
+
                         <div x-show="!hasTyped">
                             @error($name)
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -69,6 +84,7 @@
                 </div>
             </div>
 
+            {{-- BAGIAN DATA IBU --}}
             <div class="bg-white border border-[#89FFE7] shadow-md rounded-[30px] p-8 space-y-4">
                 <h4 class="text-sky-700 font-semibold">👩 Data Ibu</h4>
                 <div class="grid md:grid-cols-2 gap-6">
@@ -81,14 +97,30 @@
                     ] as $name => $label)
                     <div x-data="{ hasTyped: false }">
                         <label for="{{ $name }}" class="block text-sm font-semibold mb-2">{{ $label }}</label>
-                        <input
-                            id="{{ $name }}"
-                            type="{{ str_contains($name, 'tanggal') ? 'date' : 'text' }}"
-                            name="{{ $name }}"
-                            value="{{ old($name, $anak->$name) }}"
-                            @input="hasTyped = true"
-                            class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error($name) border-red-500 @enderror">
                         
+                        @if(str_contains($name, 'pendidikan'))
+                            <select 
+                                id="{{ $name }}" 
+                                name="{{ $name }}"
+                                @change="hasTyped = true"
+                                class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error($name) border-red-500 @enderror">
+                                <option value="">-- Pilih Pendidikan --</option>
+                                @foreach(['SD', 'SMP', 'SMA', 'S1', 'S2', 'S3', 'Tidak Sekolah'] as $edu)
+                                    <option value="{{ $edu }}" {{ old($name, $anak->$name) == $edu ? 'selected' : '' }}>
+                                        {{ $edu }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        @else
+                            <input
+                                id="{{ $name }}"
+                                type="{{ str_contains($name, 'tanggal') ? 'date' : 'text' }}"
+                                name="{{ $name }}"
+                                value="{{ old($name, $anak->$name) }}"
+                                @input="hasTyped = true"
+                                class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error($name) border-red-500 @enderror">
+                        @endif {{-- <--- INI JUGA TADI HILANG --}}
+
                         <div x-show="!hasTyped">
                             @error($name)
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -99,6 +131,7 @@
                 </div>
             </div>
 
+            {{-- BAGIAN DATA WALI --}}
             <div class="bg-white border border-[#89FFE7] shadow-md rounded-[30px] p-8 space-y-4">
                 <h4 class="text-sky-700 font-semibold">🧓 Data Wali (Opsional)</h4>
                 <div class="grid md:grid-cols-2 gap-6">
