@@ -3,7 +3,7 @@
 
         {{-- BAGIAN ATAS (SAMPAI PROGRESS BAR) --}}
         <section class="bg-gradient-to-br from-white via-blue-50 to-cyan-50 shadow-2xl rounded-[50px] p-8 border-2 border-[#89FFE7] flex flex-col sm:flex-row items-center justify-between gap-6 relative overflow-hidden">
-            {{-- ... (kode banner selamat datang) ... --}}
+            {{-- Elemen dekoratif blur --}}
             <div class="absolute -top-10 -right-10 w-40 h-40 bg-[#89FFE7] opacity-10 rounded-full blur-3xl"></div>
             <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-[#2E7099] opacity-10 rounded-full blur-3xl"></div>
 
@@ -28,7 +28,6 @@
         </section>
 
         <section class="max-w-5xl mx-auto bg-gradient-to-br from-white via-blue-50 to-cyan-50 rounded-[40px] p-10 shadow-2xl border-2 border-[#89FFE7] relative overflow-hidden">
-            {{-- ... (kode section progress bar tahapan pendaftaran) ... --}}
             <div class="absolute top-0 left-0 w-64 h-64 bg-[#89FFE7] opacity-5 rounded-full -ml-32 -mt-32"></div>
             <div class="absolute bottom-0 right-0 w-64 h-64 bg-[#2E7099] opacity-5 rounded-full -mr-32 -mb-32"></div>
 
@@ -38,7 +37,6 @@
                     <p class="text-sm text-gray-600">Lacak proses pendaftaran secara real-time</p>
                 </div>
 
-                {{-- Logika untuk status dinamis 4-langkah --}}
                 @php
                 $steps = [
                 'Pengisian Formulir' => ['desc' => 'Anda sedang dalam tahap pengisian formulir.'],
@@ -53,7 +51,6 @@
                 $currentStatus = $pendaftaran->status ?? 'Belum Mendaftar';
 
                 // Tentukan step mana yang aktif/selesai
-                // "Diterima" dan "Ditolak" sekarang sama-sama berada di step 4
                 $statusMap = [
                 'Belum Mendaftar' => 0,
                 'Pengisian Formulir' => 1,
@@ -87,7 +84,7 @@
                         @endif
                     </div>
 
-                    <div class="grid grid-cols-4 gap-2 relative z-10"> {{-- <-- INI PERBAIKANNYA --}}
+                    <div class="grid grid-cols-4 gap-2 relative z-10">
 
                         @php $stepIndex = 1; @endphp
                         <div class="flex flex-col items-center group">
@@ -261,7 +258,7 @@
             <div class="mt-8 bg-white rounded-2xl p-5 shadow-md border border-[#89FFE7]">
                 <div class="flex items-center gap-3">
                     <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#2E7099] to-[#89FFE7] flex items-center justify-center 
-                            {{ ($currentStepIndex == 4) ? '' : 'animate-pulse' }}">
+                                    {{ ($currentStepIndex == 4) ? '' : 'animate-pulse' }}">
 
                         @if ($currentStatus == 'Diterima')
                         <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -286,14 +283,7 @@
             </div>
         </section>
 
-        {{-- ====================================================================== --}}
-        {{-- == KARTU-KARTU MENU == --}}
-        {{-- ====================================================================== --}}
         <section class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-14 max-w-5xl mx-auto place-items-stretch">
-
-            {{-- ============================================= --}}
-            {{-- == KARTU PENDAFTARAN (DINAMIS) == --}}
-            {{-- ============================================= --}}
             @php
             // Tentukan logic untuk link dan teks
             $linkPendaftaran = route('user.formulir.step1'); // Default
@@ -331,83 +321,97 @@
             }
             @endphp
 
-            {{-- PERBAIKAN: `p-8` diubah menjadi `p-6` --}}
+            {{-- CARD MULAI PENDAFTARAN --}}
             <a href="{{ $linkPendaftaran }}"
-                class="group bg-gradient-to-br from-white to-cyan-50 border-2 border-[#89FFE7] rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:border-[#2E7099] relative overflow-hidden flex flex-col
-               {{ $pendaftaran && $pendaftaran->status !== 'Pengisian Formulir' ? 'opacity-70 cursor-not-allowed' : '' }} {{-- Abu-abu jika non-aktif --}}
-               ">
+                class="group bg-gradient-to-br from-white to-cyan-50 rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 relative overflow-hidden flex flex-col
 
-                <div class="absolute top-0 right-0 w-32 h-32 bg-[#89FFE7] opacity-10 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500"></div>
+    {{-- LOGIC UNTUK BORDER/PULSE --}}
+    @if ($pendaftaran && $pendaftaran->status == 'Pengisian Formulir')
+        border-4 border-[#89FFE7] hover:border-[#2E7099] animate-pulse
+    @else
+        border-2 border-[#89FFE7] hover:border-[#2E7099]
+    @endif
+    
+    {{ $pendaftaran && $pendaftaran->status !== 'Pengisian Formulir' ? 'opacity-70 cursor-not-allowed' : '' }}
+">
 
-                {{-- PERBAIKAN: `gap-4` diubah `gap-3` --}}
+                {{-- LAYER PING BORDER --}}
+                @if ($pendaftaran && $pendaftaran->status == 'Pengisian Formulir')
+                <div class="absolute inset-0 rounded-3xl border-4 border-[#89FFE7] opacity-75 animate-ping z-0"></div>
+                @endif
+
+                {{-- DECOR BACKGROUND --}}
+                <div class="absolute top-0 right-0 w-32 h-32 bg-[#89FFE7] opacity-10 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500 "></div>
+
                 <div class="flex flex-col items-center gap-3 relative z-10">
-                    <div class="bg-gradient-to-br from-[#2E7099] to-[#3d8bb8] p-4 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
-                        {{-- PERBAIKAN: `h-12 w-12` diubah `h-10 w-10` --}}
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            {!! $iconPendaftaran !!}
-                        </svg>
+
+                    {{-- ICON WRAPPER + PING ANIMATION --}}
+                    <div class="relative">
+                        {{-- BULATAN PING --}}
+                        @if ($pendaftaran && $pendaftaran->status == 'Pengisian Formulir')
+                        <span class="absolute inset-0 rounded-full bg-[#89FFE7] opacity-40 animate-ping"></span>
+                        @endif
+
+                        {{-- ICON UTAMA --}}
+                        <div class="relative bg-gradient-to-br from-[#2E7099] to-[#3d8bb8] p-4 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                {!! $iconPendaftaran !!}
+                            </svg>
+                        </div>
                     </div>
-                    {{-- PERBAIKAN: `text-2xl` diubah `text-xl` --}}
+
                     <span class="text-xl text-[#2E7099] font-bold group-hover:text-[#3d8bb8] transition-colors">{{ $teksJudul }}</span>
                     <p class="text-sm text-gray-600 text-center">{{ $teksDeskripsi }}</p>
                 </div>
 
-                {{-- Progress Bar (Hanya tampil saat proses pengisian) --}}
+                {{-- PROGRESS BAR --}}
                 @if ($pendaftaran && $pendaftaran->status == 'Pengisian Formulir')
-                @php $progressPercent = max(0, ($step - 1) * 50); // Step 1: 0%, Step 2: 50%, Step 3: 100% @endphp
+                @php $progressPercent = max(0, ($step - 1) * 50); @endphp
 
-                <div class="w-full mt-auto pt-4">
+                <div class="w-full mt-auto pt-4 relative z-10">
                     <span class="text-xs font-semibold text-gray-500">Progres: ({{ $step }}/3)</span>
                     <div class="w-full bg-gray-200 rounded-full h-2.5 mt-1">
-                        <div class="bg-gradient-to-r from-[#2E7099] to-[#89FFE7] h-2.5 rounded-full transition-all duration-500" style="width: {{ $progressPercent }}%"></div>
+                        <div class="bg-gradient-to-r from-[#2E7099] to-[#89FFE7] h-2.5 rounded-full transition-all duration-500"
+                            style="width: {{ $progressPercent }}%">
+                        </div>
                     </div>
                 </div>
                 @endif
             </a>
 
-            {{-- ================================= --}}
-            {{-- == KARTU BIODATA == --}}
-            {{-- ================================= --}}
-
-            {{-- PERBAIKAN: `p-8` diubah menjadi `p-6` --}}
+            {{-- CARD BIODATA --}}
             <a href="{{ route('user.biodata') }}"
                 class="group bg-gradient-to-br from-white to-cyan-50 border-2 border-[#89FFE7] rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:border-[#2E7099] relative overflow-hidden flex flex-col">
                 <div class="absolute top-0 right-0 w-32 h-32 bg-[#89FFE7] opacity-10 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500"></div>
 
-                {{-- PERBAIKAN: `gap-4` diubah `gap-3` --}}
                 <div class="flex flex-col items-center gap-3 relative z-10">
                     <div class="bg-gradient-to-br from-[#2E7099] to-[#3d8bb8] p-4 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
-                        {{-- PERBAIKAN: `h-12 w-12` diubah `h-10 w-10` --}}
+
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M5.121 17.804A8.966 8.966 0 0112 15c2.21 0 4.21.804 5.879 2.121M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
                     </div>
-                    {{-- PERBAIKAN: `text-2xl` diubah `text-xl` --}}
+
                     <span class="text-xl text-[#2E7099] font-bold group-hover:text-[#3d8bb8] transition-colors">Biodata</span>
                     <p class="text-sm text-gray-600 text-center">Lihat dan kelola biodata pribadi</p>
                 </div>
             </a>
 
-            {{-- ================================= --}}
-            {{-- == KARTU PROFIL TK == --}}
-            {{-- ================================= --}}
-
-            {{-- PERBAIKAN: `p-8` diubah menjadi `p-6` --}}
+            {{-- CARD PROFIL TK --}}
             <a href="{{ route('user.company') }}"
                 class="group bg-gradient-to-br from-white to-blue-50 border-2 border-[#89FFE7] rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:border-[#2E7099] relative overflow-hidden flex flex-col">
                 <div class="absolute top-0 right-0 w-32 h-32 bg-[#89FFE7] opacity-10 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500"></div>
 
-                {{-- PERBAIKAN: `gap-4` diubah `gap-3` --}}
                 <div class="flex flex-col items-center gap-3 relative z-10">
                     <div class="bg-gradient-to-br from-[#2E7099] to-[#3d8bb8] p-4 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
-                        {{-- PERBAIKAN: `h-12 w-12` diubah `h-10 w-10` --}}
+
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M3 7l9-4 9 4-9 4-9-4zm0 0v10a2 2 0 002 2h14a2 2 0 002-2V7M9 21h6" />
                         </svg>
                     </div>
-                    {{-- PERBAIKAN: `text-2xl` diubah `text-xl` --}}
+
                     <span class="text-xl text-[#2E7099] font-bold group-hover:text-[#3d8bb8] transition-colors">Profil TK</span>
                     <p class="text-sm text-gray-600 text-center">Informasi tentang sekolah kami</p>
                 </div>
