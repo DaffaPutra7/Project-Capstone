@@ -51,7 +51,7 @@
 
                 {{-- FOTO ANAK --}}
                 <div x-data="{ hasTyped: false }">
-                    <label for="foto_anak" class="block text-sm font-semibold mb-2">Foto Anak</label>
+                    <label for="foto_anak" class="block text-sm font-semibold mb-2">Foto Anak (Opsional)</label>
 
                     {{-- Tampilkan foto saat ini jika ada --}}
                     @if ($anak->foto_anak)
@@ -88,12 +88,12 @@
                 <div class="grid md:grid-cols-2 gap-6">
                     @foreach([
                     'nama_lengkap'=>'Nama Lengkap',
-                    'nama_panggilan'=>'Nama Panggilan',
+                    'nama_panggilan'=>'Nama Panggilan (Opsional)',
                     'nik_anak'=>'NIK Anak',
-                    'anak_ke'=>'Anak ke-',
-                    'nomor_akte'=>'Nomor Akte',
-                    'asal_sekolah'=>'Asal Sekolah',
-                    'nisn'=>'NISN',
+                    'anak_ke'=>'Anak ke- (Opsional)',
+                    'nomor_akte'=>'Nomor Akta (Opsional)',
+                    'asal_sekolah'=>'Asal Sekolah (Opsional)',
+                    'nisn'=>'NISN (Opsional)',
                     'tempat_lahir'=>'Tempat Lahir',
                     'tanggal_lahir'=>'Tanggal Lahir',
                     'agama'=>'Agama',
@@ -104,21 +104,21 @@
                     <div x-data="{ hasTyped: false }">
                         <label for="{{ $name }}" class="block text-sm font-semibold mb-2">{{ $label }}</label>
                         @if($name === 'agama')
-                            <select
-                                id="{{ $name }}"
-                                name="{{ $name }}"
-                                @change="hasTyped = true"
-                                class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error($name) border-red-500 @enderror">
-                                <option value="">-- Pilih Agama --</option>
-                                @foreach(['Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha', 'Khonghucu'] as $agm)
-                                    <option value="{{ $agm }}" {{ old($name, $anak->$name) == $agm ? 'selected' : '' }}>
-                                        {{ $agm }}
-                                    </option>
-                                @endforeach
-                            </select>
+                        <select
+                            id="{{ $name }}"
+                            name="{{ $name }}"
+                            @change="hasTyped = true"
+                            class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error($name) border-red-500 @enderror">
+                            <option value="">-- Pilih Agama --</option>
+                            @foreach(['Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha', 'Khonghucu'] as $agm)
+                            <option value="{{ $agm }}" {{ old($name, $anak->$name) == $agm ? 'selected' : '' }}>
+                                {{ $agm }}
+                            </option>
+                            @endforeach
+                        </select>
 
                         @else
-                              <input
+                        <input
                             id="{{ $name }}"
                             type="{{ $name === 'tanggal_lahir' ? 'date' : 
                                         ($name === 'berat_badan' || $name === 'tinggi_badan' || $name === 'anak_ke' ? 'number' : 'text') }}"
@@ -126,11 +126,11 @@
                             value="{{ old($name, $anak->$name) }}"
                             @input="hasTyped = true"
                             @if($name==='anak_ke' )
-                                max="99"
-                                oninput="if(this.value.length > 2) this.value = this.value.slice(0, 2);"
+                            max="99"
+                            oninput="if(this.value.length > 2) this.value = this.value.slice(0, 2);"
                             @elseif($name==='berat_badan' || $name==='tinggi_badan' )
-                                max="999"
-                                oninput="if(this.value.length > 3) this.value = this.value.slice(0, 3);"
+                            max="999"
+                            oninput="if(this.value.length > 3) this.value = this.value.slice(0, 3);"
                             @endif
                             class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error($name) border-red-500 @enderror">
                         @endif
@@ -212,7 +212,7 @@
 
                 {{-- TEXTAREA RIWAYAT PENYAKIT --}}
                 <div x-data="{ hasTyped: false }">
-                    <label for="riwayat_penyakit" class="block text-sm font-semibold mb-2">Riwayat Penyakit</label>
+                    <label for="riwayat_penyakit" class="block text-sm font-semibold mb-2">Riwayat Penyakit (Opsional)</label>
                     <textarea id="riwayat_penyakit" name="riwayat_penyakit" rows="3"
                         @input="hasTyped = true"
                         class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error('riwayat_penyakit') border-red-500 @enderror">{{ old('riwayat_penyakit', $anak->riwayat_penyakit) }}</textarea>

@@ -291,6 +291,7 @@
             $teksDeskripsi = "Klik untuk mengisi formulir pendaftaran";
             $iconPendaftaran = '
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />';
+
             $step = 1;
 
             if ($pendaftaran) {
@@ -311,8 +312,7 @@
             $teksDeskripsi = "Anda di Tahap 3: Pilihan Program";
             }
             } else {
-            // Jika status BUKAN 'Pengisian Formulir' (misal: Formulir Dikirim, Diterima, dll)
-            $linkPendaftaran = '#'; // Link non-aktif
+            $linkPendaftaran = '#';
             $teksJudul = "Pendaftaran Terkirim";
             $teksDeskripsi = "Data Anda sedang diverifikasi. Status: " . $pendaftaran->status;
             $iconPendaftaran = '
@@ -321,38 +321,28 @@
             }
             @endphp
 
-            {{-- CARD MULAI PENDAFTARAN --}}
+            {{-- pendaftaran --}}
             <a href="{{ $linkPendaftaran }}"
-                class="group bg-gradient-to-br from-white to-cyan-50 rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 relative overflow-hidden flex flex-col
-
-    {{-- LOGIC UNTUK BORDER/PULSE --}}
+                class="group bg-gradient-to-br from-amber-100 to-red-200 rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 relative overflow-visible flex flex-col
     @if ($pendaftaran && $pendaftaran->status == 'Pengisian Formulir')
         border-4 border-[#89FFE7] hover:border-[#2E7099] animate-pulse
     @else
         border-2 border-[#89FFE7] hover:border-[#2E7099]
     @endif
-    
     {{ $pendaftaran && $pendaftaran->status !== 'Pengisian Formulir' ? 'opacity-70 cursor-not-allowed' : '' }}
 ">
 
-                {{-- LAYER PING BORDER --}}
-                @if ($pendaftaran && $pendaftaran->status == 'Pengisian Formulir')
-                <div class="absolute inset-0 rounded-3xl border-4 border-[#89FFE7] opacity-75 animate-ping z-0"></div>
+                @if (!$pendaftaran || ($pendaftaran && $pendaftaran->status == 'Pengisian Formulir'))
+                <div class="absolute -inset-2 rounded-3xl border-8 border-[#89FFE7] opacity-50 animate-ping z-0"></div>
                 @endif
 
-                {{-- DECOR BACKGROUND --}}
-                <div class="absolute top-0 right-0 w-32 h-32 bg-[#89FFE7] opacity-10 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500 "></div>
+
+                <div class="absolute top-0 right-0 w-32 h-32 bg-[#89FFE7] opacity-10 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500"></div>
 
                 <div class="flex flex-col items-center gap-3 relative z-10">
 
-                    {{-- ICON WRAPPER + PING ANIMATION --}}
                     <div class="relative">
-                        {{-- BULATAN PING --}}
-                        @if ($pendaftaran && $pendaftaran->status == 'Pengisian Formulir')
-                        <span class="absolute inset-0 rounded-full bg-[#89FFE7] opacity-40 animate-ping"></span>
-                        @endif
-
-                        {{-- ICON UTAMA --}}
+                        {{-- ICON tanpa ping --}}
                         <div class="relative bg-gradient-to-br from-[#2E7099] to-[#3d8bb8] p-4 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 {!! $iconPendaftaran !!}
@@ -364,7 +354,6 @@
                     <p class="text-sm text-gray-600 text-center">{{ $teksDeskripsi }}</p>
                 </div>
 
-                {{-- PROGRESS BAR --}}
                 @if ($pendaftaran && $pendaftaran->status == 'Pengisian Formulir')
                 @php $progressPercent = max(0, ($step - 1) * 50); @endphp
 
@@ -379,14 +368,14 @@
                 @endif
             </a>
 
-            {{-- CARD BIODATA --}}
+            {{-- biodata --}}
             <a href="{{ route('user.biodata') }}"
-                class="group bg-gradient-to-br from-white to-cyan-50 border-2 border-[#89FFE7] rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:border-[#2E7099] relative overflow-hidden flex flex-col">
+                class="group bg-gradient-to-br from-emerald-200 to-emerald-400 border-2 border-[#89FFE7] rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:border-[#2E7099] relative overflow-hidden flex flex-col">
+
                 <div class="absolute top-0 right-0 w-32 h-32 bg-[#89FFE7] opacity-10 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500"></div>
 
                 <div class="flex flex-col items-center gap-3 relative z-10">
                     <div class="bg-gradient-to-br from-[#2E7099] to-[#3d8bb8] p-4 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
-
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M5.121 17.804A8.966 8.966 0 0112 15c2.21 0 4.21.804 5.879 2.121M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -398,14 +387,14 @@
                 </div>
             </a>
 
-            {{-- CARD PROFIL TK --}}
+            {{-- profile TK --}}
             <a href="{{ route('user.company') }}"
-                class="group bg-gradient-to-br from-white to-blue-50 border-2 border-[#89FFE7] rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:border-[#2E7099] relative overflow-hidden flex flex-col">
+                class="group bg-gradient-to-br from-blue-200 to-blue-400 border-2 border-[#89FFE7] rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:border-[#2E7099] relative overflow-hidden flex flex-col">
+
                 <div class="absolute top-0 right-0 w-32 h-32 bg-[#89FFE7] opacity-10 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500"></div>
 
                 <div class="flex flex-col items-center gap-3 relative z-10">
                     <div class="bg-gradient-to-br from-[#2E7099] to-[#3d8bb8] p-4 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
-
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M3 7l9-4 9 4-9 4-9-4zm0 0v10a2 2 0 002 2h14a2 2 0 002-2V7M9 21h6" />
