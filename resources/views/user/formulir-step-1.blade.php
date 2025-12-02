@@ -61,11 +61,6 @@
                     </div>
                     @endif
 
-                    {{-- 
-                        LOGIKA DIUBAH:
-                        1. class="..." hanya berisi styling dasar (layout, focus, dll)
-                        2. :class="..." berisi logika warna border (Merah vs Biru)
-                    --}}
                     <input
                         id="foto_anak"
                         type="file"
@@ -87,7 +82,7 @@
                     </div>
                 </div>
 
-                {{-- LOOP INPUT FIELD --}}
+                {{-- INPUT FIELD --}}
                 <div class="grid md:grid-cols-2 gap-6">
                     @foreach([
                     'nama_lengkap'=>'Nama Lengkap',

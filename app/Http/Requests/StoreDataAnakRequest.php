@@ -45,29 +45,55 @@ class StoreDataAnakRequest extends FormRequest
         ];
     }
 
+    /**
+     * Daftar "Nama Cantik" untuk setiap kolom.
+     * Laravel akan menggunakan ini untuk mengganti :attribute di pesan error.
+     */
     public function attributes(): array
     {
         return [
-            'nama_lengkap' => 'Nama lengkap',
-            'nik_anak' => 'NIK anak',
-            'tempat_lahir' => 'Tempat lahir',
-            'tanggal_lahir' => 'Tanggal lahir',
-            'berat_badan' => 'Berat badan',
-            'tinggi_badan' => 'Tinggi badan',
-            'foto_anak' => 'Foto anak', 
+            'nama_lengkap' => 'Nama Lengkap',
+            'nama_panggilan' => 'Nama Panggilan',
+            'nik_anak' => 'NIK Anak',
+            'anak_ke' => 'Anak ke',
+            'nomor_akte' => 'Nomor Akta',
+            'asal_sekolah' => 'Asal Sekolah',
+            'nisn' => 'NISN',
+            'tempat_lahir' => 'Tempat Lahir',
+            'tanggal_lahir' => 'Tanggal Lahir',
+            'agama' => 'Agama',
+            'bahasa_sehari_hari' => 'Bahasa Sehari-hari',
+            'berat_badan' => 'Berat Badan',
+            'tinggi_badan' => 'Tinggi Badan',
+            'golongan_darah' => 'Golongan Darah',
+            'jenis_kelamin' => 'Jenis Kelamin',
+            'kewarganegaraan' => 'Kewarganegaraan',
+            'alamat' => 'Alamat',
+            'foto_anak' => 'Foto Anak',
+            'riwayat_penyakit' => 'Riwayat Penyakit',
         ];
     }
 
+    /**
+     * Kustomisasi pesan error.
+     * Gunakan :attribute agar otomatis mengambil nama dari fungsi attributes() di atas.
+     */
     public function messages(): array
     {
         return [
-            'required' => 'Data ini wajib diisi.',
+            // :attribute akan otomatis diganti sesuai kolomnya (misal: "Data Nama Lengkap wajib diisi.")
+            'required' => 'Data :attribute wajib diisi.',
             
-            'foto_anak.required' => 'Mohon unggah foto anak.',
-            'nik_anak.digits' => 'NIK harus berjumlah 16 digit.',
-            'nik_anak.unique' => 'NIK ini sudah terdaftar.',
-            'numeric' => 'Kolom ini harus berupa angka.',
-            'date' => 'Format tanggal tidak valid.',
+            // Khusus Foto bahasanya dibedakan sedikit agar lebih natural
+            'foto_anak.required' => 'Mohon unggah Foto Anak.',
+            
+            // Validasi khusus lainnya
+            'nik_anak.digits' => 'NIK Anak harus berjumlah 16 digit.',
+            'nik_anak.unique' => 'NIK Anak ini sudah terdaftar.',
+            'numeric' => 'Data :attribute harus berupa angka.',
+            'date' => 'Format :attribute tidak valid.',
+            'image' => 'File :attribute harus berupa gambar.',
+            'max' => 'Data :attribute tidak boleh lebih dari :max karakter/kilobyte.',
         ];
     }
 }
