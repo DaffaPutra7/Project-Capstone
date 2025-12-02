@@ -2,9 +2,7 @@
     <main class="max-w-5xl mx-auto py-10 px-6">
         <h2 class="text-2xl font-bold text-sky-700 mb-6 text-center">Formulir Pendaftaran — Data Orang Tua / Wali</h2>
 
-        {{-- ====================================================== --}}
-        {{-- == Boks Info "Jalan Keluar" == --}}
-        {{-- ====================================================== --}}
+        {{-- Boks Info "Jalan Keluar" --}}
         <div class="flex items-start gap-3 bg-sky-50 border border-sky-200 text-sky-800 p-4 rounded-xl mb-6 shadow-sm">
             <div class="flex-shrink-0">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -21,14 +19,15 @@
             </div>
         </div>
 
-        <form method="POST" action="{{ route('user.formulir.step2.store') }}" class="space-y-6">
+        {{-- FORM UTAMA --}}
+        <form method="POST" action="{{ route('user.formulir.step2.store') }}" class="space-y-6" novalidate>
             @csrf
 
-            {{-- TAMPILKAN SEMUA ERROR DI ATAS (UNTUK DEBUGGING) --}}
+            {{-- ERROR SUMMARY --}}
             @if ($errors->any())
                 <div class="bg-red-50 border border-red-300 text-red-700 p-4 rounded-xl">
-                    <strong class="font-bold">Oops! Ada yang salah:</strong>
-                    <ul class="list-disc list-inside mt-2">
+                    <strong class="font-bold">Oops! Ada kolom yang belum diisi:</strong>
+                    <ul class="list-disc list-inside mt-2 text-sm">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
@@ -48,14 +47,19 @@
                     'pekerjaan_ayah' => 'Pekerjaan',
                     ] as $name => $label)
                     <div x-data="{ hasTyped: false }">
-                        <label for="{{ $name }}" class="block text-sm font-semibold mb-2">{{ $label }}</label>
+                        <label for="{{ $name }}" class="block text-sm font-semibold mb-2">
+                            {{ $label }} <span class="text-red-500">*</span>
+                        </label>
                         
                         @if(str_contains($name, 'pendidikan'))
                             <select 
                                 id="{{ $name }}" 
                                 name="{{ $name }}"
+                                required
                                 @change="hasTyped = true"
-                                class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error($name) border-red-500 @enderror">
+                                class="w-full border rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7]"
+                                :class="(!hasTyped && {{ $errors->has($name) ? 'true' : 'false' }}) ? 'border-red-500' : 'border-[#89FFE7]'"
+                                >
                                 <option value="">-- Pilih Pendidikan --</option>
                                 @foreach(['SD', 'SMP', 'SMA', 'S1', 'S2', 'S3', 'Tidak Sekolah'] as $edu)
                                     <option value="{{ $edu }}" {{ old($name, $anak->$name) == $edu ? 'selected' : '' }}>
@@ -64,15 +68,17 @@
                                 @endforeach
                             </select>
                         @else
-                        {{-- Input Biasa --}}
                             <input
                                 id="{{ $name }}"
                                 type="{{ str_contains($name, 'tanggal') ? 'date' : 'text' }}"
                                 name="{{ $name }}"
                                 value="{{ old($name, $anak->$name) }}"
+                                required
                                 @input="hasTyped = true"
-                                class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error($name) border-red-500 @enderror">
-                        @endif  {{-- <--- INI YANG TADI HILANG --}}
+                                class="w-full border rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7]"
+                                :class="(!hasTyped && {{ $errors->has($name) ? 'true' : 'false' }}) ? 'border-red-500' : 'border-[#89FFE7]'"
+                                >
+                        @endif
 
                         <div x-show="!hasTyped">
                             @error($name)
@@ -96,14 +102,19 @@
                     'pekerjaan_ibu' => 'Pekerjaan',
                     ] as $name => $label)
                     <div x-data="{ hasTyped: false }">
-                        <label for="{{ $name }}" class="block text-sm font-semibold mb-2">{{ $label }}</label>
+                        <label for="{{ $name }}" class="block text-sm font-semibold mb-2">
+                            {{ $label }} <span class="text-red-500">*</span>
+                        </label>
                         
                         @if(str_contains($name, 'pendidikan'))
                             <select 
                                 id="{{ $name }}" 
                                 name="{{ $name }}"
+                                required
                                 @change="hasTyped = true"
-                                class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error($name) border-red-500 @enderror">
+                                class="w-full border rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7]"
+                                :class="(!hasTyped && {{ $errors->has($name) ? 'true' : 'false' }}) ? 'border-red-500' : 'border-[#89FFE7]'"
+                                >
                                 <option value="">-- Pilih Pendidikan --</option>
                                 @foreach(['SD', 'SMP', 'SMA', 'S1', 'S2', 'S3', 'Tidak Sekolah'] as $edu)
                                     <option value="{{ $edu }}" {{ old($name, $anak->$name) == $edu ? 'selected' : '' }}>
@@ -117,9 +128,12 @@
                                 type="{{ str_contains($name, 'tanggal') ? 'date' : 'text' }}"
                                 name="{{ $name }}"
                                 value="{{ old($name, $anak->$name) }}"
+                                required
                                 @input="hasTyped = true"
-                                class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error($name) border-red-500 @enderror">
-                        @endif {{-- <--- INI JUGA TADI HILANG --}}
+                                class="w-full border rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7]"
+                                :class="(!hasTyped && {{ $errors->has($name) ? 'true' : 'false' }}) ? 'border-red-500' : 'border-[#89FFE7]'"
+                                >
+                        @endif
 
                         <div x-show="!hasTyped">
                             @error($name)
@@ -131,15 +145,18 @@
                 </div>
             </div>
 
-            {{-- BAGIAN DATA WALI --}}
+            {{-- BAGIAN DATA WALI (OPSIONAL) --}}
             <div class="bg-white border border-[#89FFE7] shadow-md rounded-[30px] p-8 space-y-4">
                 <h4 class="text-sky-700 font-semibold">🧓 Data Wali (Opsional)</h4>
                 <div class="grid md:grid-cols-2 gap-6">
+                    {{-- Nama Wali --}}
                     <div x-data="{ hasTyped: false }">
                         <label for="nama_wali" class="block text-sm font-semibold mb-2">Nama Wali</label>
                         <input id="nama_wali" type="text" name="nama_wali" value="{{ old('nama_wali', $anak->nama_wali) }}" 
                                 @input="hasTyped = true"
-                                class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error('nama_wali') border-red-500 @enderror">
+                                class="w-full border rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7]"
+                                :class="(!hasTyped && {{ $errors->has('nama_wali') ? 'true' : 'false' }}) ? 'border-red-500' : 'border-[#89FFE7]'"
+                                >
                         
                         <div x-show="!hasTyped">
                             @error('nama_wali')
@@ -147,11 +164,15 @@
                             @enderror
                         </div>
                     </div>
+
+                    {{-- Pekerjaan Wali --}}
                     <div x-data="{ hasTyped: false }">
                         <label for="pekerjaan_wali" class="block text-sm font-semibold mb-2">Pekerjaan Wali</label>
                         <input id="pekerjaan_wali" type="text" name="pekerjaan_wali" value="{{ old('pekerjaan_wali', $anak->pekerjaan_wali) }}" 
                                 @input="hasTyped = true"
-                                class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error('pekerjaan_wali') border-red-500 @enderror">
+                                class="w-full border rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7]"
+                                :class="(!hasTyped && {{ $errors->has('pekerjaan_wali') ? 'true' : 'false' }}) ? 'border-red-500' : 'border-[#89FFE7]'"
+                                >
                         
                         <div x-show="!hasTyped">
                             @error('pekerjaan_wali')
@@ -169,10 +190,8 @@
         </form>
     </main>
 
-    {{-- SCRIPT ALPINE.JS --}}
     <script src="//unpkg.com/alpinejs" defer></script>
 
-    {{-- Script untuk menampilkan pesan error jika dipaksa akses step 3 --}}
     @if (session('error'))
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
@@ -184,5 +203,4 @@
         });
     </script>
     @endif
-
 </x-app-layout>
