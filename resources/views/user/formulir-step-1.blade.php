@@ -234,4 +234,17 @@
         </form>
     </main>
 
+    {{-- Script untuk menampilkan pesan error jika dipaksa akses step 2 --}}
+    @if (session('error'))
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        Swal.fire({
+            icon: 'warning',
+            title: 'Akses Ditolak',
+            text: "{{ session('error') }}",
+            confirmButtonColor: '#0ea5e9',
+        });
+    </script>
+    @endif
+
 </x-app-layout>

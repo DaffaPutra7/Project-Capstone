@@ -92,6 +92,11 @@ class PendaftaranController extends Controller
         $check = $this->checkStatus($pendaftaran);
         if ($check) return $check;
 
+        if ($pendaftaran->progress_step < 2) {
+            return redirect()->route('user.formulir.step1')
+                ->with('error', 'Silakan lengkapi Data Anak terlebih dahulu.');
+        }
+
         return view('user.formulir-step-2', [
             'pendaftaran' => $pendaftaran,
             'anak' => $pendaftaran->anak
@@ -119,6 +124,11 @@ class PendaftaranController extends Controller
         $pendaftaran = $this->getOrCreatePendaftaran();
         $check = $this->checkStatus($pendaftaran);
         if ($check) return $check;
+
+        if ($pendaftaran->progress_step < 3) {
+            return redirect()->route('user.formulir.step2')
+                ->with('error', 'Silakan lengkapi Data Orang Tua terlebih dahulu.');
+        }
 
         return view('user.formulir-step-3', [
             'pendaftaran' => $pendaftaran,
