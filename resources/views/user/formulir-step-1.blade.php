@@ -4,9 +4,6 @@
             Formulir Pendaftaran — Data Anak
         </h2>
 
-        {{-- ====================================================== --}}
-        {{-- == TAMBAHAN: Boks Info "Jalan Keluar" == --}}
-        {{-- ====================================================== --}}
         <div class="flex items-start gap-3 bg-sky-50 border border-sky-200 text-sky-800 p-4 rounded-xl mb-6 shadow-sm">
             <div class="flex-shrink-0">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
@@ -27,9 +24,6 @@
                 </p>
             </div>
         </div>
-        {{-- ====================================================== --}}
-        {{-- == BATAS TAMBAHAN == --}}
-        {{-- ====================================================== --}}
 
         <form method="POST" action="{{ route('user.formulir.step1.store') }}" enctype="multipart/form-data" class="space-y-6">
             @csrf
@@ -37,7 +31,6 @@
             <div class="bg-white border border-[#89FFE7] shadow-md rounded-[30px] p-8 space-y-6">
                 <h4 class="text-sky-700 font-semibold">Data Anak</h4>
 
-                {{-- TAMPILKAN SEMUA ERROR DI ATAS (UNTUK DEBUGGING) --}}
                 @if ($errors->any())
                 <div class="bg-red-50 border border-red-300 text-red-700 p-4 rounded-xl">
                     <strong class="font-bold">Oops! Ada yang salah:</strong>
@@ -51,7 +44,9 @@
 
                 {{-- FOTO ANAK --}}
                 <div x-data="{ hasTyped: false }">
-                    <label for="foto_anak" class="block text-sm font-semibold mb-2">Foto Anak (Opsional)</label>
+                    <label for="foto_anak" class="block text-sm font-semibold mb-2">
+                        Foto Anak <span class="text-red-500">*</span>
+                    </label>
 
                     {{-- Tampilkan foto saat ini jika ada --}}
                     @if ($anak->foto_anak)
@@ -71,6 +66,8 @@
                         name="foto_anak"
                         accept="image/*"
                         @change="hasTyped = true"
+                        {{-- Logika required jika belum ada foto --}}
+                        {{ !$anak->foto_anak ? 'required' : '' }}
                         class="w-full text-sm text-gray-900 border border-[#89FFE7] rounded-lg cursor-pointer bg-gray-50 focus:outline-none
                                file:bg-sky-600 file:border-0 file:text-white file:font-semibold
                                file:mr-4 file:py-3 file:px-4 @error('foto_anak') border-red-500 @enderror">
@@ -82,16 +79,15 @@
                         @enderror
                     </div>
                 </div>
-                {{-- END FOTO ANAK --}}
 
                 {{-- INPUT FIELD --}}
                 <div class="grid md:grid-cols-2 gap-6">
                     @foreach([
                     'nama_lengkap'=>'Nama Lengkap',
-                    'nama_panggilan'=>'Nama Panggilan (Opsional)',
+                    'nama_panggilan'=>'Nama Panggilan',
                     'nik_anak'=>'NIK Anak',
-                    'anak_ke'=>'Anak ke- (Opsional)',
-                    'nomor_akte'=>'Nomor Akta (Opsional)',
+                    'anak_ke'=>'Anak ke-',
+                    'nomor_akte'=>'Nomor Akta Kelahiran',
                     'asal_sekolah'=>'Asal Sekolah (Opsional)',
                     'nisn'=>'NISN (Opsional)',
                     'tempat_lahir'=>'Tempat Lahir',
@@ -102,11 +98,19 @@
                     'tinggi_badan'=>'Tinggi Badan (cm)',
                     ] as $name => $label)
                     <div x-data="{ hasTyped: false }">
-                        <label for="{{ $name }}" class="block text-sm font-semibold mb-2">{{ $label }}</label>
+                        <label for="{{ $name }}" class="block text-sm font-semibold mb-2">
+                            {{ $label }}
+                            {{-- Visual Bintang Merah --}}
+                            @if(!in_array($name, ['asal_sekolah', 'nisn']))
+                            <span class="text-red-500">*</span>
+                            @endif
+                        </label>
+                        
                         @if($name === 'agama')
                         <select
                             id="{{ $name }}"
                             name="{{ $name }}"
+                            required {{-- Agama pasti required --}}
                             @change="hasTyped = true"
                             class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error($name) border-red-500 @enderror">
                             <option value="">-- Pilih Agama --</option>
@@ -121,10 +125,13 @@
                         <input
                             id="{{ $name }}"
                             type="{{ $name === 'tanggal_lahir' ? 'date' : 
-                                        ($name === 'berat_badan' || $name === 'tinggi_badan' || $name === 'anak_ke' ? 'number' : 'text') }}"
+                                    ($name === 'berat_badan' || $name === 'tinggi_badan' || $name === 'anak_ke' ? 'number' : 'text') }}"
                             name="{{ $name }}"
                             value="{{ old($name, $anak->$name) }}"
                             @input="hasTyped = true"
+                            {{-- LOGIKA REQUIRED YANG SEBELUMNYA KURANG --}}
+                            {{ !in_array($name, ['asal_sekolah', 'nisn']) ? 'required' : '' }}
+                            
                             @if($name==='anak_ke' )
                             max="99"
                             oninput="if(this.value.length > 2) this.value = this.value.slice(0, 2);"
@@ -145,8 +152,10 @@
 
                     {{-- GOLONGAN DARAH --}}
                     <div x-data="{ hasTyped: false }">
-                        <label for="golongan_darah" class="block text-sm font-semibold mb-2">Golongan Darah</label>
-                        <select id="golongan_darah" name="golongan_darah"
+                        <label for="golongan_darah" class="block text-sm font-semibold mb-2">
+                            Golongan Darah <span class="text-red-500">*</span>
+                        </label>
+                        <select id="golongan_darah" name="golongan_darah" required
                             @change="hasTyped = true"
                             class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error('golongan_darah') border-red-500 @enderror">
                             <option value="">-- Pilih --</option>
@@ -164,8 +173,10 @@
 
                     {{-- JENIS KELAMIN --}}
                     <div x-data="{ hasTyped: false }">
-                        <label for="jenis_kelamin" class="block text-sm font-semibold mb-2">Jenis Kelamin</label>
-                        <select id="jenis_kelamin" name="jenis_kelamin"
+                        <label for="jenis_kelamin" class="block text-sm font-semibold mb-2">
+                            Jenis Kelamin <span class="text-red-500">*</span>
+                        </label>
+                        <select id="jenis_kelamin" name="jenis_kelamin" required
                             @change="hasTyped = true"
                             class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error('jenis_kelamin') border-red-500 @enderror">
                             <option value="">-- Pilih --</option>
@@ -181,8 +192,10 @@
 
                     {{-- KEWARGANEGARAAN --}}
                     <div x-data="{ hasTyped: false }">
-                        <label for="kewarganegaraan" class="block text-sm font-semibold mb-2">Kewarganegaraan</label>
-                        <select id="kewarganegaraan" name="kewarganegaraan"
+                        <label for="kewarganegaraan" class="block text-sm font-semibold mb-2">
+                            Kewarganegaraan <span class="text-red-500">*</span>
+                        </label>
+                        <select id="kewarganegaraan" name="kewarganegaraan" required
                             @change="hasTyped = true"
                             class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error('kewarganegaraan') border-red-500 @enderror">
                             <option value="">-- Pilih --</option>
@@ -197,10 +210,12 @@
                     </div>
                 </div>
 
-                {{-- TEXTAREA ALAMAT --}}
+                {{-- ALAMAT --}}
                 <div x-data="{ hasTyped: false }">
-                    <label for="alamat" class="block text-sm font-semibold mb-2">Alamat</label>
-                    <textarea id="alamat" name="alamat" rows="3"
+                    <label for="alamat" class="block text-sm font-semibold mb-2">
+                        Alamat <span class="text-red-500">*</span>
+                    </label>
+                    <textarea id="alamat" name="alamat" rows="3" required
                         @input="hasTyped = true"
                         class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error('alamat') border-red-500 @enderror">{{ old('alamat', $anak->alamat) }}</textarea>
                     <div x-show="!hasTyped">
@@ -210,7 +225,7 @@
                     </div>
                 </div>
 
-                {{-- TEXTAREA RIWAYAT PENYAKIT --}}
+                {{-- RIWAYAT PENYAKIT --}}
                 <div x-data="{ hasTyped: false }">
                     <label for="riwayat_penyakit" class="block text-sm font-semibold mb-2">Riwayat Penyakit (Opsional)</label>
                     <textarea id="riwayat_penyakit" name="riwayat_penyakit" rows="3"
