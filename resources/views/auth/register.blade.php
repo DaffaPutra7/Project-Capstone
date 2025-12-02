@@ -1,24 +1,19 @@
 <x-guest-layout>
-    {{-- CSS CUSTOM UNTUK SCROLLBAR CANTIK --}}
     <style>
-        /* Mengatur lebar scrollbar */
         .custom-scrollbar::-webkit-scrollbar {
             width: 6px;
         }
-        /* Mengatur track (jalur) scrollbar */
         .custom-scrollbar::-webkit-scrollbar-track {
             background: transparent;
             margin-top: 20px;
             margin-bottom: 20px;
         }
-        /* Mengatur thumb (batang) scrollbar */
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background-color: #cbd5e1; /* Warna abu muda */
+            background-color: #cbd5e1;
             border-radius: 20px;
         }
-        /* Warna saat diarahkan mouse */
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background-color: #2E7099; /* Warna tema biru */
+            background-color: #2E7099;
         }
     </style>
 
@@ -33,16 +28,9 @@
             </p>
         </div>
 
-        {{-- 
-            PERUBAHAN DISINI:
-            1. max-h-[85vh]: Membatasi tinggi maksimal kotak putih jadi 85% dari tinggi layar.
-            2. overflow-y-auto: Mengaktifkan scroll jika konten lebih panjang dari tinggi kotak.
-            3. custom-scrollbar: Class tambahan untuk style scrollbar di atas.
-        --}}
+
         <div class="bg-white rounded-[50px] shadow-md p-8 border border-[#89FFE7] w-full sm:max-w-md mx-auto md:ml-8 max-h-[85vh] overflow-y-auto custom-scrollbar">
             
-            {{-- ERROR SUMMARY REMOVED AS REQUESTED --}}
-
             <form method="POST" action="{{ route('register') }}" class="space-y-4" novalidate>
                 @csrf
 
@@ -58,7 +46,7 @@
                            required 
                            autofocus 
                            placeholder="Masukkan nama lengkap"
-                           @input="hasTyped = true"
+                           @input="hasTyped = true; $el.value = $el.value.replace(/[^a-zA-Z\s\.\,\']/g, '')"
                            :class="(!hasTyped && {{ $errors->has('nama_lengkap') ? 'true' : 'false' }}) ? 'border-red-500' : 'border-gray-300'"
                     />
                     <div x-show="!hasTyped">
@@ -226,6 +214,5 @@
         </div>
     </div>
 
-    {{-- SCRIPT ALPINE.JS --}}
     <script src="//unpkg.com/alpinejs" defer></script>
 </x-guest-layout>
