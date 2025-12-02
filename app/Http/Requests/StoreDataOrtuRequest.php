@@ -33,4 +33,39 @@ class StoreDataOrtuRequest extends FormRequest
             'pekerjaan_wali' => 'nullable|string|max:100',
         ];
     }
+
+    /**
+     * Ubah nama atribut database menjadi nama yang enak dibaca user.
+     */
+    public function attributes(): array
+    {
+        return [
+            'nama_ayah' => 'Nama Ayah',
+            'tempat_lahir_ayah' => 'Tempat Lahir Ayah',
+            'tanggal_lahir_ayah' => 'Tanggal Lahir Ayah',
+            'pendidikan_ayah' => 'Pendidikan Ayah',
+            'pekerjaan_ayah' => 'Pekerjaan Ayah',
+            
+            'nama_ibu' => 'Nama Ibu',
+            'tempat_lahir_ibu' => 'Tempat Lahir Ibu',
+            'tanggal_lahir_ibu' => 'Tanggal Lahir Ibu',
+            'pendidikan_ibu' => 'Pendidikan Ibu',
+            'pekerjaan_ibu' => 'Pekerjaan Ibu',
+            
+            'nama_wali' => 'Nama Wali',
+            'pekerjaan_wali' => 'Pekerjaan Wali',
+        ];
+    }
+
+    /**
+     * Kustomisasi pesan error.
+     */
+    public function messages(): array
+    {
+        return [
+            'required' => 'Data :attribute wajib diisi.',
+            'date' => 'Format :attribute tidak valid.',
+            'max' => 'Data :attribute maksimal :max karakter.',
+        ];
+    }
 }
