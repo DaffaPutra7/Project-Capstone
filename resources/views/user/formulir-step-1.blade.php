@@ -32,6 +32,7 @@
             <div class="bg-white border border-[#89FFE7] shadow-md rounded-[30px] p-8 space-y-6">
                 <h4 class="text-sky-700 font-semibold">Data Anak</h4>
 
+                {{-- ERROR SUMMARY --}}
                 @if ($errors->any())
                 <div class="bg-red-50 border border-red-300 text-red-700 p-4 rounded-xl">
                     <strong class="font-bold">Oops! Ada kolom yang belum diisi:</strong>
@@ -60,23 +61,30 @@
                     </div>
                     @endif
 
+                    {{-- 
+                        LOGIKA DIUBAH:
+                        1. class="..." hanya berisi styling dasar (layout, focus, dll)
+                        2. :class="..." berisi logika warna border (Merah vs Biru)
+                    --}}
                     <input
                         id="foto_anak"
                         type="file"
                         name="foto_anak"
                         accept="image/*"
                         @change="hasTyped = true"
-                        {{-- required tetap ada untuk semantik HTML, tapi diabaikan browser karena novalidate --}}
                         {{ !$anak->foto_anak ? 'required' : '' }}
-                        class="w-full text-sm text-gray-900 border border-[#89FFE7] rounded-lg cursor-pointer bg-gray-50 focus:outline-none
+                        class="w-full text-sm text-gray-900 border rounded-lg cursor-pointer bg-gray-50 focus:outline-none
                                file:bg-sky-600 file:border-0 file:text-white file:font-semibold
-                               file:mr-4 file:py-3 file:px-4 @error('foto_anak') border-red-500 @enderror">
+                               file:mr-4 file:py-3 file:px-4"
+                        :class="(!hasTyped && {{ $errors->has('foto_anak') ? 'true' : 'false' }}) ? 'border-red-500' : 'border-[#89FFE7]'"
+                        >
                     <p class="mt-1 text-xs text-gray-500">Format: JPG, PNG, GIF. Maks: 2MB.</p>
 
-                    {{-- Pesan Error Merah --}}
-                    @error('foto_anak')
-                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
+                    <div x-show="!hasTyped">
+                        @error('foto_anak')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
 
                 {{-- LOOP INPUT FIELD --}}
@@ -96,7 +104,7 @@
                     'berat_badan'=>'Berat Badan (kg)',
                     'tinggi_badan'=>'Tinggi Badan (cm)',
                     ] as $name => $label)
-
+                    
                     <div x-data="{ hasTyped: false }">
                         <label for="{{ $name }}" class="block text-sm font-semibold mb-2">
                             {{ $label }}
@@ -111,7 +119,9 @@
                             name="{{ $name }}"
                             required
                             @change="hasTyped = true"
-                            class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error($name) border-red-500 @enderror">
+                            class="w-full border rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7]"
+                            :class="(!hasTyped && {{ $errors->has($name) ? 'true' : 'false' }}) ? 'border-red-500' : 'border-[#89FFE7]'"
+                            >
                             <option value="">-- Pilih Agama --</option>
                             @foreach(['Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha', 'Khonghucu'] as $agm)
                             <option value="{{ $agm }}" {{ old($name, $anak->$name) == $agm ? 'selected' : '' }}>
@@ -137,13 +147,20 @@
                             max="999"
                             oninput="if(this.value.length > 3) this.value = this.value.slice(0, 3);"
                             @endif
-                            class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error($name) border-red-500 @enderror">
+                            
+                            {{-- Style dasar --}}
+                            class="w-full border rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7]"
+                            {{-- Style Border Dinamis (Merah/Biru) --}}
+                            :class="(!hasTyped && {{ $errors->has($name) ? 'true' : 'false' }}) ? 'border-red-500' : 'border-[#89FFE7]'"
+                            >
                         @endif
 
-                        {{-- Pesan Error Merah --}}
-                        @error($name)
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                        {{-- Pesan Error Text (Hilang saat hasTyped = true) --}}
+                        <div x-show="!hasTyped">
+                            @error($name)
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
                     @endforeach
 
@@ -154,18 +171,21 @@
                         </label>
                         <select id="golongan_darah" name="golongan_darah" required
                             @change="hasTyped = true"
-                            class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error('golongan_darah') border-red-500 @enderror">
+                            class="w-full border rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7]"
+                            :class="(!hasTyped && {{ $errors->has('golongan_darah') ? 'true' : 'false' }}) ? 'border-red-500' : 'border-[#89FFE7]'"
+                            >
                             <option value="">-- Pilih --</option>
                             <option value="A" {{ old('golongan_darah', $anak->golongan_darah) == 'A' ? 'selected' : '' }}>A</option>
                             <option value="B" {{ old('golongan_darah', $anak->golongan_darah) == 'B' ? 'selected' : '' }}>B</option>
                             <option value="AB" {{ old('golongan_darah', $anak->golongan_darah) == 'AB' ? 'selected' : '' }}>AB</option>
                             <option value="O" {{ old('golongan_darah', $anak->golongan_darah) == 'O' ? 'selected' : '' }}>O</option>
                         </select>
-
-                        {{-- Pesan Error Merah --}}
-                        @error('golongan_darah')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                        
+                        <div x-show="!hasTyped">
+                            @error('golongan_darah')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
 
                     {{-- JENIS KELAMIN --}}
@@ -175,16 +195,19 @@
                         </label>
                         <select id="jenis_kelamin" name="jenis_kelamin" required
                             @change="hasTyped = true"
-                            class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error('jenis_kelamin') border-red-500 @enderror">
+                            class="w-full border rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7]"
+                            :class="(!hasTyped && {{ $errors->has('jenis_kelamin') ? 'true' : 'false' }}) ? 'border-red-500' : 'border-[#89FFE7]'"
+                            >
                             <option value="">-- Pilih --</option>
                             <option value="Laki-laki" {{ old('jenis_kelamin', $anak->jenis_kelamin) == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
                             <option value="Perempuan" {{ old('jenis_kelamin', $anak->jenis_kelamin) == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
                         </select>
-
-                        {{-- Pesan Error Merah --}}
-                        @error('jenis_kelamin')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                        
+                        <div x-show="!hasTyped">
+                            @error('jenis_kelamin')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
 
                     {{-- KEWARGANEGARAAN --}}
@@ -194,16 +217,19 @@
                         </label>
                         <select id="kewarganegaraan" name="kewarganegaraan" required
                             @change="hasTyped = true"
-                            class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error('kewarganegaraan') border-red-500 @enderror">
+                            class="w-full border rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7]"
+                            :class="(!hasTyped && {{ $errors->has('kewarganegaraan') ? 'true' : 'false' }}) ? 'border-red-500' : 'border-[#89FFE7]'"
+                            >
                             <option value="">-- Pilih --</option>
                             <option value="Indonesia" {{ old('kewarganegaraan', $anak->kewarganegaraan) == 'Indonesia' ? 'selected' : '' }}>Indonesia</option>
                             <option value="WNA" {{ old('kewarganegaraan', $anak->kewarganegaraan) == 'WNA' ? 'selected' : '' }}>WNA</option>
                         </select>
-
-                        {{-- Pesan Error Merah --}}
-                        @error('kewarganegaraan')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                        
+                        <div x-show="!hasTyped">
+                            @error('kewarganegaraan')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
                 </div>
 
@@ -214,12 +240,15 @@
                     </label>
                     <textarea id="alamat" name="alamat" rows="3" required
                         @input="hasTyped = true"
-                        class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error('alamat') border-red-500 @enderror">{{ old('alamat', $anak->alamat) }}</textarea>
-
-                    {{-- Pesan Error Merah --}}
-                    @error('alamat')
-                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
+                        class="w-full border rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7]"
+                        :class="(!hasTyped && {{ $errors->has('alamat') ? 'true' : 'false' }}) ? 'border-red-500' : 'border-[#89FFE7]'"
+                        >{{ old('alamat', $anak->alamat) }}</textarea>
+                    
+                    <div x-show="!hasTyped">
+                        @error('alamat')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
 
                 {{-- RIWAYAT PENYAKIT --}}
@@ -227,11 +256,14 @@
                     <label for="riwayat_penyakit" class="block text-sm font-semibold mb-2">Riwayat Penyakit (Opsional)</label>
                     <textarea id="riwayat_penyakit" name="riwayat_penyakit" rows="3"
                         @input="hasTyped = true"
-                        class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error('riwayat_penyakit') border-red-500 @enderror">{{ old('riwayat_penyakit', $anak->riwayat_penyakit) }}</textarea>
-
-                    @error('riwayat_penyakit')
-                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
+                        class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7]"
+                        >{{ old('riwayat_penyakit', $anak->riwayat_penyakit) }}</textarea>
+                    
+                    <div x-show="!hasTyped">
+                        @error('riwayat_penyakit')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
             </div>
 
