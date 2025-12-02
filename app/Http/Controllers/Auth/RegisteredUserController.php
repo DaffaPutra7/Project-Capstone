@@ -29,13 +29,36 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        // Custom Pesan Error Bahasa Indonesia
+        $messages = [
+            'required' => 'Data :attribute wajib diisi.',
+            'email' => 'Format email tidak valid.',
+            'unique' => 'Data :attribute sudah terdaftar.',
+            'min' => 'Data :attribute minimal :min karakter.',
+            'max' => 'Data :attribute maksimal :max karakter.',
+            'confirmed' => 'Konfirmasi :attribute tidak cocok.',
+            'numeric' => 'Data :attribute harus berupa angka.',
+            'digits_between' => 'Data :attribute harus bernilai antara :min sampai :max digit.',
+        ];
+
+        // Custom Nama Atribut
+        $attributes = [
+            'nama_lengkap' => 'Nama Lengkap',
+            'email' => 'Alamat Email',
+            'password' => 'Kata Sandi',
+            'password_confirmation' => 'Konfirmasi Sandi',
+            'no_hp' => 'Nomor HP',
+            'alamat' => 'Alamat Lengkap',
+        ];
+
         $request->validate([
             'nama_lengkap' => ['required', 'string', 'max:100'],
             'email'        => ['required', 'string', 'lowercase', 'email', 'max:100', 'unique:users,email'],
             'password'     => ['required', 'confirmed', Rules\Password::defaults()],
-            'no_hp'        => ['nullable', 'string', 'numeric', 'digits_between:11,13'], 
-            'alamat'       => ['nullable', 'string'],
-        ]);
+            'password_confirmation' => ['required'],
+            'no_hp'        => ['required', 'string', 'numeric', 'digits_between:10,15'], 
+            'alamat'       => ['required', 'string'],
+        ], $messages, $attributes);
 
         $user = User::create([
             'nama_lengkap' => $request->nama_lengkap,
