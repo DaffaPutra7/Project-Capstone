@@ -121,9 +121,7 @@
     @push('scripts')
     <script>
         function submitDeleteForm(id) {
-            // Tampilkan konfirmasi
             if (confirm('Yakin ingin hapus foto ini?')) {
-                // Cari form yang benar dan submit
                 document.getElementById('form-hapus-' + id).submit();
             }
         }

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProfilTk;
-use App\Models\FotoTk; // Import model FotoTk
+use App\Models\FotoTk; 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage; // Import Storage facade
+use Illuminate\Support\Facades\Storage; 
 
 class ProfilTkController extends Controller
 {
@@ -27,7 +27,6 @@ class ProfilTkController extends Controller
 
     public function update(Request $request)
     {
-        // (Validasi sudah benar)
         $request->validate([
             'visi' => 'nullable|string',
             'misi' => 'nullable|string',
@@ -48,7 +47,6 @@ class ProfilTkController extends Controller
             'motto' => $request->motto,
         ]);
 
-        // (Logika update deskripsi sudah benar)
         if ($request->has('deskripsi')) {
             foreach ($request->deskripsi as $id_foto => $teks_deskripsi) {
                 FotoTk::where('id_foto', $id_foto)
@@ -57,16 +55,11 @@ class ProfilTkController extends Controller
             }
         }
 
-        // (Logika upload foto baru DIPERBAIKI)
         if ($request->hasFile('galeri')) {
             foreach ($request->file('galeri') as $file) {
 
-                // 1. Simpan di folder 'galeri' pada disk 'public'
                 $path = $file->store('galeri', 'public');
 
-                // 2. Tidak perlu str_replace — $path sudah benar (galeri/namafile.jpg)
-
-                // 3. Simpan path langsung ke database
                 $profil->foto()->create([
                     'path_foto' => $path,
                     'deskripsi' => null,
@@ -80,7 +73,6 @@ class ProfilTkController extends Controller
 
     public function hapusFoto($id_foto)
     {
-        // (Logika hapus foto sudah benar)
         $foto = FotoTk::findOrFail($id_foto);
         Storage::delete('public/' . $foto->path_foto);
         $foto->delete();

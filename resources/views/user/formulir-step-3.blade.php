@@ -99,13 +99,12 @@
                 text: "Apakah Anda yakin ingin mengirim data ini? Data tidak akan bisa diubah lagi setelah dikirim.",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#10B981', // emerald-600
-                cancelButtonColor: '#6B7280', // gray-500
+                confirmButtonColor: '#10B981', 
+                cancelButtonColor: '#6B7280', 
                 confirmButtonText: 'Ya, Kirim!',
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Jika dikonfirmasi, submit form-nya
                     document.getElementById('formStep3').submit();
                 }
             })

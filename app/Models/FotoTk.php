@@ -18,9 +18,6 @@ class FotoTk extends Model
         'deskripsi',
     ];
 
-    /**
-     * Relasi 'belongsTo' ke ProfilTk
-     */
     public function profilTk()
     {
         return $this->belongsTo(ProfilTk::class, 'id_profil', 'id_profil');

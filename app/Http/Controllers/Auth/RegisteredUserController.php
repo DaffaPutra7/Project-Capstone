@@ -48,12 +48,10 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        // 1. Langsung loginkan user yang baru daftar
         Auth::login($user); 
 
-        // 2. UBAH: Alihkan ke dashboard user, BUKAN ke halaman login
         return redirect()
-            ->route('user.dashboard') // <-- UBAH KE user.dashboard
-            ->with('success', 'Registrasi berhasil! Selamat datang.'); // Pesan bisa diubah
+            ->route('user.dashboard') 
+            ->with('success', 'Registrasi berhasil! Selamat datang.'); 
     }
 }

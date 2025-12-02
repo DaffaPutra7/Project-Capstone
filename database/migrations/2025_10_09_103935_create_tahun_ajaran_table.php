@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('tahun', 20);
             $table->integer('kuota_full_day')->default(0);
             $table->integer('kuota_reguler')->default(0);
-            $table->timestamps(); // Menambahkan created_at & updated_at
+            $table->timestamps(); 
         });
     }
 

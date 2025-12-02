@@ -9,8 +9,8 @@ use Carbon\Carbon;
 class Anak extends Model
 {
     use HasFactory;
-    protected $table = 'anak'; // Mendefinisikan nama tabel
-    protected $primaryKey = 'id_anak'; // Mendefinisikan primary key
+    protected $table = 'anak'; 
+    protected $primaryKey = 'id_anak'; 
 
     protected $fillable = [
         'id_pendaftaran',
@@ -53,7 +53,7 @@ class Anak extends Model
     }
 
     /**
-     * Accessor untuk menghitung usia (hanya angka tahun).
+     *  untuk menghitung usia (hanya angka tahun).
      */
     public function getUsiaTahunAttribute()
     {
@@ -64,7 +64,7 @@ class Anak extends Model
     }
 
     /**
-     * Accessor untuk menampilkan usia dalam format "X tahun, Y bulan".
+     *  untuk menampilkan usia dalam format "X tahun, Y bulan".
      */
     public function getUsiaDetailAttribute()
     {
@@ -75,11 +75,11 @@ class Anak extends Model
     }
 
     /**
-     * Accessor untuk status pemenuhan syarat usia (Min 4, Max 5).
+     *  untuk status pemenuhan syarat usia (Min 4, Max 5).
      */
     public function getStatusUsiaAttribute()
     {
-        $usiaTahun = $this->getUsiaTahunAttribute(); // Memanggil accessor di atas
+        $usiaTahun = $this->getUsiaTahunAttribute(); 
 
         if ($usiaTahun === null) {
             return 'N/A';

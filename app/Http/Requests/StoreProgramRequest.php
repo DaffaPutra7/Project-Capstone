@@ -15,10 +15,8 @@ class StoreProgramRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // Kontak
             'no_hp' => 'required|string|min:10|max:20',
 
-            // Pilihan Program
             'jenis_program' => ['required', Rule::in(['Reguler', 'Full Day'])],
         ];
     }

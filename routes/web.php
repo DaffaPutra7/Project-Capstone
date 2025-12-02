@@ -23,25 +23,25 @@ Route::get('/', function () {
     $tahunAktif = TahunAjaran::orderBy('tahun', 'desc')->first();
 
     $jumlahPendaftar = 0;
-    $sisaKuota = 0; // Default sisa kuota
+    $sisaKuota = 0;
 
     if ($tahunAktif) {
-        // 1. Hitung TOTAL kuota
+        // Hitung total kuota
         $totalKuota = ($tahunAktif->kuota_full_day ?? 0) + ($tahunAktif->kuota_reguler ?? 0);
 
-        // 2. Hitung jumlah pendaftar
+        // Hitung jumlah pendaftar
         $jumlahPendaftar = Pendaftaran::where('id_tahun', $tahunAktif->id_tahun)
                                       ->where('status', '!=', 'Pengisian Formulir')
                                       ->count();
         
-        // 3. Hitung sisa kuota
+        // Hitung sisa kuota
         $sisaKuota = $totalKuota - $jumlahPendaftar;
     }
 
     return view('welcome', [
         'profil' => $profil,
         'jumlahPendaftar' => $jumlahPendaftar,
-        'sisaKuota' => $sisaKuota // <-- Mengirim sisa kuota yang sudah dihitung
+        'sisaKuota' => $sisaKuota
     ]);
 })->name('home');
 
@@ -68,7 +68,6 @@ Route::middleware(['auth', 'verified', 'role:user'])
         Route::get('/dashboard', [UserController::class, 'index'])->name('dashboard');
         Route::get('/company', [UserController::class, 'showCompanyProfile'])->name('company');
 
-        // Route::view('/formulir', 'user.formulir')->name('formulir');
         Route::get('/formulir/data-anak', [PendaftaranController::class, 'createStep1'])->name('formulir.step1');
         Route::post('/formulir/data-anak', [PendaftaranController::class, 'storeStep1'])->name('formulir.step1.store');
 

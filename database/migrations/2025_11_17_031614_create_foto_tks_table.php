@@ -14,13 +14,12 @@ return new class extends Migration
         Schema::create('foto_tk', function (Blueprint $table) {
             $table->id('id_foto');
             
-            // Kolom ini menghubungkan ke tabel 'profil_tk'
             $table->foreignId('id_profil')
                   ->constrained('profil_tk', 'id_profil')
-                  ->onDelete('cascade'); // Jika profil dihapus, foto ikut terhapus
+                  ->onDelete('cascade'); 
 
-            $table->string('path_foto'); // Menyimpan path/nama file foto
-            $table->string('deskripsi')->nullable(); // Opsional untuk caption
+            $table->string('path_foto'); 
+            $table->string('deskripsi')->nullable(); 
             $table->timestamps();
         });
     }

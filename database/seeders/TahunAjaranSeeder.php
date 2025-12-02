@@ -13,14 +13,12 @@ class TahunAjaranSeeder extends Seeder
      */
     public function run(): void
     {
-        // Buat tahun ajaran 2025/2026
         TahunAjaran::create([
             'tahun' => '2025/2026',
-            'kuota_full_day' => 50, // Ganti dengan kuota sebenarnya
-            'kuota_reguler' => 50,  // Ganti dengan kuota sebenarnya
+            'kuota_full_day' => 50, 
+            'kuota_reguler' => 50, 
         ]);
 
-        // Buat tahun ajaran sebelumnya (jika perlu)
         TahunAjaran::create([
             'tahun' => '2024/2025',
             'kuota_full_day' => 40,

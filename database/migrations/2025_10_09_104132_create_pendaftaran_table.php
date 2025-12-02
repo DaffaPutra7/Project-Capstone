@@ -13,20 +13,18 @@ return new class extends Migration
     {
         Schema::create('pendaftaran', function (Blueprint $table) {
             $table->id('id_pendaftaran');
-            // Foreign Key ke tabel users
             $table->foreignId('id_user')->references('id_user')->on('users')->onDelete('cascade');
-            // Foreign Key ke tabel tahun_ajaran
             $table->foreignId('id_tahun')->nullable()->references('id_tahun')->on('tahun_ajaran')->onDelete('set null');
             
             $table->enum('jenis_program', ['Full Day', 'Reguler'])->nullable();
             $table->date('tanggal_daftar')->nullable();
             $table->enum('status', [
-                'Pengisian Formulir', // Status Awal
+                'Pengisian Formulir',
                 'Formulir Dikirim', 
                 'Proses Seleksi',
                 'Diterima',
                 'Ditolak'
-            ])->default('Pengisian Formulir'); // Default-nya adalah status pertama
+            ])->default('Pengisian Formulir'); 
 
             $table->string('no_hp', 20)->nullable();
             $table->timestamps();

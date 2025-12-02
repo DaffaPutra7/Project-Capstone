@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
         {
             Schema::table('pendaftaran', function (Blueprint $table) {
-                // Default 1, artinya saat baru dibuat, user ada di step 1
                 $table->tinyInteger('progress_step')->default(1)->after('status');
             });
         }

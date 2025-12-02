@@ -36,7 +36,7 @@ class StoreDataAnakRequest extends FormRequest
             'alamat' => 'required|string',
             'riwayat_penyakit' => 'nullable|string',
             
-            'foto_anak' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // 2048KB = 2MB
+            'foto_anak' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
         ];
     }
 

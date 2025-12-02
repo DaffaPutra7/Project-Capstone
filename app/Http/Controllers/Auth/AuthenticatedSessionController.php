@@ -28,9 +28,9 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
         $request->session()->regenerate();
 
-        $user = Auth::user(); // Ambil data user yang login
+        $user = Auth::user(); 
 
-        // 🔥 Arahkan sesuai role
+        // Arahkan sesuai role
         if ($user->role === 'admin') {
             return redirect()
                 ->route('admin.dashboard')
@@ -43,7 +43,7 @@ class AuthenticatedSessionController extends Controller
                 ->with('success', 'Login berhasil sebagai User!');
         }
 
-        // 🧠 fallback untuk role lain (biar gak error)
+        // fallback untuk role lain (biar gak error)
         return redirect('/')
             ->with('error', 'Role pengguna tidak dikenali.');
     }
