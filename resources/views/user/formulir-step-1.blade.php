@@ -45,7 +45,7 @@
                 @endif
 
                 {{-- FOTO ANAK --}}
-                <div x-data="{ hasTyped: false }">
+                <div x-data="{ hasTyped: false, fileName: 'Belum ada foto yang dipilih' }">
                     <label for="foto_anak" class="block text-sm font-semibold mb-2">
                         Foto Anak <span class="text-red-500">*</span>
                     </label>
@@ -61,18 +61,30 @@
                     </div>
                     @endif
 
-                    <input
-                        id="foto_anak"
-                        type="file"
-                        name="foto_anak"
-                        accept="image/*"
-                        @change="hasTyped = true"
-                        {{ !$anak->foto_anak ? 'required' : '' }}
-                        class="w-full text-sm text-gray-900 border rounded-lg cursor-pointer bg-gray-50 focus:outline-none
-                               file:bg-sky-600 file:border-0 file:text-white file:font-semibold
-                               file:mr-4 file:py-3 file:px-4"
-                        :class="(!hasTyped && {{ $errors->has('foto_anak') ? 'true' : 'false' }}) ? 'border-red-500' : 'border-[#89FFE7]'"
+                    <div class="relative">
+                        <input
+                            id="foto_anak"
+                            type="file"
+                            name="foto_anak"
+                            accept="image/*"
+                            class="hidden"
+                            {{ !$anak->foto_anak ? 'required' : '' }}
+                            @change="hasTyped = true; fileName = $event.target.files[0] ? $event.target.files[0].name : 'Belum ada foto yang dipilih'"
                         >
+                        
+                        <div class="flex items-center w-full border rounded-lg overflow-hidden bg-gray-50"
+                             :class="(!hasTyped && {{ $errors->has('foto_anak') ? 'true' : 'false' }}) ? 'border-red-500' : 'border-[#89FFE7]'">
+                            
+                            {{-- Tombol Custom --}}
+                            <label for="foto_anak" class="cursor-pointer bg-sky-600 text-white font-semibold py-3 px-4 hover:bg-sky-700 transition">
+                                Pilih Foto
+                            </label>
+                            
+                            {{-- Teks Nama File --}}
+                            <span class="px-4 text-sm text-gray-600 truncate" x-text="fileName"></span>
+                        </div>
+                    </div>
+                    
                     <p class="mt-1 text-xs text-gray-500">Format: JPG, PNG, GIF. Maks: 2MB.</p>
 
                     <div x-show="!hasTyped">
@@ -82,7 +94,7 @@
                     </div>
                 </div>
 
-                {{-- INPUT FIELD --}}
+                {{-- LOOP INPUT FIELD --}}
                 <div class="grid md:grid-cols-2 gap-6">
                     @foreach([
                     'nama_lengkap'=>'Nama Lengkap',
@@ -143,14 +155,11 @@
                             oninput="if(this.value.length > 3) this.value = this.value.slice(0, 3);"
                             @endif
                             
-                            {{-- Style dasar --}}
                             class="w-full border rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7]"
-                            {{-- Style Border Dinamis (Merah/Biru) --}}
                             :class="(!hasTyped && {{ $errors->has($name) ? 'true' : 'false' }}) ? 'border-red-500' : 'border-[#89FFE7]'"
                             >
                         @endif
 
-                        {{-- Pesan Error Text (Hilang saat hasTyped = true) --}}
                         <div x-show="!hasTyped">
                             @error($name)
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
