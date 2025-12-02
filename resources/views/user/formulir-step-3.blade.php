@@ -2,9 +2,7 @@
     <main class="max-w-3xl mx-auto py-10 px-6">
         <h2 class="text-2xl font-bold text-sky-700 mb-6 text-center">Formulir Pendaftaran — Pilihan Program</h2>
 
-        {{-- ====================================================== --}}
-        {{-- == TAMBAHAN: Boks Info "Jalan Keluar" == --}}
-        {{-- ====================================================== --}}
+        {{-- Boks Info "Jalan Keluar" --}}
         <div class="flex items-start gap-3 bg-sky-50 border border-sky-200 text-sky-800 p-4 rounded-xl mb-6 shadow-sm">
             <div class="flex-shrink-0">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -20,18 +18,16 @@
                 </p>
             </div>
         </div>
-        {{-- ====================================================== --}}
-        {{-- == BATAS TAMBAHAN == --}}
-        {{-- ====================================================== --}}
 
-        <form method="POST" action="{{ route('user.formulir.step3.store') }}" class="space-y-8" id="formStep3">
+        {{-- FORM UTAMA --}}
+        <form method="POST" action="{{ route('user.formulir.step3.store') }}" class="space-y-8" id="formStep3" novalidate>
             @csrf
 
-            {{-- TAMPILKAN SEMUA ERROR DI ATAS (UNTUK DEBUGGING) --}}
+            {{-- ERROR SUMMARY --}}
             @if ($errors->any())
                 <div class="bg-red-50 border border-red-300 text-red-700 p-4 rounded-xl">
-                    <strong class="font-bold">Oops! Ada yang salah:</strong>
-                    <ul class="list-disc list-inside mt-2">
+                    <strong class="font-bold">Oops! Ada kolom yang belum diisi:</strong>
+                    <ul class="list-disc list-inside mt-2 text-sm">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
@@ -41,11 +37,16 @@
 
             <div class="bg-white border border-[#89FFE7] shadow-md rounded-[30px] p-8 space-y-6">
                 
+                {{-- NOMOR HP --}}
                 <div x-data="{ hasTyped: false }">
-                    <label for="no_hp" class="block text-sm font-semibold mb-2">Nomor HP (Aktif)</label>
-                    <input id="no_hp" type="text" name="no_hp" value="{{ old('no_hp', $pendaftaran->no_hp) }}" 
+                    <label for="no_hp" class="block text-sm font-semibold mb-2">
+                        Nomor HP (Aktif) <span class="text-red-500">*</span>
+                    </label>
+                    <input id="no_hp" type="text" name="no_hp" value="{{ old('no_hp', $pendaftaran->no_hp) }}" required
                            @input="hasTyped = true"
-                           class="w-full border border-[#89FFE7] rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7] @error('no_hp') border-red-500 @enderror">
+                           class="w-full border rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7]"
+                           :class="(!hasTyped && {{ $errors->has('no_hp') ? 'true' : 'false' }}) ? 'border-red-500' : 'border-[#89FFE7]'"
+                           >
                     
                     <div x-show="!hasTyped">
                         @error('no_hp')
@@ -54,18 +55,29 @@
                     </div>
                 </div>
 
+                {{-- JENIS PROGRAM --}}
                 <div x-data="{ hasTyped: false }">
-                    <label class="block text-sm font-semibold mb-2">Pilih Program</label>
-                    <div class="flex gap-6 mt-2">
-                        <label class="flex items-center gap-2">
-                            <input type="radio" name="jenis_program" value="Reguler" 
+                    <label class="block text-sm font-semibold mb-2">
+                        Pilih Program <span class="text-red-500">*</span>
+                    </label>
+                    
+                    <div class="flex gap-6 mt-2 p-3 rounded-xl border"
+                         :class="(!hasTyped && {{ $errors->has('jenis_program') ? 'true' : 'false' }}) ? 'border-red-500 bg-red-50' : 'border-transparent'">
+                        
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="jenis_program" value="Reguler" required
                                    @change="hasTyped = true"
-                                   {{ old('jenis_program', $pendaftaran->jenis_program) == 'Reguler' ? 'checked' : '' }}> Reguler
+                                   class="text-sky-600 focus:ring-sky-500"
+                                   {{ old('jenis_program', $pendaftaran->jenis_program) == 'Reguler' ? 'checked' : '' }}> 
+                            <span>Reguler</span>
                         </label>
-                        <label class="flex items-center gap-2">
-                            <input type="radio" name="jenis_program" value="Full Day" 
+                        
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="jenis_program" value="Full Day" required
                                    @change="hasTyped = true"
-                                   {{ old('jenis_program', $pendaftaran->jenis_program) == 'Full Day' ? 'checked' : '' }}> Full Day
+                                   class="text-sky-600 focus:ring-sky-500"
+                                   {{ old('jenis_program', $pendaftaran->jenis_program) == 'Full Day' ? 'checked' : '' }}> 
+                            <span>Full Day</span>
                         </label>
                     </div>
                     
@@ -88,12 +100,17 @@
         </form>
     </main>
     
-    {{-- SCRIPT ALPINE.JS --}}
     <script src="//unpkg.com/alpinejs" defer></script>
 
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function confirmSubmit() {
+            var form = document.getElementById('formStep3');
+            if (!form.checkValidity()) {
+                form.submit();
+                return;
+            }
+
             Swal.fire({
                 title: 'Konfirmasi Pengiriman',
                 text: "Apakah Anda yakin ingin mengirim data ini? Data tidak akan bisa diubah lagi setelah dikirim.",
@@ -105,10 +122,9 @@
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    document.getElementById('formStep3').submit();
+                    form.submit();
                 }
             })
         }
     </script>
-
 </x-app-layout>
