@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="overflow-y-hidden">
-    <head>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -37,7 +36,8 @@
     </header>
 
     <body class="font-sans text-gray-900 antialiased bg-gray-100 overflow-x-hidden">
-        <div class="flex items-center justify-center min-h-[calc(100vh-110px)] px-6 py-8 overflow-hidden">
+        <!-- HAPUS class overflow-hidden di div bawah ini -->
+        <div class="flex items-center justify-center min-h-[calc(100vh-110px)] px-6 py-8">
             <div class="w-full max-w-5xl">
                 {{ $slot }}
             </div>
