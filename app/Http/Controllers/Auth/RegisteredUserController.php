@@ -32,13 +32,14 @@ class RegisteredUserController extends Controller
         // Custom Pesan Error Bahasa Indonesia
         $messages = [
             'required' => 'Data :attribute wajib diisi.',
-            'email' => 'Format email tidak valid.',
+            'email' => 'Format email tidak valid (harus mengandung @ dan nama domain, cth: user@gmail.com).', 
             'unique' => 'Data :attribute sudah terdaftar.',
             'min' => 'Data :attribute minimal :min karakter.',
             'max' => 'Data :attribute maksimal :max karakter.',
             'confirmed' => 'Konfirmasi :attribute tidak cocok.',
             'numeric' => 'Data :attribute harus berupa angka.',
             'digits_between' => 'Data :attribute harus bernilai antara :min sampai :max digit.',
+            'nama_lengkap.regex' => 'Nama tidak boleh mengandung angka atau simbol aneh.', // Pesan khusus validasi nama
         ];
 
         // Custom Nama Atribut
@@ -52,7 +53,7 @@ class RegisteredUserController extends Controller
         ];
 
         $request->validate([
-            'nama_lengkap' => ['required', 'string', 'max:100'],
+            'nama_lengkap' => ['required', 'string', 'max:100', 'regex:/^[a-zA-Z\s\.\,\']+$/'], 
             'email'        => ['required', 'string', 'lowercase', 'email', 'max:100', 'unique:users,email'],
             'password'     => ['required', 'confirmed', Rules\Password::defaults()],
             'password_confirmation' => ['required'],
