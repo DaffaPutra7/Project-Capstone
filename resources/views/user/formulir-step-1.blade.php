@@ -105,7 +105,7 @@
                             <span class="text-red-500">*</span>
                             @endif
                         </label>
-                        
+
                         @if($name === 'agama')
                         <select
                             id="{{ $name }}"
@@ -131,7 +131,7 @@
                             @input="hasTyped = true"
                             {{-- LOGIKA REQUIRED YANG SEBELUMNYA KURANG --}}
                             {{ !in_array($name, ['asal_sekolah', 'nisn']) ? 'required' : '' }}
-                            
+
                             @if($name==='anak_ke' )
                             max="99"
                             oninput="if(this.value.length > 2) this.value = this.value.slice(0, 2);"
@@ -261,5 +261,21 @@
         });
     </script>
     @endif
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var elements = document.querySelectorAll("input[required], select[required], textarea[required]");
+
+            elements.forEach(function(element) {
+                element.addEventListener("invalid", function() {
+                    this.setCustomValidity("Data ini wajib diisi");
+                });
+
+                element.addEventListener("input", function() {
+                    this.setCustomValidity("");
+                });
+            });
+        });
+    </script>
 
 </x-app-layout>
