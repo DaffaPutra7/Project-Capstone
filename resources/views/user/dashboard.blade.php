@@ -323,9 +323,9 @@
 
             {{-- pendaftaran --}}
             <a href="{{ $linkPendaftaran }}"
-                class="group bg-gradient-to-br from-amber-100 to-red-200 rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 relative overflow-visible flex flex-col
+                class="group bg-gradient-to-br from-[#3889BA] to-[#89FFE7] rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 relative overflow-visible flex flex-col
     @if ($pendaftaran && $pendaftaran->status == 'Pengisian Formulir')
-        border-4 border-[#89FFE7] hover:border-[#2E7099] animate-pulse
+        border-4 border-[#89FFE7] hover:border-[#2E7099]
     @else
         border-2 border-[#89FFE7] hover:border-[#2E7099]
     @endif
@@ -360,7 +360,7 @@
                 <div class="w-full mt-auto pt-4 relative z-10">
                     <span class="text-xs font-semibold text-gray-500">Progres: ({{ $step }}/3)</span>
                     <div class="w-full bg-gray-200 rounded-full h-2.5 mt-1">
-                        <div class="bg-gradient-to-r from-[#2E7099] to-[#89FFE7] h-2.5 rounded-full transition-all duration-500"
+                        <div class="bg-[#2E7099] h-2.5 rounded-full transition-all duration-500"
                             style="width: {{ $progressPercent }}%">
                         </div>
                     </div>
@@ -370,38 +370,38 @@
 
             {{-- biodata --}}
             <a href="{{ route('user.biodata') }}"
-                class="group bg-gradient-to-br from-emerald-200 to-emerald-400 border-2 border-[#89FFE7] rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:border-[#2E7099] relative overflow-hidden flex flex-col">
+                class="group bg-gradient-to-br from-[#347928] to-[#C0EBA6] border-2 border-[#C0EBA6] rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:border-[#2E7099] relative overflow-hidden flex flex-col">
 
                 <div class="absolute top-0 right-0 w-32 h-32 bg-[#89FFE7] opacity-10 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500"></div>
 
                 <div class="flex flex-col items-center gap-3 relative z-10">
-                    <div class="bg-gradient-to-br from-[#2E7099] to-[#3d8bb8] p-4 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    <div class="bg-gradient-to-br from-[#E0B624] to-[#B89A11] p-4 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M5.121 17.804A8.966 8.966 0 0112 15c2.21 0 4.21.804 5.879 2.121M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
                     </div>
 
-                    <span class="text-xl text-[#2E7099] font-bold group-hover:text-[#3d8bb8] transition-colors">Biodata</span>
+                    <span class="text-xl text-[#E0B624] font-bold group-hover:text-[#B89A11] transition-colors">Biodata</span>
                     <p class="text-sm text-gray-600 text-center">Lihat dan kelola biodata pribadi</p>
                 </div>
             </a>
 
             {{-- profile TK --}}
             <a href="{{ route('user.company') }}"
-                class="group bg-gradient-to-br from-blue-200 to-blue-400 border-2 border-[#89FFE7] rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:border-[#2E7099] relative overflow-hidden flex flex-col">
+                class="group bg-gradient-to-br from-[#B33D63] to-[#EDCAD5] border-2 border-[#EDCAD5] rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:border-[#2E7099] relative overflow-hidden flex flex-col">
 
                 <div class="absolute top-0 right-0 w-32 h-32 bg-[#89FFE7] opacity-10 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500"></div>
 
                 <div class="flex flex-col items-center gap-3 relative z-10">
-                    <div class="bg-gradient-to-br from-[#2E7099] to-[#3d8bb8] p-4 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    <div class="bg-gradient-to-br from-[#C588EB] to-[#9E6ABD] p-4 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M3 7l9-4 9 4-9 4-9-4zm0 0v10a2 2 0 002 2h14a2 2 0 002-2V7M9 21h6" />
                         </svg>
                     </div>
 
-                    <span class="text-xl text-[#2E7099] font-bold group-hover:text-[#3d8bb8] transition-colors">Profil TK</span>
+                    <span class="text-xl text-[#9E6ABD] font-bold group-hover:text-[#9E6ABD] transition-colors">Profil TK</span>
                     <p class="text-sm text-gray-600 text-center">Informasi tentang sekolah kami</p>
                 </div>
             </a>
