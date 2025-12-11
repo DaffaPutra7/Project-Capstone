@@ -110,36 +110,41 @@
       </a>
     </div>
 
-    <!-- Visi Misi Tujuan -->
     <section class="space-y-8">
-      <div class="grid md:grid-cols-2 gap-6">
-        <!-- Visi -->
-        <div class="bg-white border border-[#89FFE7] rounded-2xl shadow-md overflow-hidden">
-          <div class="bg-sky-600 text-white font-semibold text-center py-2 text-lg flex items-center justify-center gap-2">
-            <!-- Icon Mata/Vision -->
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+      <div class="grid md:grid-cols-2 gap-8">
+
+        <!-- VISI -->
+        <div class="p-8 rounded-3xl shadow-xl border-2 border-[#89FFE7]">
+          <div class="flex items-center justify-center gap-3 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 text-sky-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
             </svg>
-            VISI
+            <h3 class="text-2xl font-bold bg-gradient-to-r from-sky-700 to-sky-500 bg-clip-text text-transparent">
+              VISI
+            </h3>
           </div>
-          <div class="p-5 text-gray-700 leading-relaxed">
-            <p>
-              {{ $profil->visi ?? 'Visi belum diatur oleh admin.' }}
-            </p>
-          </div>
+
+          <p class="text-gray-800 leading-relaxed text-lg font-medium text-center">
+            {{ $profil->visi ?? 'Visi belum diatur oleh admin.' }}
+          </p>
         </div>
 
-        <!-- Misi -->
-        <div class="bg-white border border-[#89FFE7] rounded-2xl shadow-md overflow-hidden">
-          <div class="bg-sky-600 text-white font-semibold text-center py-2 text-lg flex items-center justify-center gap-2">
-            <!-- Icon Target/Mission -->
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+        <!-- MISI -->
+        <div class="p-8 rounded-3xl shadow-xl border-2 border-[#89FFE7]">
+          <div class="flex items-center justify-center gap-3 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 text-sky-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
             </svg>
-            MISI
+            <h3 class="text-2xl font-bold bg-gradient-to-r from-sky-700 to-sky-500 bg-clip-text text-transparent">
+              MISI
+            </h3>
           </div>
-          <div class="p-5 text-gray-700 leading-relaxed">
+
+          <div class="text-gray-800 leading-relaxed text-lg font-medium text-center">
             @if (!empty($profil->misi))
             {!! nl2br(e($profil->misi)) !!}
             @else
@@ -147,18 +152,22 @@
             @endif
           </div>
         </div>
+
       </div>
 
-      <!-- Tujuan -->
-      <div class="bg-white border border-[#89FFE7] rounded-2xl shadow-md overflow-hidden">
-        <div class="bg-sky-700 text-white font-semibold text-center py-2 text-lg flex items-center justify-center gap-2">
-          <!-- Icon Flag/Goal -->
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
+      <!-- TUJUAN -->
+      <div class="p-8 rounded-3xl shadow-xl border-2 border-[#89FFE7]">
+        <div class="flex items-center justify-center gap-3 mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 text-sky-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
           </svg>
-          TUJUAN
+          <h3 class="text-2xl font-bold bg-gradient-to-r from-sky-700 to-sky-500 bg-clip-text text-transparent">
+            TUJUAN
+          </h3>
         </div>
-        <div class="p-5 text-gray-700 leading-relaxed">
+
+        <div class="text-gray-800 leading-relaxed text-lg font-medium text-center">
           @if (!empty($profil->tujuan))
           {!! nl2br(e($profil->tujuan)) !!}
           @else
@@ -167,21 +176,28 @@
         </div>
       </div>
 
-      <!-- Motto -->
-      <div class="text-center mt-8 bg-gradient-to-br from-amber-50 to-orange-50 p-8 rounded-3xl shadow-xl border-2 border-amber-200">
+      <!-- MOTTO -->
+      <div class="text-center mt-8 p-8 rounded-3xl shadow-xl border-2 border-[#89FFE7]">
         <div class="flex items-center justify-center gap-3 mb-4">
           <div class="float-animation">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-sky-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
             </svg>
           </div>
-          <h3 class="text-2xl font-bold bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">MOTTO SEKOLAH</h3>
+          <h3 class="text-2xl font-bold bg-gradient-to-r from-sky-700 to-sky-500 bg-clip-text text-transparent">
+            MOTTO SEKOLAH
+          </h3>
         </div>
+
         <p class="text-gray-800 leading-relaxed text-lg font-medium">
           {{ $profil->motto ?? 'Motto belum diatur oleh admin.' }}
         </p>
       </div>
+
     </section>
+
+
 
   </main>
 
@@ -216,7 +232,6 @@
       </div>
     </div>
   </footer>
-  {{-- KODE FOOTER BARU BERAKHIR DI SINI --}}
 
 </body>
 
