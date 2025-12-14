@@ -67,6 +67,7 @@
                         
                         {{-- OPSI REGULER --}}
                         <div class="relative rounded-xl border p-4 transition-all {{ $isRegulerFull ? 'bg-gray-100 border-gray-200 opacity-60 cursor-not-allowed' : 'bg-white border-gray-200 hover:border-sky-400 hover:shadow-md cursor-pointer' }}">
+                            {{-- Tambahkan pointer-events-none jika penuh --}}
                             <label class="flex items-start gap-3 w-full h-full {{ $isRegulerFull ? 'pointer-events-none' : 'cursor-pointer' }}">
                                 <input type="radio" name="jenis_program" value="Reguler" required
                                        @change="hasTyped = true"
@@ -79,7 +80,7 @@
                                     <p class="text-xs text-gray-500 mb-2">Program belajar standar Senin - Jumat.</p>
                                     
                                     @if($isRegulerFull)
-                                        <span class="inline-block text-[10px] font-bold text-white bg-red-500 px-2 py-1 rounded">KUOTA PENUH (0 Tersisa)</span>
+                                        <span class="inline-block text-[10px] font-bold text-white bg-red-500 px-2 py-1 rounded">KUOTA PENUH</span>
                                     @else
                                         <span class="inline-block text-[10px] font-bold text-emerald-700 bg-emerald-100 border border-emerald-200 px-2 py-1 rounded">
                                             Sisa Kuota: {{ $sisaReguler }}
@@ -91,6 +92,7 @@
 
                         {{-- OPSI FULL DAY --}}
                         <div class="relative rounded-xl border p-4 transition-all {{ $isFullDayFull ? 'bg-gray-100 border-gray-200 opacity-60 cursor-not-allowed' : 'bg-white border-gray-200 hover:border-sky-400 hover:shadow-md cursor-pointer' }}">
+                            {{-- Tambahkan pointer-events-none jika penuh --}}
                             <label class="flex items-start gap-3 w-full h-full {{ $isFullDayFull ? 'pointer-events-none' : 'cursor-pointer' }}">
                                 <input type="radio" name="jenis_program" value="Full Day" required
                                        @change="hasTyped = true"
@@ -103,7 +105,7 @@
                                     <p class="text-xs text-gray-500 mb-2">Program belajar + pengasuhan sore.</p>
 
                                     @if($isFullDayFull)
-                                        <span class="inline-block text-[10px] font-bold text-white bg-red-500 px-2 py-1 rounded">KUOTA PENUH (0 Tersisa)</span>
+                                        <span class="inline-block text-[10px] font-bold text-white bg-red-500 px-2 py-1 rounded">KUOTA PENUH</span>
                                     @else
                                         <span class="inline-block text-[10px] font-bold text-emerald-700 bg-emerald-100 border border-emerald-200 px-2 py-1 rounded">
                                             Sisa Kuota: {{ $sisaFullDay }}
