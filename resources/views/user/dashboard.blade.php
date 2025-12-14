@@ -75,7 +75,6 @@
 
                     <div class="relative">
 
-                        <!-- Progress bar (sembunyi di mobile) -->
                         <div class="hidden md:block">
                             <div class="absolute top-12 left-0 right-0 h-2 bg-gray-200 rounded-full mx-auto"
                                 style="width: calc(100% - 80px); margin-left: 40px;"></div>
@@ -91,8 +90,6 @@
 
                     <!-- GRID -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-2 relative z-10 mt-6">
-
-                        {{-- ================= STEP 1 ================= --}}
                         @php $stepIndex = 1; @endphp
                         <div class="flex flex-col items-center group mb-10 md:mb-0">
                             <div class="relative mb-3">
