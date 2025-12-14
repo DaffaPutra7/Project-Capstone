@@ -10,6 +10,7 @@ use App\Http\Requests\StoreDataAnakRequest;
 use App\Http\Requests\StoreDataOrtuRequest;
 use App\Http\Requests\StoreProgramRequest;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class PendaftaranController extends Controller
 {
@@ -130,8 +131,30 @@ class PendaftaranController extends Controller
                 ->with('error', 'Silakan lengkapi Data Orang Tua terlebih dahulu.');
         }
 
+        $tahunAktif = TahunAjaran::orderBy('tahun', 'desc')->first();
+
+        $limitReguler = $tahunAktif->kuota_reguler ?? 0;
+        $limitFullDay = $tahunAktif->kuota_full_day ?? 0;
+
+        $terisiReguler = Pendaftaran::where('id_tahun', $tahunAktif->id_tahun)
+            ->where('jenis_program', 'Reguler')
+            ->whereNotIn('status', ['Pengisian Formulir', 'Ditolak'])
+            ->count();
+
+        $terisiFullDay = Pendaftaran::where('id_tahun', $tahunAktif->id_tahun)
+            ->where('jenis_program', 'Full Day')
+            ->whereNotIn('status', ['Pengisian Formulir', 'Ditolak'])
+            ->count();
+
+        $sisaReguler = max(0, $limitReguler - $terisiReguler);
+        $sisaFullDay = max(0, $limitFullDay - $terisiFullDay);
+
         return view('user.formulir-step-3', [
             'pendaftaran' => $pendaftaran,
+            'sisaReguler' => $sisaReguler,
+            'sisaFullDay' => $sisaFullDay,
+            'isRegulerFull' => $sisaReguler <= 0,
+            'isFullDayFull' => $sisaFullDay <= 0,
         ]);
     }
 
@@ -140,6 +163,23 @@ class PendaftaranController extends Controller
         $pendaftaran = $this->getOrCreatePendaftaran();
         $check = $this->checkStatus($pendaftaran);
         if ($check) return $check;
+
+        $tahunAktif = TahunAjaran::orderBy('tahun', 'desc')->first();
+        
+        $limit = ($request->jenis_program == 'Reguler') 
+                    ? ($tahunAktif->kuota_reguler ?? 0) 
+                    : ($tahunAktif->kuota_full_day ?? 0);
+        
+        $terisi = Pendaftaran::where('id_tahun', $tahunAktif->id_tahun)
+                    ->where('jenis_program', $request->jenis_program)
+                    ->whereNotIn('status', ['Pengisian Formulir', 'Ditolak'])
+                    ->count();
+
+        if ($terisi >= $limit) {
+            throw ValidationException::withMessages([
+                'jenis_program' => "Mohon maaf, kuota untuk program {$request->jenis_program} baru saja penuh. Silakan pilih program lain."
+            ]);
+        }
 
         $pendaftaran->update([
             'jenis_program' => $request->jenis_program,
