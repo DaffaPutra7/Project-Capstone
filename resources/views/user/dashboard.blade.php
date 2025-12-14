@@ -74,20 +74,24 @@
                     @endphp
 
                     <div class="relative">
-                        <div class="absolute top-12 left-0 right-0 h-2 bg-gray-200 rounded-full mx-auto" style="width: calc(100% - 80px); margin-left: 40px;"></div>
 
-                        <div class="absolute top-12 left-0 h-2 bg-gradient-to-r from-[#2E7099] via-[#3d8bb8] to-[#89FFE7] rounded-full transition-all duration-1000 ease-out shadow-lg"
-                            style="width: calc({{ $progressWidth }} - 80px); margin-left: 40px;">
-                            @if ($currentStepIndex > 0 && $currentStepIndex < 4)
-                                <div class="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#89FFE7] rounded-full animate-pulse shadow-lg">
+                        <div class="hidden md:block">
+                            <div class="absolute top-12 left-0 right-0 h-2 bg-gray-200 rounded-full mx-auto"
+                                style="width: calc(100% - 80px); margin-left: 40px;"></div>
+
+                            <div class="absolute top-12 left-0 h-2 bg-gradient-to-r from-[#2E7099] via-[#3d8bb8] to-[#89FFE7] rounded-full transition-all duration-1000 ease-out shadow-lg"
+                                style="width: calc({{ $progressWidth }} - 80px); margin-left: 40px;">
+                                @if ($currentStepIndex > 0 && $currentStepIndex < 4)
+                                    <div class="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#89FFE7] rounded-full animate-pulse shadow-lg">
+                            </div>
+                            @endif
                         </div>
-                        @endif
                     </div>
 
-                    <div class="grid grid-cols-4 gap-2 relative z-10">
-
+                    <!-- GRID -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-2 relative z-10 mt-6">
                         @php $stepIndex = 1; @endphp
-                        <div class="flex flex-col items-center group">
+                        <div class="flex flex-col items-center group mb-10 md:mb-0">
                             <div class="relative mb-3">
                                 <div class="w-24 h-24 rounded-full flex items-center justify-center shadow-xl border-4 border-white transform transition-all duration-300 group-hover:scale-110 
                                     {{ $currentStepIndex > $stepIndex ? 'bg-gradient-to-br from-[#2E7099] to-[#3d8bb8]' : '' }}
@@ -414,7 +418,7 @@
             toast: true,
             position: 'bottom-end',
             icon: 'success',
-            title: 'Login berhasil 🎉',
+            title: 'berhasil masuk',
             showConfirmButton: false,
             timer: 2500,
             timerProgressBar: true,
