@@ -26,7 +26,7 @@
             {{-- ERROR SUMMARY --}}
             @if ($errors->any())
                 <div class="bg-red-50 border border-red-300 text-red-700 p-4 rounded-xl">
-                    <strong class="font-bold">Oops! Ada kolom yang belum diisi:</strong>
+                    <strong class="font-bold">Oops! Ada kolom yang belum diisi atau Kuota Penuh:</strong>
                     <ul class="list-disc list-inside mt-2 text-sm">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -42,8 +42,9 @@
                     <label for="no_hp" class="block text-sm font-semibold mb-2">
                         Nomor HP (Aktif) <span class="text-red-500">*</span>
                     </label>
-                    <input id="no_hp" type="text" name="no_hp" value="{{ old('no_hp', $pendaftaran->no_hp) }}" required
+                    <input id="no_hp" type="text" inputmode="numeric" name="no_hp" value="{{ old('no_hp', $pendaftaran->no_hp) }}" required
                            @input="hasTyped = true"
+                           placeholder="Contoh: 081234567890"
                            class="w-full border rounded-xl p-3 focus:ring-2 focus:ring-[#89FFE7]"
                            :class="(!hasTyped && {{ $errors->has('no_hp') ? 'true' : 'false' }}) ? 'border-red-500' : 'border-[#89FFE7]'"
                            >
@@ -55,30 +56,63 @@
                     </div>
                 </div>
 
-                {{-- JENIS PROGRAM --}}
+                {{-- JENIS PROGRAM (DENGAN INDIKATOR KUOTA) --}}
                 <div x-data="{ hasTyped: false }">
                     <label class="block text-sm font-semibold mb-2">
                         Pilih Program <span class="text-red-500">*</span>
                     </label>
                     
-                    <div class="flex gap-6 mt-2 p-3 rounded-xl border"
-                         :class="(!hasTyped && {{ $errors->has('jenis_program') ? 'true' : 'false' }}) ? 'border-red-500 bg-red-50' : 'border-transparent'">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2"
+                         :class="(!hasTyped && {{ $errors->has('jenis_program') ? 'true' : 'false' }}) ? 'p-2 border border-red-500 rounded-xl bg-red-50' : ''">
                         
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="radio" name="jenis_program" value="Reguler" required
-                                   @change="hasTyped = true"
-                                   class="text-sky-600 focus:ring-sky-500"
-                                   {{ old('jenis_program', $pendaftaran->jenis_program) == 'Reguler' ? 'checked' : '' }}> 
-                            <span>Reguler</span>
-                        </label>
-                        
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="radio" name="jenis_program" value="Full Day" required
-                                   @change="hasTyped = true"
-                                   class="text-sky-600 focus:ring-sky-500"
-                                   {{ old('jenis_program', $pendaftaran->jenis_program) == 'Full Day' ? 'checked' : '' }}> 
-                            <span>Full Day</span>
-                        </label>
+                        {{-- OPSI REGULER --}}
+                        <div class="relative rounded-xl border p-4 transition-all {{ $isRegulerFull ? 'bg-gray-100 border-gray-200 opacity-60 cursor-not-allowed' : 'bg-white border-gray-200 hover:border-sky-400 hover:shadow-md cursor-pointer' }}">
+                            <label class="flex items-start gap-3 w-full h-full {{ $isRegulerFull ? 'pointer-events-none' : 'cursor-pointer' }}">
+                                <input type="radio" name="jenis_program" value="Reguler" required
+                                       @change="hasTyped = true"
+                                       {{ $isRegulerFull ? 'disabled' : '' }}
+                                       class="mt-1 text-sky-600 focus:ring-sky-500 {{ $isRegulerFull ? 'text-gray-400' : '' }}"
+                                       {{ old('jenis_program', $pendaftaran->jenis_program) == 'Reguler' ? 'checked' : '' }}> 
+                                
+                                <div class="flex-1">
+                                    <span class="font-bold block text-gray-800 text-lg">Reguler</span>
+                                    <p class="text-xs text-gray-500 mb-2">Program belajar standar Senin - Jumat.</p>
+                                    
+                                    @if($isRegulerFull)
+                                        <span class="inline-block text-[10px] font-bold text-white bg-red-500 px-2 py-1 rounded">KUOTA PENUH (0 Tersisa)</span>
+                                    @else
+                                        <span class="inline-block text-[10px] font-bold text-emerald-700 bg-emerald-100 border border-emerald-200 px-2 py-1 rounded">
+                                            Sisa Kuota: {{ $sisaReguler }}
+                                        </span>
+                                    @endif
+                                </div>
+                            </label>
+                        </div>
+
+                        {{-- OPSI FULL DAY --}}
+                        <div class="relative rounded-xl border p-4 transition-all {{ $isFullDayFull ? 'bg-gray-100 border-gray-200 opacity-60 cursor-not-allowed' : 'bg-white border-gray-200 hover:border-sky-400 hover:shadow-md cursor-pointer' }}">
+                            <label class="flex items-start gap-3 w-full h-full {{ $isFullDayFull ? 'pointer-events-none' : 'cursor-pointer' }}">
+                                <input type="radio" name="jenis_program" value="Full Day" required
+                                       @change="hasTyped = true"
+                                       {{ $isFullDayFull ? 'disabled' : '' }}
+                                       class="mt-1 text-sky-600 focus:ring-sky-500 {{ $isFullDayFull ? 'text-gray-400' : '' }}"
+                                       {{ old('jenis_program', $pendaftaran->jenis_program) == 'Full Day' ? 'checked' : '' }}> 
+                                
+                                <div class="flex-1">
+                                    <span class="font-bold block text-gray-800 text-lg">Full Day</span>
+                                    <p class="text-xs text-gray-500 mb-2">Program belajar + pengasuhan sore.</p>
+
+                                    @if($isFullDayFull)
+                                        <span class="inline-block text-[10px] font-bold text-white bg-red-500 px-2 py-1 rounded">KUOTA PENUH (0 Tersisa)</span>
+                                    @else
+                                        <span class="inline-block text-[10px] font-bold text-emerald-700 bg-emerald-100 border border-emerald-200 px-2 py-1 rounded">
+                                            Sisa Kuota: {{ $sisaFullDay }}
+                                        </span>
+                                    @endif
+                                </div>
+                            </label>
+                        </div>
+
                     </div>
                     
                     <div x-show="!hasTyped">
@@ -90,10 +124,10 @@
             </div>
 
             <div class="flex justify-between pt-6">
-                <a href="{{ route('user.formulir.step2') }}" class="px-6 py-3 bg-gray-300 hover:bg-gray-400 rounded-full font-semibold">← Kembali</a>
+                <a href="{{ route('user.formulir.step2') }}" class="px-6 py-3 bg-gray-300 hover:bg-gray-400 rounded-full font-semibold transition">← Kembali</a>
                 <button type="button" 
                         onclick="confirmSubmit()" 
-                        class="px-10 py-3 bg-emerald-600 text-white font-semibold rounded-full hover:bg-emerald-700">
+                        class="px-10 py-3 bg-emerald-600 text-white font-semibold rounded-full hover:bg-emerald-700 transition shadow-lg hover:shadow-emerald-500/30">
                     ✅ Kirim Formulir
                 </button>
             </div>
@@ -106,8 +140,9 @@
     <script>
         function confirmSubmit() {
             var form = document.getElementById('formStep3');
+            
             if (!form.checkValidity()) {
-                form.submit();
+                form.reportValidity();
                 return;
             }
 
