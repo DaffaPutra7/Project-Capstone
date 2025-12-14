@@ -131,16 +131,19 @@ class PendaftaranController extends Controller
                 ->with('error', 'Silakan lengkapi Data Orang Tua terlebih dahulu.');
         }
 
+        // --- LOGIKA HITUNG KUOTA UNTUK STEP 3 ---
         $tahunAktif = TahunAjaran::orderBy('tahun', 'desc')->first();
 
         $limitReguler = $tahunAktif->kuota_reguler ?? 0;
         $limitFullDay = $tahunAktif->kuota_full_day ?? 0;
 
+        // Hitung kuota terpakai (Reguler)
         $terisiReguler = Pendaftaran::where('id_tahun', $tahunAktif->id_tahun)
             ->where('jenis_program', 'Reguler')
             ->whereNotIn('status', ['Pengisian Formulir', 'Ditolak'])
             ->count();
 
+        // Hitung kuota terpakai (Full Day)
         $terisiFullDay = Pendaftaran::where('id_tahun', $tahunAktif->id_tahun)
             ->where('jenis_program', 'Full Day')
             ->whereNotIn('status', ['Pengisian Formulir', 'Ditolak'])
@@ -164,6 +167,7 @@ class PendaftaranController extends Controller
         $check = $this->checkStatus($pendaftaran);
         if ($check) return $check;
 
+        // --- VALIDASI ULANG KUOTA SEBELUM SIMPAN (Mencegah rebutan di detik terakhir) ---
         $tahunAktif = TahunAjaran::orderBy('tahun', 'desc')->first();
         
         $limit = ($request->jenis_program == 'Reguler') 
