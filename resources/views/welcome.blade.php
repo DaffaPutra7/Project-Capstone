@@ -87,7 +87,7 @@
     </div>
 
     <!-- Tombol Aksi -->
-    <div class="mt-5 flex flex-wrap gap-3">
+    <div class="mt-5 flex flex-wrap gap-3 text-center">
       <!-- Tombol Daftar Sekarang -->
       <a href="{{ route('register') }}"
         class="bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 text-white font-bold px-7 py-3 rounded-xl shadow-lg shadow-orange-200 hover:scale-110 hover:shadow-orange-400 transition-all duration-200 ease-in-out flex items-center gap-2">
@@ -144,14 +144,22 @@
             </h3>
           </div>
 
-          <div class="text-gray-800 leading-relaxed text-lg font-medium text-center">
-            @if (!empty($profil->misi))
-            {!! nl2br(e($profil->misi)) !!}
-            @else
-            <p>Misi belum diatur oleh admin.</p>
+          @if (!empty($profil->misi))
+          <ul class="space-y-3 text-left text-gray-800 text-lg font-medium">
+            @foreach(explode("\n", $profil->misi) as $item)
+            @if(trim($item))
+            <li class="flex items-start gap-3">
+              <span class="w-3 h-3 mt-2 border-2 border-sky-600 rounded-full shrink-0"></span>
+              <span>{{ trim($item, "•- ") }}</span>
+            </li>
             @endif
-          </div>
+            @endforeach
+          </ul>
+          @else
+          <p class="text-gray-500 text-center">Misi belum diatur oleh admin.</p>
+          @endif
         </div>
+      </div>
 
       </div>
 
@@ -167,13 +175,24 @@
           </h3>
         </div>
 
-        <div class="text-gray-800 leading-relaxed text-lg font-medium text-center">
-          @if (!empty($profil->tujuan))
-          {!! nl2br(e($profil->tujuan)) !!}
-          @else
-          <p>Tujuan belum diatur oleh admin.</p>
+        @if (!empty($profil->tujuan))
+        <ul class="space-y-3 text-gray-800 leading-relaxed text-lg font-medium">
+          @foreach(explode("\n", $profil->tujuan) as $item)
+          @if(trim($item))
+          <li class="flex items-start gap-2 w-full justify-center text-center">
+            <span class="w-2.5 h-2.5 mt-2 border-2 border-sky-600 rounded-full shrink-0"></span>
+            <span>
+              {{ trim($item, "•- ") }}
+            </span>
+          </li>
           @endif
-        </div>
+          @endforeach
+        </ul>
+        @else
+        <p class="text-gray-500 text-center">Tujuan belum diatur oleh admin.</p>
+        @endif
+
+
       </div>
 
       <!-- MOTTO -->
