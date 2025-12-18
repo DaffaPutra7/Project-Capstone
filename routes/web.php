@@ -22,26 +22,53 @@ Route::get('/', function () {
     $profil = ProfilTk::first();
     $tahunAktif = TahunAjaran::orderBy('tahun', 'desc')->first();
 
+    // default biar ga undefined
     $jumlahPendaftar = 0;
-    $sisaKuota = 0;
+
+    $terisiReguler = 0;
+    $terisiFullDay = 0;
+    $sisaReguler = 0;
+    $sisaFullDay = 0;
 
     if ($tahunAktif) {
-        // Hitung total kuota
-        $totalKuota = ($tahunAktif->kuota_full_day ?? 0) + ($tahunAktif->kuota_reguler ?? 0);
+        $kuotaReguler = $tahunAktif->kuota_reguler ?? 0;
+        $kuotaFullDay = $tahunAktif->kuota_full_day ?? 0;
 
-        // Hitung jumlah pendaftar
+        // jumlah pendaftar TOTAL (tetap ada)
         $jumlahPendaftar = Pendaftaran::where('id_tahun', $tahunAktif->id_tahun)
-                                      ->where('status', '!=', 'Pengisian Formulir')
-                                      ->count();
-        
-        // Hitung sisa kuota
-        $sisaKuota = $totalKuota - $jumlahPendaftar;
+            ->whereNotIn('status', ['Pengisian Formulir', 'Ditolak'])
+            ->count();
+
+        // terisi reguler
+        $terisiReguler = Pendaftaran::where('id_tahun', $tahunAktif->id_tahun)
+            ->where('jenis_program', 'Reguler')
+            ->whereNotIn('status', ['Pengisian Formulir', 'Ditolak'])
+            ->count();
+
+        // terisi full day
+        $terisiFullDay = Pendaftaran::where('id_tahun', $tahunAktif->id_tahun)
+            ->where('jenis_program', 'Full Day')
+            ->whereNotIn('status', ['Pengisian Formulir', 'Ditolak'])
+            ->count();
+
+        // sisa kuota
+        $sisaReguler = max(0, $kuotaReguler - $terisiReguler);
+        $sisaFullDay = max(0, $kuotaFullDay - $terisiFullDay);
     }
 
     return view('welcome', [
         'profil' => $profil,
+
+        // EXISTING (biar ga error)
         'jumlahPendaftar' => $jumlahPendaftar,
-        'sisaKuota' => $sisaKuota
+
+        // REGULER
+        'sisaReguler' => $sisaReguler,
+        'terisiReguler' => $terisiReguler,
+
+        // FULL DAY
+        'sisaFullDay' => $sisaFullDay,
+        'terisiFullDay' => $terisiFullDay,
     ]);
 })->name('home');
 
@@ -75,7 +102,7 @@ Route::middleware(['auth', 'verified', 'role:user'])
         Route::post('/formulir/data-ortu', [PendaftaranController::class, 'storeStep2'])->name('formulir.step2.store');
 
         Route::get('/formulir/program', [PendaftaranController::class, 'createStep3'])->name('formulir.step3');
-        Route::post('/formulir/program', [PendaftaranController::class, 'storeFinal'])->name('formulir.step3.store'); 
+        Route::post('/formulir/program', [PendaftaranController::class, 'storeFinal'])->name('formulir.step3.store');
 
         Route::get('/biodata', [BiodataController::class, 'index'])->name('biodata');
     });

@@ -74,14 +74,26 @@
           <span><strong>Jumlah Pendaftar:</strong> {{ $jumlahPendaftar }} Orang</span>
         </div>
 
-        <!-- Kuota Pendaftaran -->
+        <!-- Sisa Kuota Reguler -->
+        <div class="flex items-center gap-2 bg-cyan-100 text-sky-800 px-4 py-2 rounded-xl shadow-sm border border-sky-200">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M18 9a3 3 0 11-6 0 3 3 0 016 0zM6 11a3 3 0 100-6 3 3 0 000 6zm0 0c-2.21 0-4 1.79-4 4v1h8v-1c0-2.21-1.79-4-4-4zm8 4c.34-1.17 1.38-2 2.7-2h1.3c2.21 0 4 1.79 4 4v1h-5" />
+          </svg>
+          <span>
+            <strong>Sisa Kuota Reguler:</strong> {{ $sisaReguler }} Orang
+          </span>
+        </div>
+
+        <!-- Sisa Kuota Full Day -->
         <div class="flex items-center gap-2 bg-emerald-100 text-emerald-800 px-4 py-2 rounded-xl shadow-sm border border-emerald-200">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M9 12h6m-6 4h6m2 4H7a2 2 0 01-2-2V6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v12a2 2 0 01-2 2z" />
+              d="M18 9a3 3 0 11-6 0 3 3 0 016 0zM6 11a3 3 0 100-6 3 3 0 000 6zm0 0c-2.21 0-4 1.79-4 4v1h8v-1c0-2.21-1.79-4-4-4zm8 4c.34-1.17 1.38-2 2.7-2h1.3c2.21 0 4 1.79 4 4v1h-5" />
           </svg>
-          {{-- Ganti angka 500 dengan variabel sisaKuota --}}
-          <span><strong>Kuota Tersedia:</strong> {{ $sisaKuota }} Peserta</span>
+          <span>
+            <strong>Sisa Kuota Full Day:</strong> {{ $sisaFullDay }} Orang
+          </span>
         </div>
       </section>
     </div>

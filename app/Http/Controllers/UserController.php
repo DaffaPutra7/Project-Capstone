@@ -22,8 +22,31 @@ class UserController extends Controller
                 ->first();
         }
 
+        // ===== LOGIC STATISTIK KUOTA =====
+        $kuotaReguler = $tahunAktif->kuota_reguler ?? 0;
+        $kuotaFullDay = $tahunAktif->kuota_full_day ?? 0;
+
+        $terisiReguler = Pendaftaran::where('id_tahun', $tahunAktif->id_tahun)
+            ->where('jenis_program', 'Reguler')
+            ->whereNotIn('status', ['Pengisian Formulir', 'Ditolak'])
+            ->count();
+
+        $terisiFullDay = Pendaftaran::where('id_tahun', $tahunAktif->id_tahun)
+            ->where('jenis_program', 'Full Day')
+            ->whereNotIn('status', ['Pengisian Formulir', 'Ditolak'])
+            ->count();
+
+        $sisaReguler = max(0, $kuotaReguler - $terisiReguler);
+        $sisaFullDay = max(0, $kuotaFullDay - $terisiFullDay);
+
         return view('user.dashboard', [
-            'pendaftaran' => $pendaftaran
+            'pendaftaran' => $pendaftaran,
+            'sisaReguler' => $sisaReguler,
+            'sisaFullDay' => $sisaFullDay,
+            'kuotaReguler' => $kuotaReguler,
+            'kuotaFullDay' => $kuotaFullDay,
+            'terisiReguler' => $terisiReguler,
+            'terisiFullDay' => $terisiFullDay,
         ]);
     }
 
