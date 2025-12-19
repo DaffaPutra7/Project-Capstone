@@ -45,7 +45,6 @@
   </header>
 
   <!-- MAIN -->
-  <!-- Tambahkan flex-grow agar main content mengisi ruang dan footer menempel di bawah -->
   <main class="max-w-6xl mx-auto px-4 mt-10 space-y-8 flex-grow">
 
     <!-- Card Selamat Datang + Statistik -->
@@ -227,8 +226,6 @@
       </div>
 
     </section>
-
-
 
   </main>
 
