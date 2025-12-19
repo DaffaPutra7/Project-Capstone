@@ -230,34 +230,75 @@
   </main>
 
   <!-- Footer -->
-  {{-- KODE FOOTER BARU DIMULAI DI SINI --}}
   <footer class="mt-16 py-6 bg-[#2E7099] text-white text-sm">
     <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
 
-      <!-- Kiri: Link Google Maps -->
-      <div class="text-center sm:text-left">
+      <div class="flex items-start gap-4">
+
+        <!-- Mini Maps -->
         <a href="https://maps.app.goo.gl/DtEXPabjH8JkZc2w8?g_st=ipc"
           target="_blank"
           rel="noopener noreferrer"
-          class="flex items-center justify-center sm:justify-start gap-2 hover:text-gray-300 transition-colors duration-200">
-
-          <!-- Ikon Pin Lokasi -->
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
-          <span>Lokasi TK AISYIYAH BUSTANUL ATHFAL BANJAREJA</span>
+          class="shrink-0">
+          <div class="w-[140px] h-[90px] rounded-lg overflow-hidden border shadow hover:scale-105 transition">
+            <iframe
+              src="https://www.google.com/maps?q=-7.648044,109.5109768&z=16&output=embed"
+              class="w-full h-full border-0"
+              loading="lazy">
+            </iframe>
+          </div>
         </a>
+
+        <div class="space-y-1">
+          <!-- Alamat -->
+          <a href="https://maps.app.goo.gl/DtEXPabjH8JkZc2w8?g_st=ipc"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-start gap-2 hover:text-gray-300 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mt-0.5 shrink-0"
+              fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span class="font-medium leading-snug">
+              Lokasi TK Aisyiyah Bustanul Athfal Banjareja
+            </span>
+          </a>
+
+          <!-- WhatsApp -->
+          <a href="https://wa.me/6282294226428"
+            target="_blank"
+            class="flex items-center gap-2 text-xs hover:text-green-300 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 32 32" fill="currentColor">
+              <path d="M16 2.7C8.7 2.7 2.7 8.6 2.7 15.9c0 2.5.7 4.9 2.1 7L2 30l7.3-1.9c2 1.1 4.2 1.7 6.7 1.7 7.3 0 13.3-5.9 13.3-13.2S23.3 2.7 16 2.7z" />
+            </svg>
+            <span>WhatsApp: 0822-9422-6428</span>
+          </a>
+
+          <!-- Email -->
+          <a href="mailto:tkababanjareja86@gmail.com"
+            class="flex items-center gap-2 text-xs hover:text-yellow-300 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
+              fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M3 8l9 6 9-6M5 6h14a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z" />
+            </svg>
+            <span>Email: tkababanjareja86@gmail.com</span>
+          </a>
+        </div>
       </div>
 
-      <!-- Kanan: Copyright -->
       <div class="text-center sm:text-right flex items-center justify-center sm:justify-end gap-2">
-        <!-- Icon Copyright -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+          viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
         <p>2025 TK Aisyiyah Bustanul Athfal Banjareja. Seluruh hak cipta dilindungi.</p>
       </div>
+
     </div>
   </footer>
 
