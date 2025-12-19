@@ -1,6 +1,5 @@
 <x-app-layout>
     <main class="max-w-6xl mx-auto px-4 py-10 space-y-12">
-
         <!-- JUDUL -->
         <section class="text-center">
             <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-sky-700 to-sky-500 bg-clip-text text-transparent">
@@ -10,7 +9,6 @@
                 {{ $profile->nama_tk ?? 'Nama TK' }}
             </p>
         </section>
-
         <!-- VISI & MISI -->
         <section class="grid md:grid-cols-2 gap-8">
 
@@ -32,7 +30,6 @@
                     </p>
                 </div>
             </div>
-
             <!-- MISI -->
             <div class="rounded-3xl shadow-xl border-2 border-[#89FFE7] bg-white overflow-hidden">
                 <div class="bg-gradient-to-r from-sky-600 to-cyan-500 px-8 py-5 flex items-center justify-center gap-3">
@@ -57,7 +54,6 @@
                 </div>
             </div>
         </section>
-
         <!-- TUJUAN -->
         <section class="rounded-3xl shadow-xl border-2 border-[#89FFE7] bg-white overflow-hidden">
             <div class="bg-gradient-to-r from-sky-600 to-cyan-500 px-8 py-5 flex items-center justify-center gap-3">
@@ -81,7 +77,6 @@
                 </ul>
             </div>
         </section>
-
         <!-- GALERI -->
         <section class="rounded-3xl shadow-xl border-2 border-[#89FFE7] bg-white overflow-hidden">
             <div class="bg-gradient-to-r from-sky-600 to-cyan-500 px-8 py-5 text-center">
@@ -109,7 +104,6 @@
                 @endif
             </div>
         </section>
-
         <!-- LOKASI -->
         <section class="rounded-3xl shadow-xl border-2 border-[#89FFE7] bg-white overflow-hidden">
             <h3 class="text-2xl font-bold text-center py-4 bg-gradient-to-r from-sky-700 to-sky-500 text-white">
@@ -150,7 +144,6 @@
                         </p>
                     </div>
                 </div>
-
                 <!-- KONTAK -->
                 <div class="flex gap-3">
                     <div class="shrink-0">
@@ -178,7 +171,6 @@
                         </p>
                     </div>
                 </div>
-
                 <!-- BUTTON -->
                 <div class="flex flex-col gap-3 justify-center">
                     <a href="https://maps.app.goo.gl/2zUEd5y5iTpwxfs99" target="_blank"
