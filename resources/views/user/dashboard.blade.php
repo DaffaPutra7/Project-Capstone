@@ -1,7 +1,66 @@
 <x-app-layout>
+    {{-- BAGIAN LOGIKA (Diambil dari Code Lama & Diperbaiki) --}}
+    @php
+        // 1. LOGIKA CEK KUOTA (PENTING: Agar tombol disable jika penuh)
+        $tahunAktifDashboard = \App\Models\TahunAjaran::orderBy('tahun', 'desc')->first();
+        $semuaKuotaPenuh = false;
+
+        if ($tahunAktifDashboard) {
+            $kuotaReguler = $tahunAktifDashboard->kuota_reguler ?? 0;
+            $kuotaFullDay = $tahunAktifDashboard->kuota_full_day ?? 0;
+
+            $terisiReguler = \App\Models\Pendaftaran::where('id_tahun', $tahunAktifDashboard->id_tahun)
+                ->where('jenis_program', 'Reguler')
+                ->whereNotIn('status', ['Pengisian Formulir', 'Ditolak'])
+                ->count();
+            
+            $terisiFullDay = \App\Models\Pendaftaran::where('id_tahun', $tahunAktifDashboard->id_tahun)
+                ->where('jenis_program', 'Full Day')
+                ->whereNotIn('status', ['Pengisian Formulir', 'Ditolak'])
+                ->count();
+            
+            // Cek apakah keduanya sudah penuh
+            if ($terisiReguler >= $kuotaReguler && $terisiFullDay >= $kuotaFullDay) {
+                $semuaKuotaPenuh = true;
+            }
+        }
+
+        // 2. LOGIKA STATUS & PROGRESS BAR
+        $steps = [
+            'Pengisian Formulir' => ['desc' => 'Anda sedang dalam tahap pengisian formulir.'],
+            'Formulir Dikirim' => ['desc' => 'Formulir Anda sedang dalam proses verifikasi oleh tim kami. Mohon menunggu konfirmasi lebih lanjut.'],
+            'Proses Seleksi' => ['desc' => 'Anda telah memasuki tahap seleksi. Tim kami akan meninjau data Anda.'],
+            'Diterima' => ['desc' => 'Selamat! Anda telah diterima. Silakan lakukan pendaftaran ulang.'],
+            'Ditolak' => ['desc' => 'Mohon maaf, Anda belum lolos seleksi. Silakan coba lagi tahun depan.'],
+            'Belum Mendaftar' => ['desc' => 'Anda belum melakukan pendaftaran.'],
+        ];
+
+        // $pendaftaran dikirim dari Controller
+        $currentStatus = $pendaftaran->status ?? 'Belum Mendaftar';
+
+        $statusMap = [
+            'Belum Mendaftar' => 0,
+            'Pengisian Formulir' => 1,
+            'Formulir Dikirim' => 2,
+            'Proses Seleksi' => 3,
+            'Diterima' => 4,
+            'Ditolak' => 4, 
+        ];
+
+        $currentStepIndex = $statusMap[$currentStatus] ?? 0;
+        $statusInfo = $steps[$currentStatus] ?? $steps['Belum Mendaftar'];
+
+        // Hitung Lebar Progress Bar (Logic Lama diimplementasikan ke UI Baru)
+        $progressWidth = '0%';
+        if ($currentStepIndex > 1) {
+            // Logika: Step 2=33%, Step 3=66%, Step 4=100%
+            $progressWidth = min(100, ($currentStepIndex - 1) * 33.33) . '%';
+        }
+    @endphp
+
     <main class="space-y-12">
 
-        {{-- BAGIAN ATAS (SAMPAI PROGRESS BAR) --}}
+        {{-- BAGIAN HEADER (UI BARU) --}}
         <section class="bg-gradient-to-br from-white via-blue-50 to-cyan-50 shadow-2xl rounded-[50px] p-8 border-2 border-[#89FFE7] flex flex-col sm:flex-row items-center justify-between gap-6 relative overflow-hidden">
             {{-- Elemen dekoratif blur --}}
             <div class="absolute -top-10 -right-10 w-40 h-40 bg-[#89FFE7] opacity-10 rounded-full blur-3xl"></div>
@@ -27,6 +86,7 @@
             </div>
         </section>
 
+        {{-- BAGIAN STATUS & PROGRESS (UI BARU + LOGIKA LAMA) --}}
         <section class="max-w-5xl mx-auto bg-gradient-to-br from-white via-blue-50 to-cyan-50 rounded-[40px] p-10 shadow-2xl border-2 border-[#89FFE7] relative overflow-hidden">
             <div class="absolute top-0 left-0 w-64 h-64 bg-[#89FFE7] opacity-5 rounded-full -ml-32 -mt-32"></div>
             <div class="absolute bottom-0 right-0 w-64 h-64 bg-[#2E7099] opacity-5 rounded-full -mr-32 -mb-32"></div>
@@ -37,57 +97,24 @@
                     <p class="text-sm text-gray-600">Lacak proses pendaftaran secara real-time</p>
                 </div>
 
-                @php
-                $steps = [
-                'Pengisian Formulir' => ['desc' => 'Anda sedang dalam tahap pengisian formulir.'],
-                'Formulir Dikirim' => ['desc' => 'Formulir Anda sedang dalam proses verifikasi oleh tim kami. Mohon menunggu konfirmasi lebih lanjut.'],
-                'Proses Seleksi' => ['desc' => 'Anda telah memasuki tahap seleksi. Tim kami akan meninjau data Anda.'],
-                'Diterima' => ['desc' => 'Selamat! Anda telah diterima. Silakan lakukan pendaftaran ulang.'],
-                'Ditolak' => ['desc' => 'Mohon maaf, Anda belum lolos seleksi. Silakan coba lagi tahun depan.'],
-                'Belum Mendaftar' => ['desc' => 'Anda belum melakukan pendaftaran.'],
-                ];
+                <div class="relative">
+                    {{-- GARIS PROGRESS ABU-ABU (Background) --}}
+                    <div class="hidden md:block absolute top-12 left-0 right-0 h-2 bg-gray-200 rounded-full mx-auto" style="width: calc(100% - 80px); margin-left: 40px;"></div>
 
-                // $pendaftaran dikirim dari UserController
-                $currentStatus = $pendaftaran->status ?? 'Belum Mendaftar';
-
-                // Tentukan step mana yang aktif/selesai
-                $statusMap = [
-                'Belum Mendaftar' => 0,
-                'Pengisian Formulir' => 1,
-                'Formulir Dikirim' => 2,
-                'Proses Seleksi' => 3,
-                'Diterima' => 4,
-                'Ditolak' => 4, // <-- Digabung ke step 4
-                    ];
-
-                    $currentStepIndex=$statusMap[$currentStatus] ?? 0;
-
-                    // Tentukan pesan status
-                    $statusInfo=$steps[$currentStatus];
-
-                    // Logika progress bar (0%, 33%, 66%, 100%)
-                    $progressWidth='0%' ;
-                    if ($currentStepIndex> 1) {
-                    $progressWidth = min(100, ($currentStepIndex - 1) * 33.33) . '%';
-                    }
-
-                    @endphp
-
-                    <div class="relative">
-                        <div class="absolute top-12 left-0 right-0 h-2 bg-gray-200 rounded-full mx-auto" style="width: calc(100% - 80px); margin-left: 40px;"></div>
-
-                        <div class="absolute top-12 left-0 h-2 bg-gradient-to-r from-[#2E7099] via-[#3d8bb8] to-[#89FFE7] rounded-full transition-all duration-1000 ease-out shadow-lg"
-                            style="width: calc({{ $progressWidth }} - 80px); margin-left: 40px;">
-                            @if ($currentStepIndex > 0 && $currentStepIndex < 4)
-                                <div class="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#89FFE7] rounded-full animate-pulse shadow-lg">
-                        </div>
+                    {{-- GARIS PROGRESS BERWARNA (Isi) --}}
+                    <div class="hidden md:block absolute top-12 left-0 h-2 bg-gradient-to-r from-[#2E7099] via-[#3d8bb8] to-[#89FFE7] rounded-full transition-all duration-1000 ease-out shadow-lg"
+                        style="width: calc({{ $progressWidth }} - 80px); margin-left: 40px;">
+                        @if ($currentStepIndex > 0 && $currentStepIndex < 4)
+                            <div class="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#89FFE7] rounded-full animate-pulse shadow-lg"></div>
                         @endif
                     </div>
 
-                    <div class="grid grid-cols-4 gap-2 relative z-10">
+                    {{-- GRID STEP ITEMS --}}
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-2 relative z-10 mt-6">
 
+                        {{-- STEP 1: Pengisian Formulir --}}
                         @php $stepIndex = 1; @endphp
-                        <div class="flex flex-col items-center group">
+                        <div class="flex flex-col items-center group mb-10 md:mb-0">
                             <div class="relative mb-3">
                                 <div class="w-24 h-24 rounded-full flex items-center justify-center shadow-xl border-4 border-white transform transition-all duration-300 group-hover:scale-110 
                                     {{ $currentStepIndex > $stepIndex ? 'bg-gradient-to-br from-[#2E7099] to-[#3d8bb8]' : '' }}
@@ -111,6 +138,9 @@
                                     </svg>
                                 </div>
                                 @endif
+                                @if ($currentStepIndex == $stepIndex)
+                                <div class="absolute inset-0 rounded-full border-4 border-[#89FFE7] animate-ping opacity-75"></div>
+                                @endif
                             </div>
                             <span class="text-sm font-bold {{ $currentStepIndex >= $stepIndex ? 'text-[#2E7099]' : 'text-gray-500' }} text-center leading-tight">Pengisian<br>Formulir</span>
                             @if ($currentStepIndex > $stepIndex)
@@ -122,8 +152,9 @@
                             @endif
                         </div>
 
+                        {{-- STEP 2: Formulir Dikirim --}}
                         @php $stepIndex = 2; @endphp
-                        <div class="flex flex-col items-center group">
+                        <div class="flex flex-col items-center group mb-10 md:mb-0">
                             <div class="relative mb-3">
                                 <div class="w-24 h-24 rounded-full flex items-center justify-center shadow-xl border-4 border-white transform transition-all duration-300 group-hover:scale-110
                                     {{ $currentStepIndex > $stepIndex ? 'bg-gradient-to-br from-[#2E7099] to-[#3d8bb8]' : '' }}
@@ -161,8 +192,9 @@
                             @endif
                         </div>
 
+                        {{-- STEP 3: Proses Seleksi --}}
                         @php $stepIndex = 3; @endphp
-                        <div class="flex flex-col items-center group">
+                        <div class="flex flex-col items-center group mb-10 md:mb-0">
                             <div class="relative mb-3">
                                 <div class="w-24 h-24 rounded-full flex items-center justify-center shadow-xl border-4 border-white transform transition-all duration-300 group-hover:scale-110
                                     {{ $currentStepIndex > $stepIndex ? 'bg-gradient-to-br from-[#2E7099] to-[#3d8bb8]' : '' }}
@@ -200,6 +232,7 @@
                             @endif
                         </div>
 
+                        {{-- STEP 4: Hasil Seleksi --}}
                         @php $stepIndex = 4; @endphp
                         <div class="flex flex-col items-center group">
                             <div class="relative mb-3">
@@ -208,7 +241,6 @@
                                     {{ $currentStatus == 'Ditolak' ? 'bg-gradient-to-br from-red-500 to-red-400' : '' }}
                                     {{ $currentStepIndex < $stepIndex ? 'bg-gray-200 group-hover:bg-gray-300' : '' }}">
 
-                                    {{-- Icon dinamis --}}
                                     @if ($currentStatus == 'Diterima')
                                     <svg class="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -218,7 +250,6 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                     @else
-                                    {{-- Icon default (pending) --}}
                                     <svg class="w-10 h-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
@@ -241,7 +272,6 @@
                                 @endif
                             </div>
 
-                            {{-- Teks dinamis --}}
                             <span class="text-sm font-bold {{ $currentStatus == 'Diterima' ? 'text-green-600' : ($currentStatus == 'Ditolak' ? 'text-red-600' : 'text-gray-500') }} text-center leading-tight">Status<br>Pendaftaran</span>
 
                             @if ($currentStatus == 'Diterima')
@@ -254,95 +284,106 @@
                         </div>
 
                     </div>
-            </div>
-            <div class="mt-8 bg-white rounded-2xl p-5 shadow-md border border-[#89FFE7]">
-                <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#2E7099] to-[#89FFE7] flex items-center justify-center 
+                </div>
+
+                {{-- INFO CARD STATUS --}}
+                <div class="mt-8 bg-white rounded-2xl p-5 shadow-md border border-[#89FFE7]">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#2E7099] to-[#89FFE7] flex items-center justify-center 
                                     {{ ($currentStepIndex == 4) ? '' : 'animate-pulse' }}">
 
-                        @if ($currentStatus == 'Diterima')
-                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        @elseif ($currentStatus == 'Ditolak')
-                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        @else
-                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        @endif
-                    </div>
-                    <div class="flex-1">
-                        <h4 class="font-bold text-[#2E7099] mb-1">Status Saat Ini: {{ $currentStatus }}</h4>
-                        <p class="text-sm text-gray-600">{{ $statusInfo['desc'] }}</p>
+                            @if ($currentStatus == 'Diterima')
+                            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            @elseif ($currentStatus == 'Ditolak')
+                            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            @else
+                            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            @endif
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-bold text-[#2E7099] mb-1">Status Saat Ini: {{ $currentStatus }}</h4>
+                            <p class="text-sm text-gray-600">{{ $statusInfo['desc'] }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
-            </div>
         </section>
 
+        {{-- BAGIAN TOMBOL MENU --}}
         <section class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-14 max-w-5xl mx-auto place-items-stretch">
             @php
-            // Tentukan logic untuk link dan teks
-            $linkPendaftaran = route('user.formulir.step1'); // Default
+            // LOGIKA PENENTUAN LINK & DISABLE TOMBOL (Diambil dari Code Lama)
+            $linkPendaftaran = route('user.formulir.step1');
             $teksJudul = "Mulai Pendaftaran";
             $teksDeskripsi = "Klik untuk mengisi formulir pendaftaran";
-            $iconPendaftaran = '
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />';
+            $iconPendaftaran = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />';
 
             $step = 1;
+            $isDisabled = false;
 
-            if ($pendaftaran) {
-            $step = $pendaftaran->progress_step ?? 1;
+            if (!$pendaftaran && $semuaKuotaPenuh) {
+                // KONDISI 1: Belum daftar TAPI kuota penuh -> DISABLE
+                $isDisabled = true;
+                $linkPendaftaran = '#';
+                $teksJudul = "Kuota Penuh";
+                $teksDeskripsi = "Mohon maaf, kuota pendaftaran tahun ini sudah penuh.";
+            } 
+            elseif ($pendaftaran) {
+                // KONDISI 2: Sudah daftar/sedang daftar
+                $step = $pendaftaran->progress_step ?? 1;
 
-            if ($pendaftaran->status == 'Pengisian Formulir') {
-            if ($step == 1) {
-            $linkPendaftaran = route('user.formulir.step1');
-            $teksJudul = "Lanjutkan Pendaftaran";
-            $teksDeskripsi = "Anda di Tahap 1: Data Anak";
-            } elseif ($step == 2) {
-            $linkPendaftaran = route('user.formulir.step2');
-            $teksJudul = "Lanjutkan Pendaftaran";
-            $teksDeskripsi = "Anda di Tahap 2: Data Orang Tua";
-            } elseif ($step >= 3) {
-            $linkPendaftaran = route('user.formulir.step3');
-            $teksJudul = "Lanjutkan Pendaftaran";
-            $teksDeskripsi = "Anda di Tahap 3: Pilihan Program";
-            }
-            } else {
-            $linkPendaftaran = '#';
-            $teksJudul = "Pendaftaran Terkirim";
-            $teksDeskripsi = "Data Anda sedang diverifikasi. Status: " . $pendaftaran->status;
-            $iconPendaftaran = '
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />';
-            }
+                if ($pendaftaran->status == 'Pengisian Formulir') {
+                    if ($step == 1) {
+                        $linkPendaftaran = route('user.formulir.step1');
+                        $teksJudul = "Lanjutkan Pendaftaran";
+                        $teksDeskripsi = "Anda di Tahap 1: Data Anak";
+                    } elseif ($step == 2) {
+                        $linkPendaftaran = route('user.formulir.step2');
+                        $teksJudul = "Lanjutkan Pendaftaran";
+                        $teksDeskripsi = "Anda di Tahap 2: Data Orang Tua";
+                    } elseif ($step >= 3) {
+                        $linkPendaftaran = route('user.formulir.step3');
+                        $teksJudul = "Lanjutkan Pendaftaran";
+                        $teksDeskripsi = "Anda di Tahap 3: Pilihan Program";
+                    }
+                } else {
+                    // KONDISI 3: Sudah Submit (Menunggu/Diterima/Ditolak) -> LINK MATI (Lihat status)
+                    $linkPendaftaran = '#';
+                    $teksJudul = "Pendaftaran Terkirim";
+                    $teksDeskripsi = "Data Anda sedang diverifikasi. Status: " . $pendaftaran->status;
+                    $iconPendaftaran = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />';
+                }
             }
             @endphp
 
-            {{-- pendaftaran --}}
+            {{-- TOMBOL PENDAFTARAN --}}
             <a href="{{ $linkPendaftaran }}"
-                class="group bg-gradient-to-br from-[#3889BA] to-[#89FFE7] rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 relative overflow-visible flex flex-col
-    @if ($pendaftaran && $pendaftaran->status == 'Pengisian Formulir')
-        border-4 border-[#89FFE7] hover:border-[#2E7099]
-    @else
-        border-2 border-[#89FFE7] hover:border-[#2E7099]
-    @endif
-    {{ $pendaftaran && $pendaftaran->status !== 'Pengisian Formulir' ? 'opacity-70 cursor-not-allowed' : '' }}
-">
+               class="group bg-gradient-to-br from-[#3889BA] to-[#89FFE7] rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 relative overflow-visible flex flex-col
+                @if ($pendaftaran && $pendaftaran->status == 'Pengisian Formulir' && !$isDisabled)
+                    border-4 border-[#89FFE7] hover:border-[#2E7099]
+                @else
+                    border-2 border-[#89FFE7] hover:border-[#2E7099]
+                @endif
+                {{-- Tambahkan class grayscale/cursor-not-allowed jika disabled --}}
+                {{ ($pendaftaran && $pendaftaran->status !== 'Pengisian Formulir') || $isDisabled ? 'opacity-70 cursor-not-allowed' : '' }}
+               "
+               @if($isDisabled) onclick="return false;" @endif
+            >
 
-                @if (!$pendaftaran || ($pendaftaran && $pendaftaran->status == 'Pengisian Formulir'))
+                @if ((!$pendaftaran || ($pendaftaran && $pendaftaran->status == 'Pengisian Formulir')) && !$isDisabled)
                 <div class="absolute -inset-2 rounded-3xl border-8 border-[#89FFE7] opacity-50 animate-ping z-0"></div>
                 @endif
-
 
                 <div class="absolute top-0 right-0 w-32 h-32 bg-[#89FFE7] opacity-10 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500"></div>
 
                 <div class="flex flex-col items-center gap-3 relative z-10">
-
                     <div class="relative">
-                        {{-- ICON tanpa ping --}}
                         <div class="relative bg-gradient-to-br from-[#2E7099] to-[#3d8bb8] p-4 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 {!! $iconPendaftaran !!}
@@ -354,7 +395,8 @@
                     <p class="text-sm text-gray-600 text-center">{{ $teksDeskripsi }}</p>
                 </div>
 
-                @if ($pendaftaran && $pendaftaran->status == 'Pengisian Formulir')
+                {{-- PROGRESS BAR KECIL DI KARTU --}}
+                @if ($pendaftaran && $pendaftaran->status == 'Pengisian Formulir' && !$isDisabled)
                 @php $progressPercent = max(0, ($step - 1) * 50); @endphp
 
                 <div class="w-full mt-auto pt-4 relative z-10">
@@ -368,7 +410,7 @@
                 @endif
             </a>
 
-            {{-- biodata --}}
+            {{-- TOMBOL BIODATA --}}
             <a href="{{ route('user.biodata') }}"
                 class="group bg-gradient-to-br from-[#347928] to-[#C0EBA6] border-2 border-[#C0EBA6] rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:border-[#2E7099] relative overflow-hidden flex flex-col">
 
@@ -387,7 +429,7 @@
                 </div>
             </a>
 
-            {{-- profile TK --}}
+            {{-- TOMBOL PROFIL TK --}}
             <a href="{{ route('user.company') }}"
                 class="group bg-gradient-to-br from-[#B33D63] to-[#EDCAD5] border-2 border-[#EDCAD5] rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:border-[#2E7099] relative overflow-hidden flex flex-col">
 
@@ -408,6 +450,7 @@
         </section>
     </main>
 
+    {{-- ALERT (Tetap dipertahankan) --}}
     @if (session('success'))
     <script>
         Swal.fire({
