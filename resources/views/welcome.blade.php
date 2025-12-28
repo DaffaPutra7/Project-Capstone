@@ -15,7 +15,7 @@
     <!-- Bagian Atas -->
     <div class="bg-gradient-to-r from-[rgba(137,255,231,0.4)] to-[#2E7099] text-white">
       <div class="max-w-7xl mx-auto flex flex-col items-center justify-center py-4">
-        <h1 class="text-xl font-bold tracking-wide">PPDB-TK</h1>
+        <h1 class="text-xl font-bold tracking-wide">SPMB-TK</h1>
         <p class="text-xs opacity-90">TK AISYIYAH BUSTANUL ATHFAL BANJAREJA</p>
       </div>
     </div>
