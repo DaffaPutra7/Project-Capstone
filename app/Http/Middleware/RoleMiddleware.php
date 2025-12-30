@@ -14,7 +14,7 @@ class RoleMiddleware
         }
 
         if (!in_array(Auth::user()->role, $roles)) {
-            abort(403, 'Lu gak punya akses ke sini bro 😅');
+            abort(403, ' HTTP "Forbidden"');
         }
 
         return $next($request);
