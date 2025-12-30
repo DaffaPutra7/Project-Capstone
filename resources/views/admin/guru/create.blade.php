@@ -32,7 +32,7 @@
                 <div>
                     <label class="text-sm font-medium text-gray-700">Nama Guru</label>
                     <input type="text" name="nama"
-                        placeholder="Contoh: Siti Aminah, S.Pd"
+                        placeholder="Contoh: Nama Lengkap, Gelar"
                         class="mt-1 w-full border rounded-xl p-3 focus:ring focus:ring-sky-200">
                 </div>
 
