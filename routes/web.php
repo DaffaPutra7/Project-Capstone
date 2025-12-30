@@ -9,8 +9,10 @@ use App\Http\Controllers\ProfilTkController;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\BiodataController;
 use App\Http\Controllers\Admin\DataSiswaController;
+use App\Http\Controllers\Admin\GuruController;
 use App\Models\TahunAjaran;
 use App\Models\Pendaftaran;
+use App\Models\Guru;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,9 +24,10 @@ Route::get('/', function () {
     $profil = ProfilTk::first();
     $tahunAktif = TahunAjaran::orderBy('tahun', 'desc')->first();
 
-    // default biar ga undefined
-    $jumlahPendaftar = 0;
+    // UBAH: Pakai orderBy asc supaya data baru tidak menggeser data lama ke kanan
+    $guru = Guru::orderBy('created_at', 'asc')->get();
 
+    $jumlahPendaftar = 0;
     $terisiReguler = 0;
     $terisiFullDay = 0;
     $sisaReguler = 0;
@@ -34,42 +37,33 @@ Route::get('/', function () {
         $kuotaReguler = $tahunAktif->kuota_reguler ?? 0;
         $kuotaFullDay = $tahunAktif->kuota_full_day ?? 0;
 
-        // jumlah pendaftar TOTAL (tetap ada)
         $jumlahPendaftar = Pendaftaran::where('id_tahun', $tahunAktif->id_tahun)
             ->whereNotIn('status', ['Pengisian Formulir', 'Ditolak'])
             ->count();
 
-        // terisi reguler
         $terisiReguler = Pendaftaran::where('id_tahun', $tahunAktif->id_tahun)
             ->where('jenis_program', 'Reguler')
             ->whereNotIn('status', ['Pengisian Formulir', 'Ditolak'])
             ->count();
 
-        // terisi full day
         $terisiFullDay = Pendaftaran::where('id_tahun', $tahunAktif->id_tahun)
             ->where('jenis_program', 'Full Day')
             ->whereNotIn('status', ['Pengisian Formulir', 'Ditolak'])
             ->count();
 
-        // sisa kuota
         $sisaReguler = max(0, $kuotaReguler - $terisiReguler);
         $sisaFullDay = max(0, $kuotaFullDay - $terisiFullDay);
     }
 
-    return view('welcome', [
-        'profil' => $profil,
-
-        // EXISTING (biar ga error)
-        'jumlahPendaftar' => $jumlahPendaftar,
-
-        // REGULER
-        'sisaReguler' => $sisaReguler,
-        'terisiReguler' => $terisiReguler,
-
-        // FULL DAY
-        'sisaFullDay' => $sisaFullDay,
-        'terisiFullDay' => $terisiFullDay,
-    ]);
+    return view('welcome', compact(
+        'profil',
+        'guru',
+        'jumlahPendaftar',
+        'sisaReguler',
+        'terisiReguler',
+        'sisaFullDay',
+        'terisiFullDay'
+    ));
 })->name('home');
 
 /*
@@ -116,17 +110,30 @@ Route::middleware(['auth', 'verified', 'role:admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
+
         Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+
+        // COMPANY / PROFIL
         Route::get('/company', [ProfilTkController::class, 'index'])->name('company');
         Route::post('/company/update', [ProfilTkController::class, 'update'])->name('profil.update');
-
         Route::delete('/company/foto/{id_foto}', [ProfilTkController::class, 'hapusFoto'])->name('profil.foto.hapus');
 
+        // GURU
+        Route::get('/guru', [GuruController::class, 'index'])->name('guru.index');
+        Route::get('/guru/create', [GuruController::class, 'create'])->name('guru.create');
+        Route::post('/guru', [GuruController::class, 'store'])->name('guru.store');
+        Route::get('/guru/{id}/edit', [GuruController::class, 'edit'])->name('guru.edit');
+        Route::put('/guru/{id}', [GuruController::class, 'update'])->name('guru.update');
+        Route::delete('/guru/{id}', [GuruController::class, 'destroy'])->name('guru.destroy');
+
+        // SISWA
         Route::get('/siswa', [DataSiswaController::class, 'index'])->name('siswa.index');
         Route::get('/siswa/{id_pendaftaran}', [DataSiswaController::class, 'show'])->name('siswa.show');
         Route::post('/siswa/{id_pendaftaran}/update-status', [DataSiswaController::class, 'updateStatus'])->name('siswa.updateStatus');
 
-        Route::post('/tahun-ajaran/save', [\App\Http\Controllers\TahunAjaranController::class, 'storeOrUpdate'])->name('tahun-ajaran.save');
+        // TAHUN AJARAN
+        Route::post('/tahun-ajaran/save', [\App\Http\Controllers\TahunAjaranController::class, 'storeOrUpdate'])
+            ->name('tahun-ajaran.save');
     });
 
 /*

@@ -18,14 +18,14 @@
                         <form method="GET" action="{{ route('admin.dashboard') }}" class="relative inline-block mt-6">
                             <select id="tahun" name="tahun" onchange="this.form.submit()"
                                 class="block w-full max-w-xs appearance-none rounded-[50px] border-2 border-[#89FFE7] px-4 py-2.5 pr-10 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-sky-400 bg-white hover:bg-gray-50 transition-all cursor-pointer shadow-sm">
-                                
+
                                 {{-- $semuaTahun berasal dari Controller (Data DB) --}}
                                 @foreach($semuaTahun as $th)
-                                    <option value="{{ $th->tahun }}" {{ ($tahunAktif && $tahunAktif->tahun == $th->tahun) ? 'selected' : '' }}>
-                                        {{ $th->tahun }}
-                                    </option>
+                                <option value="{{ $th->tahun }}" {{ ($tahunAktif && $tahunAktif->tahun == $th->tahun) ? 'selected' : '' }}>
+                                    {{ $th->tahun }}
+                                </option>
                                 @endforeach
-                                
+
                             </select>
 
                             <div class="absolute inset-y-0 right-0 flex items-center px-3 text-[#2E7099] pointer-events-none">
@@ -86,18 +86,18 @@
                                     </td>
                                     <td class="px-4 py-3 text-sm font-medium text-gray-900 whitespace-nowrap">
                                         @if ($pendaftaran->anak && $pendaftaran->anak->tanggal_lahir)
-                                            <div>{{ $pendaftaran->anak->usia_detail }}</div>
-                                            @php
-                                                $statusUsia = $pendaftaran->anak->status_usia;
-                                                $statusClass = match($statusUsia) {
-                                                    'Memenuhi Syarat' => 'text-green-700 font-semibold',
-                                                    'Tidak Memenuhi Syarat' => 'text-red-700 font-semibold',
-                                                    default => 'text-gray-500'
-                                                };
-                                            @endphp
-                                            <span class="{{ $statusClass }}">{{ $statusUsia }}</span>
+                                        <div>{{ $pendaftaran->anak->usia_detail }}</div>
+                                        @php
+                                        $statusUsia = $pendaftaran->anak->status_usia;
+                                        $statusClass = match($statusUsia) {
+                                        'Memenuhi Syarat' => 'text-green-700 font-semibold',
+                                        'Tidak Memenuhi Syarat' => 'text-red-700 font-semibold',
+                                        default => 'text-gray-500'
+                                        };
+                                        @endphp
+                                        <span class="{{ $statusClass }}">{{ $statusUsia }}</span>
                                         @else
-                                            <span class="text-gray-500">N/A</span>
+                                        <span class="text-gray-500">N/A</span>
                                         @endif
                                     </td>
                                     <td class="px-4 py-3 text-sm text-gray-500 whitespace-nowrap">
@@ -108,13 +108,13 @@
                                     </td>
                                     <td class="px-4 py-3 whitespace-nowrap">
                                         @php
-                                            $statusBadge = match($pendaftaran->status){
-                                                'Formulir Dikirim' => 'bg-blue-100 text-blue-800',
-                                                'Proses Seleksi' => 'bg-yellow-100 text-yellow-800',
-                                                'Diterima' => 'bg-green-100 text-green-800',
-                                                'Ditolak' => 'bg-red-100 text-red-800',
-                                                default => '',
-                                            };
+                                        $statusBadge = match($pendaftaran->status){
+                                        'Formulir Dikirim' => 'bg-blue-100 text-blue-800',
+                                        'Proses Seleksi' => 'bg-yellow-100 text-yellow-800',
+                                        'Diterima' => 'bg-green-100 text-green-800',
+                                        'Ditolak' => 'bg-red-100 text-red-800',
+                                        default => '',
+                                        };
                                         @endphp
                                         <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full {{ $statusBadge }}">
                                             {{ $pendaftaran->status }}
@@ -161,7 +161,7 @@
 
             <section class="max-w-6xl mx-auto pt-8 pb-10">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 justify-center items-stretch">
-                    
+
                     <a href="{{ route('admin.company') }}"
                         class="group relative flex items-center gap-4 bg-white border-2 border-[#89FFE7] rounded-[30px] px-8 py-6 w-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:border-sky-300">
                         <div class="bg-[#89FFE7] bg-opacity-20 p-4 rounded-full group-hover:bg-opacity-40 transition-all shrink-0">
@@ -190,41 +190,66 @@
                         </div>
                     </button>
 
+                    <a href="{{ route('admin.guru.index') }}"
+                        class="group relative flex items-center gap-4 bg-white border-2 border-[#89FFE7]
+          rounded-[30px] px-8 py-6 w-full shadow-lg hover:shadow-xl
+          transition-all duration-300 transform hover:-translate-y-1 hover:border-sky-300">
+
+                        <div class="bg-[#89FFE7] bg-opacity-20 p-4 rounded-full
+                group-hover:bg-opacity-40 transition-all shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                class="h-8 w-8 text-[#2E7099]"
+                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87M9 10a4 4 0 11-8 0 4 4 0 018 0zm6 0a4 4 0 100-8 4 4 0 000 8z" />
+                            </svg>
+                        </div>
+
+                        <div class="text-left">
+                            <span class="text-xl text-[#2E7099] font-bold block mb-1">
+                                Kelola Guru
+                            </span>
+                            <span class="text-sm text-gray-500 block">
+                                Tambah, edit, dan atur data guru
+                            </span>
+                        </div>
+                    </a>
+
                 </div>
             </section>
         </main>
 
         {{-- MODAL KELOLA TAHUN AJARAN --}}
-        <div x-show="showModalTahun" 
-             style="display: none;"
-             class="fixed inset-0 z-50 overflow-y-auto" 
-             aria-labelledby="modal-title" role="dialog" aria-modal="true">
-            
+        <div x-show="showModalTahun"
+            style="display: none;"
+            class="fixed inset-0 z-50 overflow-y-auto"
+            aria-labelledby="modal-title" role="dialog" aria-modal="true">
+
             <div x-show="showModalTahun"
-                 x-transition:enter="ease-out duration-300"
-                 x-transition:enter-start="opacity-0"
-                 x-transition:enter-end="opacity-100"
-                 x-transition:leave="ease-in duration-200"
-                 x-transition:leave-start="opacity-100"
-                 x-transition:leave-end="opacity-0"
-                 class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" 
-                 @click="showModalTahun = false"></div>
+                x-transition:enter="ease-out duration-300"
+                x-transition:enter-start="opacity-0"
+                x-transition:enter-end="opacity-100"
+                x-transition:leave="ease-in duration-200"
+                x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0"
+                class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+                @click="showModalTahun = false"></div>
 
             <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
-                
+
                 <div x-show="showModalTahun"
-                     x-transition:enter="ease-out duration-300"
-                     x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                     x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
-                     x-transition:leave="ease-in duration-200"
-                     x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
-                     x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                     class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg border-2 border-[#89FFE7]">
-                    
+                    x-transition:enter="ease-out duration-300"
+                    x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                    x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                    x-transition:leave="ease-in duration-200"
+                    x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                    x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                    class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg border-2 border-[#89FFE7]">
+
                     {{-- Form mengarah ke route baru (Save/UpdateOrCreate) --}}
                     <form action="{{ route('admin.tahun-ajaran.save') }}" method="POST">
                         @csrf
-                        
+
                         <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                             <div class="sm:flex sm:items-start">
                                 <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[#89FFE7] bg-opacity-30 sm:mx-0 sm:h-10 sm:w-10">
@@ -239,15 +264,15 @@
                                     <p class="text-xs text-gray-500 mt-1">Pilih tahun ajaran untuk diedit atau tambahkan tahun baru.</p>
 
                                     <div class="mt-4 space-y-4">
-                                        
+
                                         <div>
                                             <label for="tahun" class="block text-sm font-medium leading-6 text-gray-900">Tahun Ajaran</label>
                                             <select name="tahun" id="tahun_modal" class="mt-1 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6">
                                                 {{-- $semuaOpsiTahun dikirim dari AdminController (Isinya tahun DB + 3 tahun kedepan) --}}
                                                 @foreach($semuaOpsiTahun as $opt)
-                                                    <option value="{{ $opt }}" {{ ($tahunAktif && $tahunAktif->tahun == $opt) ? 'selected' : '' }}>
-                                                        {{ $opt }}
-                                                    </option>
+                                                <option value="{{ $opt }}" {{ ($tahunAktif && $tahunAktif->tahun == $opt) ? 'selected' : '' }}>
+                                                    {{ $opt }}
+                                                </option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -255,7 +280,7 @@
                                         <div>
                                             <label for="kuota_full_day" class="block text-sm font-medium leading-6 text-gray-900">Kuota Full Day</label>
                                             <div class="mt-1">
-                                                <input type="number" name="kuota_full_day" id="kuota_full_day" 
+                                                <input type="number" name="kuota_full_day" id="kuota_full_day"
                                                     value="{{ $tahunAktif->kuota_full_day ?? 0 }}"
                                                     class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6">
                                             </div>
@@ -265,7 +290,7 @@
                                         <div>
                                             <label for="kuota_reguler" class="block text-sm font-medium leading-6 text-gray-900">Kuota Reguler</label>
                                             <div class="mt-1">
-                                                <input type="number" name="kuota_reguler" id="kuota_reguler" 
+                                                <input type="number" name="kuota_reguler" id="kuota_reguler"
                                                     value="{{ $tahunAktif->kuota_reguler ?? 0 }}"
                                                     class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6">
                                             </div>

@@ -224,7 +224,73 @@
           {{ $profil->motto ?? 'Motto belum diatur oleh admin.' }}
         </p>
       </div>
+    </section>
 
+    <section class="mt-20">
+
+      <!-- JUDUL -->
+      <div class="flex items-center justify-center gap-3 mb-10">
+        <svg xmlns="http://www.w3.org/2000/svg"
+          class="h-8 w-8 text-sky-700"
+          fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 14l9-5-9-5-9 5 9 5z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 14l6.16-3.422A12.083 12.083 0 0121 12.75c0 3.866-4.03 7-9 7s-9-3.134-9-7c0-.674.094-1.332.27-1.978L12 14z" />
+        </svg>
+
+        <h2
+          class="text-2xl font-bold bg-gradient-to-r from-sky-700 to-sky-500 bg-clip-text text-transparent">
+          TENAGA PENDIDIK
+        </h2>
+      </div>
+
+      <!-- GRID CARD STABIL -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 auto-rows-fr">
+        @forelse ($guru as $g)
+        <div
+          class="group bg-white rounded-3xl border-2 border-[#89FFE7] shadow-xl p-6 text-center
+               hover:-translate-y-2 hover:shadow-2xl transition-all duration-300">
+
+          <!-- FOTO -->
+          <div class="relative w-28 h-28 mx-auto">
+            @if($g->foto)
+            <img src="{{ asset('storage/'.$g->foto) }}"
+              class="w-28 h-28 rounded-full object-cover border-4 border-white shadow-md">
+            @else
+            <div class="w-28 h-28 rounded-full bg-gray-200"></div>
+            @endif
+
+            <!-- halo -->
+            <div
+              class="absolute inset-0 rounded-full border-2 border-sky-400 opacity-0
+                   group-hover:opacity-100 scale-110 transition"></div>
+          </div>
+
+          <!-- NAMA -->
+          <h3 class="mt-5 text-lg font-bold text-sky-800">{{ $g->nama }}</h3>
+
+          <!-- JABATAN -->
+          <p class="text-sm font-medium text-sky-600">{{ $g->jabatan }}</p>
+
+          <!-- LAHIR -->
+          <p class="text-xs text-gray-400 mt-1">
+            {{ $g->tempat_lahir }}, {{ \Carbon\Carbon::parse($g->tanggal_lahir)->format('d M Y') }}
+          </p>
+
+          <!-- DESKRIPSI -->
+          @if($g->deskripsi)
+          <p class="text-sm text-gray-600 mt-4 leading-relaxed">
+            {{ Str::limit($g->deskripsi, 120) }}
+          </p>
+          @endif
+        </div>
+        @empty
+        <p class="col-span-3 text-center text-gray-500">
+          Data guru belum tersedia
+        </p>
+        @endforelse
+      </div>
     </section>
 
   </main>
