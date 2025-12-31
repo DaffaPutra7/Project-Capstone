@@ -126,10 +126,14 @@ Route::middleware(['auth', 'verified', 'role:admin'])
         Route::put('/guru/{id}', [GuruController::class, 'update'])->name('guru.update');
         Route::delete('/guru/{id}', [GuruController::class, 'destroy'])->name('guru.destroy');
 
-        // SISWA
+        //  PENDAFTARAN OFFLINE 
         Route::get('/siswa', [DataSiswaController::class, 'index'])->name('siswa.index');
         Route::get('/siswa/{id_pendaftaran}', [DataSiswaController::class, 'show'])->name('siswa.show');
         Route::post('/siswa/{id_pendaftaran}/update-status', [DataSiswaController::class, 'updateStatus'])->name('siswa.updateStatus');
+        
+        // PENDAFTARAN VIA ADMIN
+        Route::get('/pendaftaran/create', [DataSiswaController::class, 'create'])->name('pendaftaran.create');
+        Route::post('/pendaftaran/store', [DataSiswaController::class, 'store'])->name('pendaftaran.store');
 
         // TAHUN AJARAN
         Route::post('/tahun-ajaran/save', [\App\Http\Controllers\TahunAjaranController::class, 'storeOrUpdate'])
