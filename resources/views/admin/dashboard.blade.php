@@ -1,5 +1,4 @@
 <x-app-layout>
-    {{-- Kita bungkus main content dengan x-data untuk state modal --}}
     <main class="space-y-14" x-data="{ showModalTahun: false }">
 
         <main class="max-w-6xl mx-auto px-4 mt-10 space-y-8 flex-grow">
@@ -55,7 +54,7 @@
                 </section>
             </div>
 
-            {{-- TABEL PENDAFTAR --}}
+            {{-- TABEL PENDAFTAR TERBARU --}}
             <section class="max-w-6xl mx-auto mt-10">
                 <div class="bg-white border-2 border-[#89FFE7] rounded-[40px] p-8 shadow-lg">
 
@@ -69,7 +68,9 @@
                                 <tr>
                                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
                                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Lengkap</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usia</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipe</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tgl. Lahir</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usia (Status)</th>
                                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tgl. Daftar</th>
                                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Program</th>
                                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
@@ -81,18 +82,44 @@
                                 @forelse ($pendaftaranSiswa as $pendaftaran)
                                 <tr>
                                     <td class="px-4 py-3 text-sm text-gray-500 whitespace-nowrap">{{ $loop->iteration }}</td>
+
+                                    {{-- Nama --}}
                                     <td class="px-4 py-3 text-sm font-medium text-gray-900 whitespace-nowrap">
                                         {{ $pendaftaran->anak->nama_lengkap ?? 'Data Belum Lengkap' }}
                                     </td>
+
+                                    {{-- Tipe Daftar (Online/Offline) --}}
+                                    <td class="px-4 py-3 text-sm whitespace-nowrap">
+                                        @if($pendaftaran->tipe_daftar == 'Online')
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 border border-purple-200">
+                                            🌐 Online
+                                        </span>
+                                        @else
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800 border border-orange-200">
+                                            🏢 Offline
+                                        </span>
+                                        @endif
+                                    </td>
+
+                                    {{-- Tgl Lahir --}}
+                                    <td class="px-4 py-3 text-sm text-gray-500 whitespace-nowrap">
+                                        @if ($pendaftaran->anak && $pendaftaran->anak->tanggal_lahir)
+                                        {{ \Carbon\Carbon::parse($pendaftaran->anak->tanggal_lahir)->format('d M Y') }}
+                                        @else
+                                        -
+                                        @endif
+                                    </td>
+
+                                    {{-- Usia & Status Syarat --}}
                                     <td class="px-4 py-3 text-sm font-medium text-gray-900 whitespace-nowrap">
                                         @if ($pendaftaran->anak && $pendaftaran->anak->tanggal_lahir)
                                         <div>{{ $pendaftaran->anak->usia_detail }}</div>
                                         @php
                                         $statusUsia = $pendaftaran->anak->status_usia;
                                         $statusClass = match($statusUsia) {
-                                        'Memenuhi Syarat' => 'text-green-700 font-semibold',
-                                        'Tidak Memenuhi Syarat' => 'text-red-700 font-semibold',
-                                        default => 'text-gray-500'
+                                        'Memenuhi Syarat' => 'text-green-700 font-semibold text-xs',
+                                        'Tidak Memenuhi Syarat' => 'text-red-700 font-semibold text-xs',
+                                        default => 'text-gray-500 text-xs'
                                         };
                                         @endphp
                                         <span class="{{ $statusClass }}">{{ $statusUsia }}</span>
@@ -100,12 +127,18 @@
                                         <span class="text-gray-500">N/A</span>
                                         @endif
                                     </td>
+
+                                    {{-- Tgl Daftar --}}
                                     <td class="px-4 py-3 text-sm text-gray-500 whitespace-nowrap">
                                         {{ $pendaftaran->tanggal_daftar ? \Carbon\Carbon::parse($pendaftaran->tanggal_daftar)->format('d M Y') : '-' }}
                                     </td>
+
+                                    {{-- Program --}}
                                     <td class="px-4 py-3 text-sm text-gray-500 whitespace-nowrap">
                                         {{ $pendaftaran->jenis_program ?? '-' }}
                                     </td>
+
+                                    {{-- Status Pendaftaran --}}
                                     <td class="px-4 py-3 whitespace-nowrap">
                                         @php
                                         $statusBadge = match($pendaftaran->status){
@@ -113,28 +146,44 @@
                                         'Proses Seleksi' => 'bg-yellow-100 text-yellow-800',
                                         'Diterima' => 'bg-green-100 text-green-800',
                                         'Ditolak' => 'bg-red-100 text-red-800',
-                                        default => '',
+                                        default => 'bg-gray-100 text-gray-800',
                                         };
                                         @endphp
                                         <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full {{ $statusBadge }}">
                                             {{ $pendaftaran->status }}
                                         </span>
                                     </td>
+
+                                    {{-- Aksi --}}
                                     <td class="px-4 py-3 text-right text-sm font-medium whitespace-nowrap w-48">
-                                        <form action="{{ route('admin.siswa.updateStatus', $pendaftaran->id_pendaftaran) }}" method="POST" class="flex items-center justify-end gap-2">
-                                            @csrf
-                                            <select name="status" class="block w-32 text-xs py-1 px-2 border border-gray-300 rounded-md shadow-sm">
-                                                <option value="Proses Seleksi" {{ $pendaftaran->status=='Proses Seleksi'?'selected':'' }}>Proses Seleksi</option>
-                                                <option value="Diterima" {{ $pendaftaran->status=='Diterima'?'selected':'' }}>Diterima</option>
-                                                <option value="Ditolak" {{ $pendaftaran->status=='Ditolak'?'selected':'' }}>Ditolak</option>
-                                            </select>
-                                            <button type="submit" class="px-3 py-1 text-xs font-medium text-white bg-sky-600 rounded-md hover:bg-sky-700">Update</button>
-                                        </form>
+                                        <div class="flex items-center justify-end gap-2">
+                                            {{-- Tombol Detail --}}
+                                            <a href="{{ route('admin.siswa.show', $pendaftaran->id_pendaftaran) }}"
+                                                class="px-3 py-1 text-xs font-medium text-sky-700 bg-sky-100 rounded-md hover:bg-sky-200 focus:outline-none transition">
+                                                Detail
+                                            </a>
+
+                                            {{-- Form Update Status (Hanya untuk ONLINE) --}}
+                                            @if($pendaftaran->tipe_daftar == 'Online')
+                                            <form action="{{ route('admin.siswa.updateStatus', $pendaftaran->id_pendaftaran) }}" method="POST" class="flex items-center gap-1">
+                                                @csrf
+                                                <select name="status" class="block w-28 text-xs py-1 px-1 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500">
+                                                    <option value="Proses Seleksi" {{ $pendaftaran->status=='Proses Seleksi'?'selected':'' }}>Proses</option>
+                                                    <option value="Diterima" {{ $pendaftaran->status=='Diterima'?'selected':'' }}>Diterima</option>
+                                                    <option value="Ditolak" {{ $pendaftaran->status=='Ditolak'?'selected':'' }}>Ditolak</option>
+                                                </select>
+                                                <button type="submit" class="px-2 py-1 text-xs font-medium text-white bg-sky-600 rounded-md hover:bg-sky-700">Upd</button>
+                                            </form>
+                                            @else
+                                            {{-- Jika Offline, tidak ada tombol update status di dashboard (harus di detail/edit jika ada) --}}
+                                            <span class="text-xs text-gray-400 italic">(Offline)</span>
+                                            @endif
+                                        </div>
                                     </td>
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="7" class="px-4 py-8 text-center text-gray-500">
+                                    <td colspan="9" class="px-4 py-8 text-center text-gray-500">
                                         <div class="flex flex-col items-center gap-3">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
@@ -159,6 +208,7 @@
                 </div>
             </section>
 
+            {{-- MENU NAVIGATION BUTTONS --}}
             <section class="max-w-6xl mx-auto pt-8 pb-10">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 justify-center items-stretch">
 
@@ -211,6 +261,28 @@
                             </span>
                             <span class="text-sm text-gray-500 block">
                                 Tambah, edit, dan atur data guru
+                            </span>
+                        </div>
+                    </a>
+
+                    {{-- MENU PENDAFTARAN OFFLINE --}}
+                    <a href="{{ route('admin.pendaftaran.create') }}"
+                        class="group relative flex items-center gap-4 bg-white border-2 border-[#89FFE7] rounded-[30px] px-8 py-6 w-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:border-sky-300">
+
+                        <div class="bg-[#89FFE7] bg-opacity-20 p-4 rounded-full group-hover:bg-opacity-40 transition-all shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                class="h-8 w-8 text-[#2E7099]"
+                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+
+                        <div class="text-left">
+                            <span class="text-xl text-[#2E7099] font-bold block mb-1">
+                                Pendaftaran Offline
+                            </span>
+                            <span class="text-sm text-gray-500 block">
+                                Input data siswa langsung tanpa akun
                             </span>
                         </div>
                     </a>
