@@ -24,7 +24,6 @@ Route::get('/', function () {
     $profil = ProfilTk::first();
     $tahunAktif = TahunAjaran::orderBy('tahun', 'desc')->first();
 
-    // UBAH: Pakai orderBy asc supaya data baru tidak menggeser data lama ke kanan
     $guru = Guru::orderBy('created_at', 'asc')->get();
 
     $jumlahPendaftar = 0;

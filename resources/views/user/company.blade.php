@@ -1,5 +1,6 @@
 <x-app-layout>
     <main class="max-w-6xl mx-auto px-4 py-10 space-y-12">
+
         <!-- JUDUL -->
         <section class="text-center">
             <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-sky-700 to-sky-500 bg-clip-text text-transparent">
@@ -9,6 +10,25 @@
                 {{ $profile->nama_tk ?? 'Nama TK' }}
             </p>
         </section>
+
+        <!-- SEJARAH -->
+        <section class="rounded-3xl shadow-xl border-2 border-[#89FFE7] bg-white overflow-hidden">
+            <div class="bg-gradient-to-r from-sky-600 to-cyan-500 px-8 py-5 flex items-center justify-center gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h3 class="text-2xl font-bold text-white tracking-wide">SEJARAH</h3>
+            </div>
+
+            <div class="p-8">
+                <p class="text-gray-800 leading-relaxed text-lg font-medium text-center">
+                    {!! nl2br(e($profile->sejarah ?? 'Sejarah TK belum diatur.')) !!}
+                </p>
+            </div>
+        </section>
+
         <!-- VISI & MISI -->
         <section class="grid md:grid-cols-2 gap-8">
 
@@ -26,10 +46,11 @@
 
                 <div class="p-8">
                     <p class="text-gray-800 leading-relaxed text-lg font-medium text-center">
-                        {!! nl2br(e($profile->visi)) !!}
+                        {!! nl2br(e($profile->visi ?? 'Visi belum diatur.')) !!}
                     </p>
                 </div>
             </div>
+
             <!-- MISI -->
             <div class="rounded-3xl shadow-xl border-2 border-[#89FFE7] bg-white overflow-hidden">
                 <div class="bg-gradient-to-r from-sky-600 to-cyan-500 px-8 py-5 flex items-center justify-center gap-3">
@@ -42,7 +63,7 @@
 
                 <div class="p-8">
                     <ul class="space-y-3 text-gray-800 text-lg font-medium">
-                        @foreach (explode("\n", $profile->misi) as $misi)
+                        @foreach (explode("\n", $profile->misi ?? '') as $misi)
                         @if (trim($misi))
                         <li class="flex items-start gap-3">
                             <span class="w-3 h-3 mt-2 border-2 border-sky-600 rounded-full shrink-0"></span>
@@ -54,6 +75,7 @@
                 </div>
             </div>
         </section>
+
         <!-- TUJUAN -->
         <section class="rounded-3xl shadow-xl border-2 border-[#89FFE7] bg-white overflow-hidden">
             <div class="bg-gradient-to-r from-sky-600 to-cyan-500 px-8 py-5 flex items-center justify-center gap-3">
@@ -66,7 +88,7 @@
 
             <div class="p-8">
                 <ul class="space-y-3 text-gray-800 text-lg font-medium">
-                    @foreach (explode("\n", $profile->tujuan) as $tujuan)
+                    @foreach (explode("\n", $profile->tujuan ?? '') as $tujuan)
                     @if (trim($tujuan))
                     <li class="flex items-start gap-3 justify-center text-center">
                         <span class="w-3 h-3 mt-2 border-2 border-sky-600 rounded-full shrink-0"></span>
@@ -77,6 +99,7 @@
                 </ul>
             </div>
         </section>
+
         <!-- GALERI -->
         <section class="rounded-3xl shadow-xl border-2 border-[#89FFE7] bg-white overflow-hidden">
             <div class="bg-gradient-to-r from-sky-600 to-cyan-500 px-8 py-5 text-center">
@@ -84,18 +107,12 @@
             </div>
 
             <div class="p-8">
-                @if ($profile->foto && $profile->foto->count() > 0)
+                @if ($profile && $profile->foto && $profile->foto->count() > 0)
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                     @foreach ($profile->foto as $foto)
                     <figure class="overflow-hidden rounded-2xl shadow-md bg-gray-50 border">
                         <img src="{{ asset('storage/' . $foto->path_foto) }}"
-                            alt="{{ $foto->deskripsi ?? 'Galeri ' . $profile->nama_tk }}"
-                            class="w-full h-48 object-cover transition-transform duration-300 hover:scale-110">
-                        @if ($foto->deskripsi)
-                        <figcaption class="p-3 text-center text-sm text-gray-800 bg-white border-t">
-                            {{ $foto->deskripsi }}
-                        </figcaption>
-                        @endif
+                            class="w-full h-48 object-cover">
                     </figure>
                     @endforeach
                 </div>

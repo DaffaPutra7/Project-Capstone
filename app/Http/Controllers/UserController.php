@@ -76,6 +76,6 @@ class UserController extends Controller
             $profil->foto = collect();
         }
 
-        return view('user.company', ['profil' => $profil]);
+        return view('user.company', ['profile' => $profil]);
     }
 }

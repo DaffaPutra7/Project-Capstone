@@ -13,6 +13,15 @@
         <form method="POST" action="{{ route('admin.profil.update') }}" class="space-y-6" enctype="multipart/form-data">
             @csrf
 
+            {{-- Sejarah --}}
+            <div>
+                <label class="block font-semibold mb-1">Sejarah</label>
+                <textarea
+                    name="sejarah"
+                    class="w-full border border-gray-300 rounded-xl p-3 min-h-[150px]"
+                    placeholder="Sejarah singkat sekolah...">{{ old('sejarah', $profil->sejarah) }}</textarea>
+            </div>
+
             {{-- Visi --}}
             <div>
                 <label class="block font-semibold mb-1">Visi</label>

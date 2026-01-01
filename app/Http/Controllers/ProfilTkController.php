@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProfilTk;
-use App\Models\FotoTk; 
+use App\Models\FotoTk;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage; 
+use Illuminate\Support\Facades\Storage;
 
 class ProfilTkController extends Controller
 {
@@ -16,6 +16,7 @@ class ProfilTkController extends Controller
         if (!$profil) {
             $profil = ProfilTk::create([
                 'nama_tk' => 'Nama TK Default',
+                'sejarah' => '',
                 'visi' => '',
                 'misi' => '',
                 'tujuan' => '',
@@ -28,6 +29,7 @@ class ProfilTkController extends Controller
     public function update(Request $request)
     {
         $request->validate([
+            'sejarah' => 'nullable|string',
             'visi' => 'nullable|string',
             'misi' => 'nullable|string',
             'tujuan' => 'nullable|string',
@@ -41,6 +43,7 @@ class ProfilTkController extends Controller
 
         // Update data teks
         $profil->update([
+            'sejarah' => $request->sejarah,
             'visi' => $request->visi,
             'misi' => $request->misi,
             'tujuan' => $request->tujuan,

@@ -122,8 +122,31 @@
     </div>
 
     <section class="space-y-8">
-      <div class="grid md:grid-cols-2 gap-8">
 
+      <!-- SEJARAH -->
+      <div class="p-10 rounded-3xl shadow-xl border-2 border-[#89FFE7]">
+        <div class="flex items-center justify-center gap-3 mb-6">
+          <!-- ICON HISTORY -->
+          <svg xmlns="http://www.w3.org/2000/svg"
+            class="h-10 w-10 text-sky-700"
+            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M12 8v4l3 3M3 12a9 9 0 1018 0 9 9 0 00-18 0z" />
+          </svg>
+
+          <h3
+            class="text-3xl font-bold bg-gradient-to-r from-sky-700 to-sky-500 bg-clip-text text-transparent">
+            SEJARAH SEKOLAH
+          </h3>
+        </div>
+
+        <p
+          class="max-w-5xl mx-auto text-gray-800 leading-relaxed text-lg font-medium text-center whitespace-pre-line">
+          {{ $profil->sejarah ?? 'Sejarah sekolah belum diatur oleh admin.' }}
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8">
         <!-- VISI -->
         <div class="p-8 rounded-3xl shadow-xl border-2 border-[#89FFE7]">
           <div class="flex items-center justify-center gap-3 mb-4">

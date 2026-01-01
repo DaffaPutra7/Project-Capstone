@@ -14,6 +14,7 @@ class ProfilTk extends Model
 
     protected $fillable = [
         'nama_tk',
+        'sejarah',
         'visi',
         'misi',
         'tujuan',
