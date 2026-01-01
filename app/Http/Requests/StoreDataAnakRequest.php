@@ -19,9 +19,11 @@ class StoreDataAnakRequest extends FormRequest
 
         $ruleFoto = $anak->foto_anak ? 'nullable' : 'required';
 
+        $regexHuruf = 'regex:/^[a-zA-Z\s\.\,\'\-]+$/';
+
         return [
-            'nama_lengkap' => 'required|string|max:100',
-            'nama_panggilan' => 'required|string|max:50',
+            'nama_lengkap' => ['required', 'string', 'max:100', $regexHuruf],
+            'nama_panggilan' => ['required', 'string', 'max:50', $regexHuruf],
             'anak_ke' => 'required|integer|min:1|max:99',
             'nomor_akte' => 'required|string|max:100',
             'nik_anak' => ['required', 'string', 'digits:16', Rule::unique('anak', 'nik_anak')->ignore($anakId, 'id_anak')],
@@ -30,8 +32,8 @@ class StoreDataAnakRequest extends FormRequest
             'nisn' => 'nullable|string|max:20',
             'riwayat_penyakit' => 'nullable|string',
 
-            'tempat_lahir' => 'required|string|max:50',
-            'tanggal_lahir' => 'required|date',
+            'tempat_lahir' => ['required', 'string', 'max:50', $regexHuruf],
+            'tanggal_lahir' => 'required|date|after_or_equal:1900-01-01|before_or_equal:today',
             'agama' => ['required', Rule::in(['Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha', 'Khonghucu'])],
             'bahasa_sehari_hari' => 'required|string|max:50',
             'berat_badan' => 'required|numeric|min:0|max:999', 
@@ -45,10 +47,6 @@ class StoreDataAnakRequest extends FormRequest
         ];
     }
 
-    /**
-     * Daftar "Nama Cantik" untuk setiap kolom.
-     * Laravel akan menggunakan ini untuk mengganti :attribute di pesan error.
-     */
     public function attributes(): array
     {
         return [
@@ -76,18 +74,22 @@ class StoreDataAnakRequest extends FormRequest
 
     /**
      * Kustomisasi pesan error.
-     * Gunakan :attribute agar otomatis mengambil nama dari fungsi attributes() di atas.
      */
     public function messages(): array
     {
         return [
-            // :attribute akan otomatis diganti sesuai kolomnya (misal: "Data Nama Lengkap wajib diisi.")
             'required' => 'Data :attribute wajib diisi.',
             
-            // Khusus Foto bahasanya dibedakan sedikit agar lebih natural
+            // Validasi Nama & Tempat
+            'nama_lengkap.regex' => 'Nama Lengkap hanya boleh berisi huruf (tidak boleh angka).',
+            'nama_panggilan.regex' => 'Nama Panggilan hanya boleh berisi huruf (tidak boleh angka).',
+            'tempat_lahir.regex' => 'Tempat Lahir hanya boleh berisi huruf (tidak boleh angka).',
+
+            // Validasi Tanggal
+            'tanggal_lahir.after_or_equal' => 'Tanggal Lahir tidak valid (Minimal tahun 1900).',
+            'tanggal_lahir.before_or_equal' => 'Tanggal Lahir tidak boleh melebihi hari ini.',
+
             'foto_anak.required' => 'Mohon unggah Foto Anak.',
-            
-            // Validasi khusus lainnya
             'nik_anak.digits' => 'NIK Anak harus berjumlah 16 digit.',
             'nik_anak.unique' => 'NIK Anak ini sudah terdaftar.',
             'numeric' => 'Data :attribute harus berupa angka.',

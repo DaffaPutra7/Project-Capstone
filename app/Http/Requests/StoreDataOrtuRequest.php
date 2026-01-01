@@ -14,29 +14,31 @@ class StoreDataOrtuRequest extends FormRequest
 
     public function rules(): array
     {
-        $pendidikan = ['SD', 'SMP', 'SMA', 'S1', 'S2', 'S3', 'Tidak Sekolah'];
+        $pendidikan = ['SD', 'SMP', 'SMA', 'SMK', 'S1', 'S2', 'S3', 'Tidak Sekolah'];
+        
+        $regexHuruf = 'regex:/^[a-zA-Z\s\.\,\'\-]+$/';
 
         return [
-            'nama_ayah' => 'required|string|max:100',
-            'tempat_lahir_ayah' => 'required|string|max:50',
-            'tanggal_lahir_ayah' => 'required|date',
+            // --- AYAH ---
+            'nama_ayah' => ['required', 'string', 'max:100', $regexHuruf],
+            'tempat_lahir_ayah' => ['required', 'string', 'max:50', $regexHuruf],
+            'tanggal_lahir_ayah' => 'required|date|after_or_equal:1900-01-01|before_or_equal:today',
             'pendidikan_ayah' => ['required', Rule::in($pendidikan)],
             'pekerjaan_ayah' => 'required|string|max:100',
 
-            'nama_ibu' => 'required|string|max:100', 
-            'tempat_lahir_ibu' => 'required|string|max:50',
-            'tanggal_lahir_ibu' => 'required|date',
+            // --- IBU ---
+            'nama_ibu' => ['required', 'string', 'max:100', $regexHuruf], 
+            'tempat_lahir_ibu' => ['required', 'string', 'max:50', $regexHuruf],
+            'tanggal_lahir_ibu' => 'required|date|after_or_equal:1900-01-01|before_or_equal:today',
             'pendidikan_ibu' => ['required', Rule::in($pendidikan)],
             'pekerjaan_ibu' => 'required|string|max:100',
 
-            'nama_wali' => 'nullable|string|max:100',
+            // --- WALI ---
+            'nama_wali' => ['nullable', 'string', 'max:100', $regexHuruf],
             'pekerjaan_wali' => 'nullable|string|max:100',
         ];
     }
 
-    /**
-     * Ubah nama atribut database menjadi nama yang enak dibaca user.
-     */
     public function attributes(): array
     {
         return [
@@ -57,13 +59,24 @@ class StoreDataOrtuRequest extends FormRequest
         ];
     }
 
-    /**
-     * Kustomisasi pesan error.
-     */
     public function messages(): array
     {
         return [
             'required' => 'Data :attribute wajib diisi.',
+            
+            // Custom Messages Regex
+            'nama_ayah.regex' => 'Nama Ayah hanya boleh berisi huruf (tidak boleh angka).',
+            'tempat_lahir_ayah.regex' => 'Tempat Lahir Ayah hanya boleh berisi huruf (tidak boleh angka).',
+            'nama_ibu.regex' => 'Nama Ibu hanya boleh berisi huruf (tidak boleh angka).',
+            'tempat_lahir_ibu.regex' => 'Tempat Lahir Ibu hanya boleh berisi huruf (tidak boleh angka).',
+            'nama_wali.regex' => 'Nama Wali hanya boleh berisi huruf (tidak boleh angka).',
+
+            // Custom Messages Date
+            'tanggal_lahir_ayah.after_or_equal' => 'Tanggal Lahir Ayah tidak valid (Minimal tahun 1900).',
+            'tanggal_lahir_ayah.before_or_equal' => 'Tanggal Lahir Ayah tidak boleh melebihi hari ini.',
+            'tanggal_lahir_ibu.after_or_equal' => 'Tanggal Lahir Ibu tidak valid (Minimal tahun 1900).',
+            'tanggal_lahir_ibu.before_or_equal' => 'Tanggal Lahir Ibu tidak boleh melebihi hari ini.',
+
             'date' => 'Format :attribute tidak valid.',
             'max' => 'Data :attribute maksimal :max karakter.',
         ];
