@@ -9,15 +9,6 @@
                     Daftar semua calon siswa yang telah mengirimkan formulir pendaftaran.
                 </p>
             </div>
-            
-            {{-- Tombol Tambah Pendaftar Offline --}}
-            <a href="{{ route('admin.pendaftaran.create') }}" 
-               class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 px-5 rounded-full shadow transition transform hover:-translate-y-0.5">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>
-                Tambah Pendaftar Offline
-            </a>
         </section>
 
         <section>
