@@ -1,6 +1,5 @@
 <x-app-layout>
     <main class="max-w-6xl mx-auto px-4 py-10 space-y-12">
-        <!-- JUDUL -->
         <section class="text-center">
             <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-sky-700 to-sky-500 bg-clip-text text-transparent">
                 Profil TK
@@ -9,10 +8,8 @@
                 {{ $profile->nama_tk ?? 'Nama TK' }}
             </p>
         </section>
-        <!-- VISI & MISI -->
         <section class="grid md:grid-cols-2 gap-8">
 
-            <!-- VISI -->
             <div class="rounded-3xl shadow-xl border-2 border-[#89FFE7] bg-white overflow-hidden">
                 <div class="bg-gradient-to-r from-sky-600 to-cyan-500 px-8 py-5 flex items-center justify-center gap-3">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -26,11 +23,11 @@
 
                 <div class="p-8">
                     <p class="text-gray-800 leading-relaxed text-lg font-medium text-center">
-                        {!! nl2br(e($profile->visi)) !!}
+                        {{-- PERBAIKAN: Tambahkan null check (?? '') agar tidak error jika visi kosong --}}
+                        {!! nl2br(e($profile->visi ?? 'Belum ada data visi.')) !!}
                     </p>
                 </div>
             </div>
-            <!-- MISI -->
             <div class="rounded-3xl shadow-xl border-2 border-[#89FFE7] bg-white overflow-hidden">
                 <div class="bg-gradient-to-r from-sky-600 to-cyan-500 px-8 py-5 flex items-center justify-center gap-3">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -42,19 +39,23 @@
 
                 <div class="p-8">
                     <ul class="space-y-3 text-gray-800 text-lg font-medium">
-                        @foreach (explode("\n", $profile->misi) as $misi)
-                        @if (trim($misi))
-                        <li class="flex items-start gap-3">
-                            <span class="w-3 h-3 mt-2 border-2 border-sky-600 rounded-full shrink-0"></span>
-                            <span>{{ trim($misi, "•- ") }}</span>
-                        </li>
+                        {{-- PERBAIKAN: Check if misi exists --}}
+                        @if(!empty($profile->misi))
+                            @foreach (explode("\n", $profile->misi) as $misi)
+                                @if (trim($misi))
+                                <li class="flex items-start gap-3">
+                                    <span class="w-3 h-3 mt-2 border-2 border-sky-600 rounded-full shrink-0"></span>
+                                    <span>{{ trim($misi, "•- ") }}</span>
+                                </li>
+                                @endif
+                            @endforeach
+                        @else
+                            <li class="text-center text-gray-500">Belum ada data misi.</li>
                         @endif
-                        @endforeach
                     </ul>
                 </div>
             </div>
         </section>
-        <!-- TUJUAN -->
         <section class="rounded-3xl shadow-xl border-2 border-[#89FFE7] bg-white overflow-hidden">
             <div class="bg-gradient-to-r from-sky-600 to-cyan-500 px-8 py-5 flex items-center justify-center gap-3">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -66,18 +67,22 @@
 
             <div class="p-8">
                 <ul class="space-y-3 text-gray-800 text-lg font-medium">
-                    @foreach (explode("\n", $profile->tujuan) as $tujuan)
-                    @if (trim($tujuan))
-                    <li class="flex items-start gap-3 justify-center text-center">
-                        <span class="w-3 h-3 mt-2 border-2 border-sky-600 rounded-full shrink-0"></span>
-                        <span>{{ trim($tujuan, "•- ") }}</span>
-                    </li>
+                    {{-- PERBAIKAN: Check if tujuan exists --}}
+                    @if(!empty($profile->tujuan))
+                        @foreach (explode("\n", $profile->tujuan) as $tujuan)
+                            @if (trim($tujuan))
+                            <li class="flex items-start gap-3 justify-center text-center">
+                                <span class="w-3 h-3 mt-2 border-2 border-sky-600 rounded-full shrink-0"></span>
+                                <span>{{ trim($tujuan, "•- ") }}</span>
+                            </li>
+                            @endif
+                        @endforeach
+                    @else
+                        <li class="text-center text-gray-500">Belum ada data tujuan.</li>
                     @endif
-                    @endforeach
                 </ul>
             </div>
         </section>
-        <!-- GALERI -->
         <section class="rounded-3xl shadow-xl border-2 border-[#89FFE7] bg-white overflow-hidden">
             <div class="bg-gradient-to-r from-sky-600 to-cyan-500 px-8 py-5 text-center">
                 <h3 class="text-2xl font-bold text-white tracking-wide">GALERI FOTO</h3>
@@ -104,7 +109,6 @@
                 @endif
             </div>
         </section>
-        <!-- LOKASI -->
         <section class="rounded-3xl shadow-xl border-2 border-[#89FFE7] bg-white overflow-hidden">
             <h3 class="text-2xl font-bold text-center py-4 bg-gradient-to-r from-sky-700 to-sky-500 text-white">
                 LOKASI TK
@@ -123,7 +127,6 @@
 
             <div class="grid md:grid-cols-3 gap-6 px-6 py-6 border-t bg-sky-50">
 
-                <!-- ALAMAT -->
                 <div class="flex gap-3">
                     <div class="shrink-0">
                         <div class="w-10 h-10 rounded-full bg-sky-100 flex items-center justify-center">
@@ -144,7 +147,6 @@
                         </p>
                     </div>
                 </div>
-                <!-- KONTAK -->
                 <div class="flex gap-3">
                     <div class="shrink-0">
                         <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
@@ -171,7 +173,6 @@
                         </p>
                     </div>
                 </div>
-                <!-- BUTTON -->
                 <div class="flex flex-col gap-3 justify-center">
                     <a href="https://maps.app.goo.gl/2zUEd5y5iTpwxfs99" target="_blank"
                         class="bg-gradient-to-r from-sky-500 to-cyan-500 text-white text-center font-semibold px-5 py-2.5 rounded-xl shadow hover:scale-105 transition">
