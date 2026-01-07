@@ -30,7 +30,7 @@
             'Formulir Dikirim' => ['desc' => 'Formulir Anda sedang dalam proses verifikasi oleh tim kami. Mohon menunggu konfirmasi lebih lanjut.'],
             'Proses Seleksi' => ['desc' => 'Anda telah memasuki tahap seleksi. Tim kami akan meninjau data Anda.'],
             'Diterima' => ['desc' => 'Selamat! Anda telah diterima. Silakan lakukan konfirmasi pendaftaran ulang melalui tombol di bawah.'],
-            'Ditolak' => ['desc' => 'Mohon maaf, Anda belum lolos seleksi. Silakan coba lagi tahun depan.'],
+            'Ditolak' => ['desc' => 'Mohon maaf, Anda belum lolos seleksi.'],
             'Belum Mendaftar' => ['desc' => 'Anda belum melakukan pendaftaran.'],
         ];
 
